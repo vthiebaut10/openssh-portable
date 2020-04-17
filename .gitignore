@@ -3,6 +3,7 @@ Makefile
 buildpkg.sh
 config.h
 config.h.in
+config.log
 config.status
 configure
 openbsd-compat/Makefile
@@ -12,6 +13,8 @@ opensshd.init
 survey.sh
 **/*.0
 **/*.o
+**/*.lo
+**/*.so
 **/*.out
 **/*.a
 autom4te.cache/
@@ -25,6 +28,7 @@ ssh-keygen
 ssh-keyscan
 ssh-keysign
 ssh-pkcs11-helper
+ssh-sk-helper
 sshd
 !regress/misc/fuzz-harness/Makefile
 tags
