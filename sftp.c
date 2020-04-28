@@ -448,7 +448,7 @@ make_absolute(char *p, const char *pwd)
 		free(p);
 		p = s1;
 	}
-
+	return(p);
 #else /* !WINDOWS */
 	if (p && !path_absolute(p)) {
 		abs_str = path_append(pwd, p);
@@ -457,8 +457,6 @@ make_absolute(char *p, const char *pwd)
 	} else
 		return(p);
 #endif /* !WINDOWS */
-	return(p);
-
 }
 
 static int
@@ -2438,13 +2436,13 @@ connect_to_server(char *path, char **args, int *in, int *out)
 		_exit(1);
 	}
 #endif
-	signal(SIGTERM, killchild);
-	signal(SIGINT, killchild);
-	signal(SIGHUP, killchild);
-	signal(SIGTSTP, suspchild);
-	signal(SIGTTIN, suspchild);
-	signal(SIGTTOU, suspchild);
-	signal(SIGCHLD, sigchld_handler);
+	ssh_signal(SIGTERM, killchild);
+	ssh_signal(SIGINT, killchild);
+	ssh_signal(SIGHUP, killchild);
+	ssh_signal(SIGTSTP, suspchild);
+	ssh_signal(SIGTTIN, suspchild);
+	ssh_signal(SIGTTOU, suspchild);
+	ssh_signal(SIGCHLD, sigchld_handler);
 	close(c_in);
 	close(c_out);
 }

@@ -137,6 +137,7 @@ try
 	$env:TEST_SSH_SCP = $OpenSSHBinPath_shell_fmt+"/scp.exe"
 	$env:BUILDDIR = $BUILDDIR
 	$env:TEST_WINDOWS_SSH = 1
+	$env:TEST_SSH_UNSAFE_PERMISSIONS=1
 	$user = &"$env:windir\system32\whoami.exe"
 	if($user.Contains($env:COMPUTERNAME.ToLower())) {
 		# for local accounts, skip COMPUTERNAME
@@ -209,7 +210,7 @@ try
 			$msg = "Run $test_file_name [$($all_tests.IndexOf($test_file) + 1) of $($all_tests.count)] " + [System.DateTime]::Now
 			Write-Output $msg | Tee-Object -FilePath $bash_test_log_file -Append -ErrorAction Stop
 
-			&$env:ShellPath -c "/usr/bin/sh $BashTestsPath/test-exec.sh $BashTestsPath/$temp_test_path $TEST 2>&1" | Out-File -FilePath $bash_test_log_file -Append -ErrorAction Stop
+			&$env:ShellPath -c "/usr/bin/sh $BashTestsPath/test-exec.sh $BashTestsPath/$temp_test_path $TEST 2>&1"| Out-File -FilePath $bash_test_log_file -Append -ErrorAction Stop
 			if ($?)
 			{
 				$msg = "$test_file_name PASSED " + [System.DateTime]::Now

@@ -90,6 +90,9 @@ trial() {
 	    -C "host=$_host,user=test,addr=127.0.0.1" > $OBJ/sshd_config.out ||
 		fatal "ssh config parse failed: $_desc host=$_host expect=$_exp"
 	_got=`grep -i '^banner ' $OBJ/sshd_config.out | awk '{print $2}'`
+	if [ "$os" == "windows" ]; then
+		_got=`echo $_got | tr -d '\r'`  # remove \r
+	fi
 	if test "x$_exp" != "x$_got" ; then
 		fail "$desc_ host $_host include fail: expected $_exp got $_got"
 	fi

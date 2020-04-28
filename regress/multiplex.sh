@@ -6,6 +6,12 @@ CTL=${SSH_REGRESS_TMP}/ctl-sock
 
 tid="connection multiplexing"
 
+if [ "$os" == "windows" ]; then
+	# Windows, ssh.exe -S option is not supported on windows
+	echo "skipped, not applicable on windows OS"
+	exit 0
+fi
+
 trace "will use ProxyCommand $proxycmd"
 if config_defined DISABLE_FD_PASSING ; then
 	echo "skipped (not supported on this platform)"

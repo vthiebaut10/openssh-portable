@@ -441,6 +441,10 @@
       <ExcludedFromBuild Condition="$(UseOpenSSL)==false">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="$(OpenSSH-Src-Path)kexgexs.c" />
+    <ClCompile Include="..\..\..\ssh-ecdsa-sk.c" />
+    <ClCompile Include="..\..\..\ssh-ed25519-sk.c" />
+    <ClCompile Include="..\..\..\ssh-sk.c" />
+    <ClCompile Include="..\..\..\sshbuf-io.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(OpenSSH-Src-Path)sshfileperm.h" />

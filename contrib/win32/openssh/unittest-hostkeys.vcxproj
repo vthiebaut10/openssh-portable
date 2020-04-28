@@ -414,6 +414,7 @@
     <ClCompile Include="$(OpenSSH-Src-Path)regress\unittests\hostkeys\test_iterate.c">
       <ExcludedFromBuild Condition="$(UseOpenSSL)=='false'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\..\ssh-sk-client.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

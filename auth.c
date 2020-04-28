@@ -76,7 +76,9 @@
 #include "ssherr.h"
 #include "compat.h"
 #include "channels.h"
+#ifdef WINDOWS
 #include "sshfileperm.h"
+#endif
 
 /* import */
 extern ServerOptions options;

@@ -280,7 +280,7 @@ test_start(const char *n)
 		printf("test %u - \"%s\": ", test_number, active_test_name);
 	test_number++;
 #ifdef SIGINFO
-	signal(SIGINFO, siginfo);
+	ssh_signal(SIGINFO, siginfo);
 #endif
 	signal(SIGUSR1, siginfo);
 }
