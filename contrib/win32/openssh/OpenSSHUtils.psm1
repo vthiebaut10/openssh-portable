@@ -196,7 +196,7 @@ function Repair-AdministratorsAuthorizedKeysPermission
         [ValidateNotNullOrEmpty()]        
         [string]$FilePath) 
 
-        Repair-FilePermission -Owners $systemSid -FullAccessNeeded $adminsSid,$systemSid -ReadAccessOK $everyoneSid @psBoundParameters        
+        Repair-FilePermission -Owners $adminsSid -FullAccessNeeded $adminsSid,$systemSid -ReadAccessOK $everyoneSid @psBoundParameters        
 
 }
 

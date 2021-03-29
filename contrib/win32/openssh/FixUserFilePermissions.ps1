@@ -15,18 +15,21 @@ Get-ChildItem ~\.ssh\* -Include "id_rsa","id_dsa" -ErrorAction SilentlyContinue 
 }
 
 
-if (([bool]([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")))
+
+$sshdAdministratorsAuthorizedKeysPath = join-path $env:ProgramData\ssh "administrators_authorized_keys"
+if(Test-Path $sshdAdministratorsAuthorizedKeysPath -PathType Leaf) 
 {
-    $sshdAdministratorsAuthorizedKeysPath = join-path $env:ProgramData\ssh "administrators_authorized_keys"
-    if(Test-Path $sshdAdministratorsAuthorizedKeysPath -PathType Leaf) 
+    if (([bool]([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")))
     {
         Repair-AdministratorsAuthorizedKeysPermission -FilePath $sshdAdministratorsAuthorizedKeysPath @psBoundParameters
     }
     else 
     {
-        Write-host "$sshdAdministratorsAuthorizedKeysPath does not exist"  -ForegroundColor Yellow
+        Write-host "To fix file permissions for $sshdAdministratorsAuthorizedKeysPath, run this script in elevated mode" -ForegroundColor Yellow
     }
 }
+
+
 
 Write-Host "   Done."
 Write-Host " "
