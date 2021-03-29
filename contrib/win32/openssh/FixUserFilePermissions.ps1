@@ -14,5 +14,15 @@ Get-ChildItem ~\.ssh\* -Include "id_rsa","id_dsa" -ErrorAction SilentlyContinue 
     Repair-UserKeyPermission -FilePath $_.FullName @psBoundParameters
 }
 
+$sshdAdministratorsAuthorizedKeysPath = join-path $env:ProgramData\ssh "administrators_authorized_keys"
+if(Test-Path $sshdAdministratorsAuthorizedKeysPath -PathType Leaf) 
+{
+    Repair-AdministratorsAuthorizedKeysPermission -FilePath $sshdAdministratorsAuthorizedKeysPath @psBoundParameters
+}
+else 
+{
+    Write-host "$sshdConfigPath does not exist"  -ForegroundColor Yellow
+}
+
 Write-Host "   Done."
 Write-Host " "
