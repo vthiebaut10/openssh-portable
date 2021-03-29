@@ -3,6 +3,11 @@
 # @manojampalam - removed ntrights.exe dependency
 # @bingbing8 - removed secedit.exe dependency
 
+if (!([bool]([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")))
+{
+    throw "You must be running as an administrator, please restart as administrator"
+}
+
 $scriptpath = $MyInvocation.MyCommand.Path
 $scriptdir = Split-Path $scriptpath
 
