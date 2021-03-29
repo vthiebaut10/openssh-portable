@@ -21,7 +21,7 @@ if(Test-Path $sshdAdministratorsAuthorizedKeysPath -PathType Leaf)
 }
 else 
 {
-    Write-host "$sshdConfigPath does not exist"  -ForegroundColor Yellow
+    Write-host "$sshdAdministratorsAuthorizedKeysPath does not exist"  -ForegroundColor Yellow
 }
 
 Write-Host "   Done."
