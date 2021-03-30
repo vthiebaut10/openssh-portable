@@ -18,7 +18,7 @@ $sshagentpath = Join-Path $scriptdir "ssh-agent.exe"
 $etwman = Join-Path $scriptdir "openssh-events.man"
 
 if (-not (Test-Path $sshdpath)) {
-    throw "$sshdpath sshd.exe is not present in script path"
+    throw "sshd.exe is not present in script path"
 }
 
 if (Get-Service sshd -ErrorAction SilentlyContinue) 
