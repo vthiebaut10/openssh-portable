@@ -3,6 +3,8 @@
 # @manojampalam - removed ntrights.exe dependency
 # @bingbing8 - removed secedit.exe dependency
 
+$ErrorActionPreference = 'Stop'
+
 if (!([bool]([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")))
 {
     throw "You must be running as an administrator, please restart as administrator"
@@ -16,7 +18,7 @@ $sshagentpath = Join-Path $scriptdir "ssh-agent.exe"
 $etwman = Join-Path $scriptdir "openssh-events.man"
 
 if (-not (Test-Path $sshdpath)) {
-    throw "sshd.exe is not present in script path"
+    throw "$sshdpath sshd.exe is not present in script path"
 }
 
 if (Get-Service sshd -ErrorAction SilentlyContinue) 
@@ -53,6 +55,7 @@ finally {
 }
 
 # Fix the registry permissions
+If ($PSVersiontable.PSVersion.Major -le 2) {$PSScriptRoot = Split-Path -Parent $MyInvocation.MyCommand.Path}
 Import-Module $PSScriptRoot\OpenSSHUtils -Force
 Enable-Privilege SeRestorePrivilege | out-null
 
