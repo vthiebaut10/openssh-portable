@@ -522,7 +522,7 @@ function Repair-FilePermissionInternal {
             }
 
             if (-not ($a.AccessControlType.Equals([System.Security.AccessControl.AccessControlType]::Allow)) -or `
-            (-not (([System.Int32]$a.FileSystemRights.value__) -band (-bnot $ReadAccessPerm))))
+            (-not (([System.UInt32]$a.FileSystemRights.value__) -band (-bnot $ReadAccessPerm))))
             {
                 continue;
             }
