@@ -41,6 +41,10 @@ $adminsSid = Get-UserSID -WellKnownSidType ([System.Security.Principal.WellKnown
 # get the everyone
 $everyoneSid = Get-UserSID -WellKnownSidType ([System.Security.Principal.WellKnownSidType]::WorldSid)
 
+# get the authenticated users group
+# not used by Repair-FilePermissions
+$authenticateduserSid = Get-UserSID -WellKnownSidType ([System.Security.Principal.WellKnownSidType]::AuthenticatedUserSid)
+
 $currentUserSid = Get-UserSID -User "$($env:USERDOMAIN)\$($env:USERNAME)"
 
 #Taken from P/Invoke.NET with minor adjustments.
@@ -96,6 +100,81 @@ public class AdjPriv
 '@
  
 $type = Add-Type $definition -PassThru -ErrorAction SilentlyContinue
+
+<#
+    .Synopsis
+    Repair-BinFolderPermission
+    Repair the file owner and permissions of the folder that contains the OpenSSH binaries
+#>
+function Repair-BinFolderPermission
+{
+	[CmdletBinding(SupportsShouldProcess=$true, ConfirmImpact="High")]
+    param (
+        [parameter(Mandatory=$true)]
+        [ValidateNotNullOrEmpty()]        
+        [string]$FilePath) 
+
+    
+    $new_acl = Get-Acl $FilePath
+
+    #Remove inherited access rules
+    $message = "Need to remove the inheritance before repair the rules."
+    $prompt = "Shall I remove the inherited rules?"
+    $description = "Remove inheritance of '$FilePath'."
+
+    if($pscmdlet.ShouldProcess($description, $prompt, $message)) 
+    {
+        $new_acl.SetAccessRuleProtection($True, $False)
+        Write-Host "Inherited rules were removed from '$FilePath'. " -ForegroundColor Green
+
+    }
+    else {
+
+        Write-Host "Inherited rules were not removed from '$FilePath'. " -ForegroundColor Yellow
+    }
+
+    #Delete all remaining entries from new_acl
+    foreach ($a in $new_acl.Access)
+    {
+        if(-not $a.IsInherited)
+        {
+            $a_copy = New-Object System.Security.AccessControl.FileSystemAccessRule($a.IdentityReference, $a.FileSystemRights, $a.InheritanceFlags, $a.PropagationFlags, $a.AccessControlType)
+            if ($new_acl.RemoveAccessRule($a_copy))
+            {
+                Write-Host "'$($a_copy.FileSystemRights)' to '$($a_copy.IdentityReference)' successfuly removed"
+            } 
+        }
+    }
+
+    #Add new owner
+    $new_acl.SetOwner($adminsSid)
+
+    #Add Rule for admin to have full control
+    $ace = New-Object System.Security.AccessControl.FileSystemAccessRule($adminsSid, "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
+    $new_acl.SetAccessRule($ace)
+
+    #Add rule for system to have full control
+    $ace = New-Object System.Security.AccessControl.FileSystemAccessRule($systemSid, "FullControl", "ContainerInherit,ObjectInherit", "None", "Allow")
+    $new_acl.SetAccessRule($ace)
+
+    #Add rule for authenticated users to have read and execute access
+    $ace = New-Object System.Security.AccessControl.FileSystemAccessRule($authenticateduserSid, "ReadAndExecute", "ContainerInherit,ObjectInherit", "None", "Allow")
+    $new_acl.SetAccessRule($ace)
+
+    <#
+    #Add rule for authenticated users to have modify access
+    $ace = New-Object System.Security.AccessControl.FileSystemAccessRule($authenticateduserSid, "Modify", "ContainerInherit,ObjectInherit", "None", "Allow")
+    $new_acl.SetAccessRule($ace)
+    #>
+
+    #Add rule for everyone to have read access
+    $ace = New-Object System.Security.AccessControl.FileSystemAccessRule($everyoneSid, "Read", "ContainerInherit,ObjectInherit", "None", "Allow")
+    $new_acl.SetAccessRule($ace)
+
+    Enable-Privilege SeRestorePrivilege | out-null
+    Set-Acl -Path $FilePath -AclObject $new_acl -Confirm:$false
+      
+}
 
 <#
     .Synopsis
@@ -443,7 +522,7 @@ function Repair-FilePermissionInternal {
             }
 
             if (-not ($a.AccessControlType.Equals([System.Security.AccessControl.AccessControlType]::Allow)) -or `
-            (-not (([System.UInt32]$a.FileSystemRights.value__) -band (-bnot $ReadAccessPerm))))
+            (-not (([System.Int32]$a.FileSystemRights.value__) -band (-bnot $ReadAccessPerm))))
             {
                 continue;
             }
@@ -708,4 +787,4 @@ function Enable-Privilege {
     $type[0]::EnablePrivilege($Privilege, $Disable)
 }
 
-Export-ModuleMember -Function Repair-FilePermission, Repair-SshdConfigPermission, Repair-SshdHostKeyPermission, Repair-AuthorizedKeyPermission, Repair-UserKeyPermission, Repair-UserSshConfigPermission, Enable-Privilege, Get-UserAccount, Get-UserSID, Repair-AdministratorsAuthorizedKeysPermission
+Export-ModuleMember -Function Repair-FilePermission, Repair-SshdConfigPermission, Repair-SshdHostKeyPermission, Repair-AuthorizedKeyPermission, Repair-UserKeyPermission, Repair-UserSshConfigPermission, Enable-Privilege, Get-UserAccount, Get-UserSID, Repair-AdministratorsAuthorizedKeysPermission, Repair-BinFolderPermission

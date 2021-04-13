@@ -59,6 +59,8 @@ If ($PSVersiontable.PSVersion.Major -le 2) {$PSScriptRoot = Split-Path -Parent $
 Import-Module $PSScriptRoot\OpenSSHUtils -Force
 Enable-Privilege SeRestorePrivilege | out-null
 
+Repair-BinFolderPermission -FilePath $PSScriptRoot @psBoundParameters
+
 $sshRootRegPath="HKLM:SOFTWARE/Openssh"
 if (Test-Path $sshRootRegPath)
 {
@@ -76,6 +78,8 @@ if (Test-Path $sshAgentRegPath)
     $sshAgentAcl.SetSecurityDescriptorSddlForm("O:BAG:SYD:P(A;OICI;KA;;;SY)(A;OICI;KA;;;BA)")
     Set-Acl $sshAgentRegPath  $sshAgentAcl
 }
+
+
 
 #register etw provider
 wevtutil im `"$etwman`"
