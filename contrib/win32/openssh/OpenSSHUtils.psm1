@@ -202,8 +202,8 @@ function Repair-AdministratorsAuthorizedKeysPermission
 
 <#
     .Synopsis
-    Repair-AdministratorsAuthorizedKeysPermission
-    Repair the file owner and Permission of administrators_authorized_keys
+    Repair-ModuliFilePermission
+    Repair the file owner and Permission of moduli file 
 #>
 
 function Repair-ModuliFilePermission
