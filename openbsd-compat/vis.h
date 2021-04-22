@@ -81,6 +81,11 @@
  */
 #define	UNVIS_END	1	/* no more characters */
 
+/*
+ * UTF16 logs
+ */
+#define VIS_LOG_UTF16	0x800
+
 char	*vis(char *, int, int, int);
 int	strvis(char *, const char *, int);
 int	stravis(char **, const char *, int);
