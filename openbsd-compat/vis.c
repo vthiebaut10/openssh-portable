@@ -117,7 +117,7 @@ vis(char *dst, int c, int flag, int nextc)
 
 #ifdef WINDOWS
 	/*Avoid encoding UTF-16 chatacters so they 
-	  show up correctly on the logs*/
+	  show up correctly in the logs*/
 	if (flag & VIS_LOG_UTF16) {
 		*dst++ = c;
 		goto done;
