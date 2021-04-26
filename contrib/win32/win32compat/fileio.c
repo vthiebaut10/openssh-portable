@@ -673,6 +673,25 @@ WriteCompletionRoutine(_In_ DWORD dwErrorCode,
 	*((__int64*)&lpOverlapped->Offset) += dwNumberOfBytesTransfered;
 }
 
+
+int 
+fileio_write_wrapper(struct w32_io* pio, const void* buf, size_t max_bytes) 
+{
+	if (max_bytes <= WRITE_BUFFER_SIZE)
+		return fileio_write(pio, buf, max_bytes);
+	
+	void* chunk_buf;
+	int chunk_count = 0;
+	int bytes_copied = 0;
+	int chunk_size;
+	for (int i = max_bytes; i > 0; i -= WRITE_BUFFER_SIZE, chunk_count++) {
+		chunk_buf = (BYTE*)buf + chunk_count * WRITE_BUFFER_SIZE;
+		chunk_size = (i >= WRITE_BUFFER_SIZE) ? WRITE_BUFFER_SIZE : i;
+		bytes_copied += fileio_write(pio, chunk_buf, chunk_size);
+	}
+	return bytes_copied;
+	
+}
 /* write() implementation */
 int
 fileio_write(struct w32_io* pio, const void *buf, size_t max_bytes)
