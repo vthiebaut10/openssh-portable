@@ -673,9 +673,8 @@ WriteCompletionRoutine(_In_ DWORD dwErrorCode,
 	*((__int64*)&lpOverlapped->Offset) += dwNumberOfBytesTransfered;
 }
 
-
-int 
-fileio_write_wrapper(struct w32_io* pio, const void* buf, size_t bytes_to_copy) 
+int
+fileio_write_wrapper(struct w32_io* pio, const void* buf, size_t bytes_to_copy)
 {
 	debug3("%s bytes_to_copy: %d", __func__, bytes_to_copy);
 	if (bytes_to_copy < WRITE_BUFFER_SIZE) {
@@ -683,31 +682,32 @@ fileio_write_wrapper(struct w32_io* pio, const void* buf, size_t bytes_to_copy)
 		debug3("Total Bytes Written: %d", bytes_written);
 		return bytes_written;
 	}
-	
+
 	debug3("Large number of bytes (%d) will be written in chunks", bytes_to_copy);
 	void* chunk_buf;
 	int chunk_count = 0;
 	int bytes_copied = -1;
 	int chunk_size;
 	int write_response;
-	
+
 	for (int i = 0; i < bytes_to_copy; i += WRITE_BUFFER_SIZE, chunk_count++) {
 		chunk_buf = (BYTE*)buf + chunk_count * WRITE_BUFFER_SIZE;
 		chunk_size = ((bytes_to_copy - i) > WRITE_BUFFER_SIZE) ? WRITE_BUFFER_SIZE : (bytes_to_copy - i);
 		write_response = fileio_write(pio, chunk_buf, chunk_size);
-		
+
 		if (write_response == -1)
 			return bytes_copied;
-		
+
 		if (bytes_copied == -1)
 			bytes_copied = 0;
-		
+
 		bytes_copied += write_response;
 		debug3("Total Bytes Written: %d, Chunk Size: %d", bytes_copied, chunk_size);
 	}
 	return bytes_copied;
-	
+
 }
+
 /* write() implementation */
 int
 fileio_write(struct w32_io* pio, const void *buf, size_t max_bytes)
