@@ -550,17 +550,6 @@ w32_read(int fd, void *dst, size_t max)
 	return fileio_read(fd_table.w32_ios[fd], dst, max);
 }
 
-int 
-w32_write_chunks(int fd, const void* buf, size_t max)
-{
-	CHECK_FD(fd);
-
-	if (fd_table.w32_ios[fd]->type == SOCK_FD)
-		return socketio_send(fd_table.w32_ios[fd], buf, max, 0);
-
-	return fileio_write_wrapper(fd_table.w32_ios[fd], buf, max);
-}
-
 int
 w32_write(int fd, const void *buf, size_t max)
 {
@@ -569,7 +558,7 @@ w32_write(int fd, const void *buf, size_t max)
 	if (fd_table.w32_ios[fd]->type == SOCK_FD)
 		return socketio_send(fd_table.w32_ios[fd], buf, max, 0);
 
-	return fileio_write(fd_table.w32_ios[fd], buf, max);
+	return fileio_write_wrapper(fd_table.w32_ios[fd], buf, max);
 }
 
 int

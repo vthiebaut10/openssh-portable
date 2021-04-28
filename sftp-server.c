@@ -807,11 +807,7 @@ process_write(u_int32_t id)
 			error("process_write: seek failed");
 		} else {
 /* XXX ATOMICIO ? */
-#ifdef WINDOWS
-			ret = w32_write_chunks(fd, data, len);
-#else
 			ret = write(fd, data, len);
-#endif
 			if (ret == -1) {
 				error("process_write: write failed");
 				status = errno_to_portable(errno);

@@ -28,8 +28,6 @@ int w32_write(int fd, const void *buf, size_t max);
 #define writev w32_writev
 int w32_writev(int fd, const struct iovec *iov, int iovcnt);
 
-int w32_write_chunks(int fd, const void* buf, size_t max);
-
 int w32_isatty(int fd);
 /* can't do this #define isatty w32_isatty
 * as there is a variable in code named isatty*/
