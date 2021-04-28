@@ -676,33 +676,29 @@ WriteCompletionRoutine(_In_ DWORD dwErrorCode,
 int
 fileio_write_wrapper(struct w32_io* pio, const void* buf, size_t bytes_to_copy)
 {
-	debug3("%s bytes_to_copy: %d", __func__, bytes_to_copy);
-	if (bytes_to_copy < WRITE_BUFFER_SIZE) {
-		int bytes_written = fileio_write(pio, buf, bytes_to_copy);
-		debug3("Total Bytes Written: %d", bytes_written);
+	int bytes_written = 0;
+	if (bytes_to_copy <= WRITE_BUFFER_SIZE) {
+		bytes_written = fileio_write(pio, buf, bytes_to_copy);
 		return bytes_written;
 	}
 
-	debug3("Large number of bytes (%d) will be written in chunks", bytes_to_copy);
-	void* chunk_buf;
+	void* chunk_buf = NULL;
 	int chunk_count = 0;
 	int bytes_copied = -1;
-	int chunk_size;
-	int write_response;
+	int chunk_size = 0;
 
 	for (int i = 0; i < bytes_to_copy; i += WRITE_BUFFER_SIZE, chunk_count++) {
 		chunk_buf = (BYTE*)buf + chunk_count * WRITE_BUFFER_SIZE;
-		chunk_size = ((bytes_to_copy - i) > WRITE_BUFFER_SIZE) ? WRITE_BUFFER_SIZE : (bytes_to_copy - i);
-		write_response = fileio_write(pio, chunk_buf, chunk_size);
+		chunk_size = ((bytes_to_copy - i) >= WRITE_BUFFER_SIZE) ? WRITE_BUFFER_SIZE : (bytes_to_copy - i);
+		bytes_written = fileio_write(pio, chunk_buf, chunk_size);
 
-		if (write_response == -1)
+		if (bytes_written == -1)
 			return bytes_copied;
 
 		if (bytes_copied == -1)
 			bytes_copied = 0;
 
-		bytes_copied += write_response;
-		debug3("Total Bytes Written: %d, Chunk Size: %d", bytes_copied, chunk_size);
+		bytes_copied += bytes_written;
 	}
 	return bytes_copied;
 
