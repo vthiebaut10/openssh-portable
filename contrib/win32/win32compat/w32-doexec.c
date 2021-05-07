@@ -254,7 +254,7 @@ setup_session_env(struct ssh *ssh, Session* s)
 		wcscat_s(wbuf, ARRAYSIZE(wbuf), L" $P$G");
 		SetEnvironmentVariableW(L"PROMPT", wbuf);
 	}
-	sleep(60);
+
 	setup_session_user_vars(pw_dir_w); /* setup user specific env variables */
 	setup_session_system_vars(); /*setup system variables*/
 
