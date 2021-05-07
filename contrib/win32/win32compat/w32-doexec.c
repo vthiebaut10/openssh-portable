@@ -142,17 +142,77 @@ setup_session_user_vars(wchar_t* profile_path)
 			to_apply = data_expanded;
 		}
 
+		if (to_apply)
+			SetEnvironmentVariableW(name, to_apply);
+	}
+cleanup:
+	if (reg_key)
+		RegCloseKey(reg_key);
+	if (data)
+		free(data);
+	if (data_expanded)
+		free(data_expanded);
+	if (path_value)
+		free(path_value);
+}
+
+static void
+setup_session_system_vars()
+{
+	/* retrieve and set env variables. */
+	HKEY reg_key = 0;
+	wchar_t name[256];
+	wchar_t path[PATH_MAX + 1] = { 0, };
+	wchar_t* data = NULL, * data_expanded = NULL, * path_value = NULL, * to_apply;
+	DWORD type, name_chars = 256, data_chars = 0, data_expanded_chars = 0, required, i = 0;
+	LONG ret;
+
+	ret = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment", 0, KEY_QUERY_VALUE, &reg_key);
+
+	if (ret != ERROR_SUCCESS)
+		return;
+	else while (1) {
+		to_apply = NULL;
+		required = data_chars * sizeof(wchar_t);
+		name_chars = 256;
+		ret = RegEnumValueW(reg_key, i++, name, &name_chars, 0, &type, (LPBYTE)data, &required);
+		if (ret == ERROR_NO_MORE_ITEMS)
+			break;
+		else if (ret == ERROR_MORE_DATA || required > data_chars * 2) {
+			if (data != NULL)
+				free(data);
+			data = xmalloc(required);
+			data_chars = required / 2;
+			i--;
+			continue;
+		}
+
+		else if (ret != ERROR_SUCCESS)
+			break;
+
+		if (type == REG_SZ)
+			to_apply = data;
+		else if (type == REG_EXPAND_SZ) {
+			required = ExpandEnvironmentStringsW(data, data_expanded, data_expanded_chars);
+			if (required > data_expanded_chars) {
+				if (data_expanded)
+					free(data_expanded);
+				data_expanded = xmalloc(required * 2);
+				data_expanded_chars = required;
+				ExpandEnvironmentStringsW(data, data_expanded, data_expanded_chars);
+			}
+			to_apply = data_expanded;
+		}
+
 		if (_wcsicmp(name, L"PATH") == 0) {
 			if ((required = GetEnvironmentVariableW(L"PATH", NULL, 0)) != 0) {
-				/* "required" includes null term */
 				path_value = xmalloc((wcslen(to_apply) + 1 + required) * 2);
 				GetEnvironmentVariableW(L"PATH", path_value, required);
-				path_value[required - 1] = L';';
-				GOTO_CLEANUP_ON_ERR(memcpy_s(path_value + required, (wcslen(to_apply) + 1) * 2, to_apply, (wcslen(to_apply) + 1) * 2));
+				GOTO_CLEANUP_ON_ERR(memcpy_s(path_value + required - 1, (wcslen(to_apply) + 1) * 2, to_apply, (wcslen(to_apply) + 1) * 2));
 				to_apply = path_value;
 			}
-
 		}
+
 		if (to_apply)
 			SetEnvironmentVariableW(name, to_apply);
 	}
@@ -194,8 +254,9 @@ setup_session_env(struct ssh *ssh, Session* s)
 		wcscat_s(wbuf, ARRAYSIZE(wbuf), L" $P$G");
 		SetEnvironmentVariableW(L"PROMPT", wbuf);
 	}
-
+	sleep(60);
 	setup_session_user_vars(pw_dir_w); /* setup user specific env variables */
+	setup_session_system_vars(); /*setup system variables*/
 
 	env = do_setup_env_proxy(ssh, s, s->pw->pw_shell);
 	while (env_name = env[i]) {
