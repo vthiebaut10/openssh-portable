@@ -78,6 +78,7 @@ struct monitor {
 
 struct monitor *monitor_init(void);
 void monitor_reinit(struct monitor *);
+void monitor_reinit_withlogs(struct monitor*);
 
 struct Authctxt;
 void monitor_child_preauth(struct ssh *, struct monitor *);

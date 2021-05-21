@@ -1911,6 +1911,12 @@ monitor_reinit(struct monitor *mon)
 	monitor_openfds(mon, 0);
 }
 
+void
+monitor_reinit_withlogs(struct monitor* mon)
+{
+	monitor_openfds(mon, 1);
+}
+
 #ifdef GSSAPI
 int
 mm_answer_gss_setup_ctx(struct ssh *ssh, int sock, struct sshbuf *m)
