@@ -422,6 +422,8 @@ monitor_read_log(struct monitor *pmonitor)
 	u_char *p;
 	int r;
 
+	printf("Entered Monitor Read Log\n");
+
 	if ((logmsg = sshbuf_new()) == NULL)
 		fatal_f("sshbuf_new");
 
@@ -449,18 +451,22 @@ monitor_read_log(struct monitor *pmonitor)
 		fatal_fr(r, "reserve msg");
 	if (atomicio(read, pmonitor->m_log_recvfd, p, len) != len)
 		fatal_f("log fd read: %s", strerror(errno));
+	printf("Monitor Logging Message\n");
 	if ((r = sshbuf_get_u32(logmsg, &level)) != 0 ||
 	    (r = sshbuf_get_u32(logmsg, &forced)) != 0 ||
 	    (r = sshbuf_get_cstring(logmsg, &msg, NULL)) != 0)
 		fatal_fr(r, "parse");
 
 	/* Log it */
+	
 	if (log_level_name(level) == NULL)
 		fatal_f("invalid log level %u (corrupted message?)", level);
 	sshlogdirect(level, forced, "%s [preauth]", msg);
 
 	sshbuf_free(logmsg);
 	free(msg);
+
+	printf("Exited Monitor Read Log\n");
 
 	return 0;
 }
@@ -1888,8 +1894,12 @@ monitor_openfds(struct monitor *mon, int do_logfds)
 		FD_CLOSEONEXEC(pair[1]);
 		mon->m_log_recvfd = pair[0];
 		mon->m_log_sendfd = pair[1];
-	} else
+		printf("Created Log FDs\n");
+	}
+	else {
 		mon->m_log_recvfd = mon->m_log_sendfd = -1;
+		printf("Not creating Log FDs\n");
+	}
 }
 
 #define MM_MEMSIZE	65536

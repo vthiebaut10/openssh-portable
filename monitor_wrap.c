@@ -89,6 +89,7 @@ mm_log_handler(LogLevel level, int forced, const char *msg, void *ctx)
 	int r;
 	size_t len;
 
+	printf("Entered Log Handler\n");
 	if (mon->m_log_sendfd == -1)
 		fatal_f("no log channel");
 
@@ -107,6 +108,8 @@ mm_log_handler(LogLevel level, int forced, const char *msg, void *ctx)
 	    sshbuf_mutable_ptr(log_msg), len) != len)
 		fatal_f("write: %s", strerror(errno));
 	sshbuf_free(log_msg);
+
+	printf("Exited Log Handler\n");
 }
 
 int
