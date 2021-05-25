@@ -396,7 +396,8 @@ int do_exec_windows(struct ssh *ssh, Session *s, const char *command, int pty) {
 		if (posix_spawn_file_actions_init(&actions) != 0 ||
 			posix_spawn_file_actions_adddup2(&actions, pipein[0], STDIN_FILENO) != 0 ||
 			posix_spawn_file_actions_adddup2(&actions, pipeout[1], STDOUT_FILENO) != 0 ||
-			posix_spawn_file_actions_adddup2(&actions, pipeerr[1], STDERR_FILENO) != 0) {
+			posix_spawn_file_actions_adddup2(&actions, pipeerr[1], STDERR_FILENO) != 0 ||
+			posix_spawn_file_actions_adddup2(&actions, STDERR_FILENO + 2, SFTP_SERVER_LOG_FD) != 0) {
 			errno = EOTHER;
 			error("posix_spawn initialization failed");
 			goto cleanup;
