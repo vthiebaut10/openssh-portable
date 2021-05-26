@@ -91,7 +91,6 @@ fd_table_initialize()
 	/* table entries representing std in, out and error*/
 	DWORD wh_index[] = { STD_INPUT_HANDLE , STD_OUTPUT_HANDLE , STD_ERROR_HANDLE };
 	int fd_num = 0;
-	printf("Entering: %s\n", __func__);
 	memset(&fd_table, 0, sizeof(fd_table));
 
 	/* prepare std io fds */
@@ -107,7 +106,6 @@ fd_table_initialize()
 			pio->type = NONSOCK_SYNC_FD;
 			pio->handle = wh;
 			fd_table_set(pio, fd_num);
-			printf("FD:%d is allocated\n", fd_num);
 		}
 	}
 

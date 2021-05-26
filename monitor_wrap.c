@@ -107,7 +107,6 @@ mm_log_handler(LogLevel level, int forced, const char *msg, void *ctx)
 	    sshbuf_mutable_ptr(log_msg), len) != len)
 		fatal_f("write: %s", strerror(errno));
 	sshbuf_free(log_msg);
-
 }
 
 int
