@@ -136,7 +136,12 @@
 #define PRIVSEP_MONITOR_FD		(STDERR_FILENO + 1)
 #define PRIVSEP_LOG_FD			(STDERR_FILENO + 2)
 #define PRIVSEP_UNAUTH_MIN_FREE_FD	(PRIVSEP_LOG_FD + 1)
+
+#ifdef WINDOWS
 #define PRIVSEP_AUTH_MIN_FREE_FD	(PRIVSEP_LOG_FD + 1)
+#else
+#define PRIVSEP_AUTH_MIN_FREE_FD	(PRIVSEP_MONITOR_FD + 1)
+#endif
 
 extern char *__progname;
 
@@ -878,7 +883,11 @@ privsep_postauth(struct ssh *ssh, Authctxt *authctxt)
 	}
 
 	/* New socket pair */
+#ifdef WINDOWS
 	monitor_reinit_withlogs(pmonitor);
+#else
+	monitor_reinit(pmonitor);
+#endif
 
 #ifdef FORK_NOT_SUPPORTED
 	if (!privsep_auth_child) { /* parent */
