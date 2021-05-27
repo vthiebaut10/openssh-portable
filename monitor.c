@@ -185,8 +185,8 @@ struct mon_table {
 #define MON_PERMIT	0x1000	/* Request is permitted */
 
 static int monitor_read(struct ssh *, struct monitor *, struct mon_table *,
-    struct mon_table **, int);
-static int monitor_read_log(struct monitor *, int);
+    struct mon_table **);
+static int monitor_read_log(struct monitor *);
 
 struct mon_table mon_dispatch_proto20[] = {
 #ifdef WITH_OPENSSL
@@ -301,7 +301,7 @@ monitor_child_preauth(struct ssh *ssh, struct monitor *pmonitor)
 		auth2_authctxt_reset_info(authctxt);
 
 		authenticated = (monitor_read(ssh, pmonitor,
-		    mon_dispatch, &ent, 1) == 1);
+		    mon_dispatch, &ent) == 1);
 
 		/* Special handling for multiple required authentications */
 		if (options.num_auth_methods != 0) {
@@ -361,7 +361,7 @@ monitor_child_preauth(struct ssh *ssh, struct monitor *pmonitor)
 	mm_get_keystate(ssh, pmonitor);
 
 	/* Drain any buffered messages from the child */
-	while (pmonitor->m_log_recvfd != -1 && monitor_read_log(pmonitor, 1) == 0)
+	while (pmonitor->m_log_recvfd != -1 && monitor_read_log(pmonitor) == 0)
 		;
 
 	if (pmonitor->m_recvfd >= 0)
@@ -410,11 +410,11 @@ monitor_child_postauth(struct ssh *ssh, struct monitor *pmonitor)
 	}
 
 	for (;;)
-		monitor_read(ssh, pmonitor, mon_dispatch, NULL, 0);
+		monitor_read(ssh, pmonitor, mon_dispatch, NULL);
 }
 
 static int
-monitor_read_log(struct monitor *pmonitor, int preauth)
+monitor_read_log(struct monitor *pmonitor)
 {
 	struct sshbuf *logmsg;
 	u_int len, level, forced;
@@ -458,12 +458,8 @@ monitor_read_log(struct monitor *pmonitor, int preauth)
 	
 	if (log_level_name(level) == NULL)
 		fatal_f("invalid log level %u (corrupted message?)", level);
-	
-	if (preauth)
-		sshlogdirect(level, forced, "%s [preauth]", msg);
-	else 
-		sshlogdirect(level, forced, "%s", msg);
-	
+
+	sshlogdirect(level, forced, "%s [preauth]", msg);
 	sshbuf_free(logmsg);
 	free(msg);
 
@@ -472,7 +468,7 @@ monitor_read_log(struct monitor *pmonitor, int preauth)
 
 static int
 monitor_read(struct ssh *ssh, struct monitor *pmonitor, struct mon_table *ent,
-    struct mon_table **pent, int preauth)
+    struct mon_table **pent)
 {
 	struct sshbuf *m;
 	int r, ret;
@@ -495,7 +491,7 @@ monitor_read(struct ssh *ssh, struct monitor *pmonitor, struct mon_table *ent,
 			 * Drain all log messages before processing next
 			 * monitor request.
 			 */
-			monitor_read_log(pmonitor, preauth);
+			monitor_read_log(pmonitor);
 			continue;
 		}
 		if (pfd[0].revents)
@@ -1893,8 +1889,7 @@ monitor_openfds(struct monitor *mon, int do_logfds)
 		FD_CLOSEONEXEC(pair[1]);
 		mon->m_log_recvfd = pair[0];
 		mon->m_log_sendfd = pair[1];
-	}
-	else {
+	} else {
 		mon->m_log_recvfd = mon->m_log_sendfd = -1;
 	}
 }
@@ -1918,11 +1913,13 @@ monitor_reinit(struct monitor *mon)
 	monitor_openfds(mon, 0);
 }
 
+#ifdef WINDOWS
 void
 monitor_reinit_withlogs(struct monitor* mon)
 {
 	monitor_openfds(mon, 1);
 }
+#endif
 
 #ifdef GSSAPI
 int

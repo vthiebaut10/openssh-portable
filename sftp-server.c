@@ -1778,9 +1778,9 @@ sftp_server_main(int argc, char **argv, struct passwd *user_pw)
 	}
 
 	log_init(__progname, log_level, log_facility, log_stderr);
-	
+#ifdef WINDOWS
 	set_log_handler(log_handler, (void*)&log_send_fd);
-
+#endif
 	/*
 	 * On platforms where we can, avoid making /proc/self/{mem,maps}
 	 * available to the user so that sftp access doesn't automatically
