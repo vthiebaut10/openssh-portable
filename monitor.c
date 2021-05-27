@@ -1889,9 +1889,8 @@ monitor_openfds(struct monitor *mon, int do_logfds)
 		FD_CLOSEONEXEC(pair[1]);
 		mon->m_log_recvfd = pair[0];
 		mon->m_log_sendfd = pair[1];
-	} else {
+	} else
 		mon->m_log_recvfd = mon->m_log_sendfd = -1;
-	}
 }
 
 #define MM_MEMSIZE	65536
