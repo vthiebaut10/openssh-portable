@@ -198,8 +198,6 @@ int privsep_auth_child = 0;
 int io_sock_in = 0;
 int io_sock_out = 0;
 
-int auth_child_spwaned = 0;
-
 /*
  * Any really sensitive data in the application is contained in this
  * structure. The idea is that this structure could be locked into memory so
