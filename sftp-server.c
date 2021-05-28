@@ -51,7 +51,7 @@
 
 #include "sftp.h"
 #include "sftp-common.h"
-#ifdef WINDOWS
+#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
 #include "atomicio.h"
 #endif
 char *sftp_realpath(const char *, char *); /* sftp-realpath.c */
@@ -1775,7 +1775,7 @@ sftp_server_main(int argc, char **argv, struct passwd *user_pw)
 	}
 
 	log_init(__progname, log_level, log_facility, log_stderr);
-#ifdef WINDOWS
+#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
 	int log_send_fd = SFTP_SERVER_LOG_FD;
 	if (fcntl(log_send_fd, F_SETFD, FD_CLOEXEC) != -1)
 		set_log_handler(log_handler, (void*)&log_send_fd);

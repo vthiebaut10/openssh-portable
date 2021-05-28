@@ -458,8 +458,8 @@ monitor_read_log(struct monitor *pmonitor)
 	
 	if (log_level_name(level) == NULL)
 		fatal_f("invalid log level %u (corrupted message?)", level);
-
 	sshlogdirect(level, forced, "%s [preauth]", msg);
+	
 	sshbuf_free(logmsg);
 	free(msg);
 
@@ -1912,7 +1912,7 @@ monitor_reinit(struct monitor *mon)
 	monitor_openfds(mon, 0);
 }
 
-#ifdef WINDOWS
+#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
 void
 monitor_reinit_withlogs(struct monitor* mon)
 {

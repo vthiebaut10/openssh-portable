@@ -78,7 +78,7 @@ struct monitor {
 
 struct monitor *monitor_init(void);
 void monitor_reinit(struct monitor *);
-#ifdef WINDOWS
+#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
 void monitor_reinit_withlogs(struct monitor*);
 #endif
 struct Authctxt;
