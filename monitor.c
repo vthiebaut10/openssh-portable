@@ -458,8 +458,12 @@ monitor_read_log(struct monitor *pmonitor)
 	
 	if (log_level_name(level) == NULL)
 		fatal_f("invalid log level %u (corrupted message?)", level);
-	sshlogdirect(level, forced, "%s [preauth]", msg);
 	
+	if (authctxt->authenticated == 0)
+		sshlogdirect(level, forced, "%s [preauth]", msg);
+	else 
+		sshlogdirect(level, forced, "%s", msg);
+
 	sshbuf_free(logmsg);
 	free(msg);
 
