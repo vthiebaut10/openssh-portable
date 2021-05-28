@@ -91,7 +91,7 @@ fd_table_initialize()
 	/* table entries representing std in, out and error*/
 	DWORD wh_index[] = { STD_INPUT_HANDLE , STD_OUTPUT_HANDLE , STD_ERROR_HANDLE };
 	int fd_num = 0;
-	
+
 	memset(&fd_table, 0, sizeof(fd_table));
 
 	/* prepare std io fds */

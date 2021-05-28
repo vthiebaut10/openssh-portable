@@ -923,7 +923,6 @@ privsep_postauth(struct ssh *ssh, Authctxt *authctxt)
 		/* NEVERREACHED */
 		exit(0);
 	}
-
 	/* child */
 	close(pmonitor->m_sendfd);
 	close(pmonitor->m_recvfd);
