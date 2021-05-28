@@ -91,7 +91,6 @@ struct Stat {
 	Attrib attrib;
 };
 
-
 /* Packet handlers */
 static void process_open(u_int32_t id);
 static void process_close(u_int32_t id);
