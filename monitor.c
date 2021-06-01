@@ -479,7 +479,7 @@ monitor_read_log(struct monitor *pmonitor)
 		if (strcmp(pname, "sftp-server") == 0) {
 			log_init(pname, sftp_log_level, sftp_log_facility, sftp_log_stderr);
 			sshlogdirect(level, forced, "%s", msg);
-			log_init(pname, options.log_level, options.log_facility, log_stderr);
+			log_init("sshd", options.log_level, options.log_facility, log_stderr);
 		} else  
 			sshlogdirect(level, forced, "%s", msg);
 	}
