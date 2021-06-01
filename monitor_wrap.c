@@ -96,6 +96,7 @@ mm_log_handler(LogLevel level, int forced, const char *msg, void *ctx)
 		fatal_f("sshbuf_new failed");
 
 	if ((r = sshbuf_put_u32(log_msg, 0)) != 0 || /* length; filled below */
+		(r = sshbuf_put_cstring(log_msg, "sshd")) != 0 ||
 	    (r = sshbuf_put_u32(log_msg, level)) != 0 ||
 	    (r = sshbuf_put_u32(log_msg, forced)) != 0 ||
 	    (r = sshbuf_put_cstring(log_msg, msg)) != 0)

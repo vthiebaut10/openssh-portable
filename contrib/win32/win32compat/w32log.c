@@ -40,6 +40,7 @@
 
 #define MSGBUFSIZ 1024
 static int logfd = -1;
+static int sftp_server_logfd = -1;
 const char* identity = NULL;
 int log_facility = 0;
 
@@ -85,14 +86,16 @@ done:
 		free(w_payload);
 }
 
-
 /*
  * log file location will be - "%programData%\\openssh\\logs\\<module_name>.log"
  */
 void
 openlog_file()
 {	
-	if (logfd != -1)
+	if (strcmp(identity, "sshd") == 0 && logfd != -1)
+		return;
+	
+	if (strcmp(identity, "sftp-server") == 0 && sftp_server_logfd != -1)
 		return;
 
 	wchar_t *logs_dir = L"\\logs\\";
@@ -115,16 +118,36 @@ openlog_file()
 		wcscat_s(ssh_cfg_path, _countof(ssh_cfg_path), L"\\ssh"); /* "%programData%\\ssh" */
 
 		if ((wcsncat_s(log_file, PATH_MAX + 12, ssh_cfg_path, wcslen(ssh_cfg_path)) != 0) ||
-		    (wcsncat_s(log_file, PATH_MAX + 12, logs_dir, 6) != 0) ||
-		    (wcsncat_s(log_file, PATH_MAX + 12, tail + 1, wcslen(tail + 1) - 3) != 0 ) ||
-		    (wcsncat_s(log_file, PATH_MAX + 12, L"log", 3) != 0))
+			(wcsncat_s(log_file, PATH_MAX + 12, logs_dir, 6) != 0))
 			return;
+		
+		if (strcmp(identity, "sftp-server") == 0) {
+			wchar_t* id = utf8_to_utf16(identity);
+			if ((wcsncat_s(log_file, PATH_MAX + 12, id, wcslen(id)) != 0) ||
+				(wcsncat_s(log_file, PATH_MAX + 12, L".log", 4) != 0)) {
+				free(id);
+				return;
+			}
+			free(id);
+		}
+
+		if (strcmp(identity, "sshd") == 0)
+			if ((wcsncat_s(log_file, PATH_MAX + 12, tail + 1, wcslen(tail + 1) - 3) != 0) ||
+				(wcsncat_s(log_file, PATH_MAX + 12, L"log", 3) != 0))
+				return;
+
 	}
 	
-	errno_t err = _wsopen_s(&logfd, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
-		
-	if (logfd != -1)
-		SetHandleInformation((HANDLE)_get_osfhandle(logfd), HANDLE_FLAG_INHERIT, 0);
+	errno_t err;
+	if (strcmp(identity, "sftp-server") == 0) {
+		err = _wsopen_s(&sftp_server_logfd, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
+		if (sftp_server_logfd != -1)
+			SetHandleInformation((HANDLE)_get_osfhandle(sftp_server_logfd), HANDLE_FLAG_INHERIT, 0);
+	} else {
+		err = _wsopen_s(&logfd, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
+		if (logfd != -1)
+			SetHandleInformation((HANDLE)_get_osfhandle(logfd), HANDLE_FLAG_INHERIT, 0);
+	}
 }
 
 void
@@ -133,8 +156,14 @@ syslog_file(int priority, const char *format, const char *formatBuffer)
 	char msgbufTimestamp[MSGBUFSIZ];
 	SYSTEMTIME st;
 	int r;
+	int msg_fd;
+	
+	if (strcmp(identity, "sftp-server") == 0)
+		msg_fd = sftp_server_logfd;
+	else
+		msg_fd = logfd;
 
-	if (logfd == -1)
+	if (msg_fd == -1)
 		return;
 
 	GetLocalTime(&st);
@@ -142,11 +171,11 @@ syslog_file(int priority, const char *format, const char *formatBuffer)
 		GetCurrentProcessId(), st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond,
 		st.wMilliseconds, formatBuffer);
 	if (r == -1) {
-		_write(logfd, "_snprintf_s failed.", 20);
+		_write(msg_fd, "_snprintf_s failed.", 20);
 		return;
 	}
 	msgbufTimestamp[strnlen(msgbufTimestamp, MSGBUFSIZ)] = '\0';
-	_write(logfd, msgbufTimestamp, (unsigned int)strnlen(msgbufTimestamp, MSGBUFSIZ));
+	_write(msg_fd, msgbufTimestamp, (unsigned int)strnlen(msgbufTimestamp, MSGBUFSIZ));
 }
 
 void

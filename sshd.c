@@ -174,7 +174,11 @@ static int inetd_flag = 0;
 static int no_daemon_flag = 0;
 
 /* debug goes to stderr unless inetd_flag is set */
+#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
+int log_stderr = 0;
+#else
 static int log_stderr = 0;
+#endif
 
 /* Saved arguments to main(). */
 static char **saved_argv;

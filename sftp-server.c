@@ -61,6 +61,8 @@ char *sftp_realpath(const char *, char *); /* sftp-realpath.c */
 
 /* Our verbosity */
 static LogLevel log_level = SYSLOG_LEVEL_ERROR;
+static SyslogFacility log_facility = SYSLOG_FACILITY_AUTH;
+int log_stderr = 0;
 
 /* Our client */
 static struct passwd *pw = NULL;
@@ -1658,6 +1660,10 @@ log_handler(LogLevel level, int forced, const char* msg, void* ctx)
 		fatal_f("sshbuf_new failed");
 
 	if ((r = sshbuf_put_u32(log_msg, 0)) != 0 || /* length; filled below */
+		(r = sshbuf_put_cstring(log_msg, __progname)) != 0 ||
+		(r = sshbuf_put_u32(log_msg, log_level)) != 0 ||
+		(r = sshbuf_put_u32(log_msg, log_facility)) != 0 ||
+		(r = sshbuf_put_u32(log_msg, log_stderr)) != 0 ||
 		(r = sshbuf_put_u32(log_msg, level)) != 0 ||
 		(r = sshbuf_put_u32(log_msg, forced)) != 0 ||
 		(r = sshbuf_put_cstring(log_msg, msg)) != 0)
@@ -1690,9 +1696,9 @@ int
 sftp_server_main(int argc, char **argv, struct passwd *user_pw)
 {
 	fd_set *rset, *wset;
-	int i, r, in, out, max, ch, skipargs = 0, log_stderr = 0;
+	int i, r, in, out, max, ch, skipargs = 0;
 	ssize_t len, olen, set_size;
-	SyslogFacility log_facility = SYSLOG_FACILITY_AUTH;
+	//SyslogFacility log_facility = SYSLOG_FACILITY_AUTH;
 	char *cp, *homedir = NULL, uidstr[32], buf[4*4096];
 	long mask;
 
