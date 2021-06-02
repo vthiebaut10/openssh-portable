@@ -106,7 +106,9 @@ extern ServerOptions options;
 extern u_int utmp_len;
 extern struct sshbuf *loginmsg;
 extern struct sshauthopt *auth_opts; /* XXX move to permanent ssh->authctxt? */
+#ifdef WINDOWS
 extern int log_stderr;
+#endif
 
 /* State exported from the child */
 static struct sshbuf *child_state;
@@ -420,12 +422,9 @@ monitor_read_log(struct monitor *pmonitor)
 	struct sshbuf *logmsg;
 	u_int len, level, forced;
 	char *msg;
-	char *pname;
 	u_char *p;
 	int r;
-
-	u_int sftp_log_level, sftp_log_facility, sftp_log_stderr;
-
+	
 	if ((logmsg = sshbuf_new()) == NULL)
 		fatal_f("sshbuf_new");
 
@@ -453,6 +452,10 @@ monitor_read_log(struct monitor *pmonitor)
 		fatal_fr(r, "reserve msg");
 	if (atomicio(read, pmonitor->m_log_recvfd, p, len) != len)
 		fatal_f("log fd read: %s", strerror(errno));
+	
+#ifdef WINDOWS
+	char* pname;
+	u_int sftp_log_level, sftp_log_facility, sftp_log_stderr;
 	if ((r = sshbuf_get_cstring(logmsg, &pname, NULL)) != 0)
 		fatal_fr(r, "parse");
 
@@ -462,6 +465,7 @@ monitor_read_log(struct monitor *pmonitor)
 			(r = sshbuf_get_u32(logmsg, &sftp_log_stderr)) != 0)
 			fatal_fr(r, "parse");
 	}
+#endif
 
 	if ((r = sshbuf_get_u32(logmsg, &level)) != 0 ||
 	    (r = sshbuf_get_u32(logmsg, &forced)) != 0 ||
@@ -469,10 +473,10 @@ monitor_read_log(struct monitor *pmonitor)
 		fatal_fr(r, "parse");
 
 	/* Log it */
-	
 	if (log_level_name(level) == NULL)
 		fatal_f("invalid log level %u (corrupted message?)", level);
-	
+
+#ifdef WINDOWS
 	if (authctxt->authenticated == 0) 
 		sshlogdirect(level, forced, "%s [preauth]", msg);
 	else {
@@ -483,7 +487,9 @@ monitor_read_log(struct monitor *pmonitor)
 		} else  
 			sshlogdirect(level, forced, "%s", msg);
 	}
-		
+#else
+	sshlogdirect(level, forced, "%s [preauth]", msg);
+#endif
 
 	sshbuf_free(logmsg);
 	free(msg);
@@ -1937,7 +1943,7 @@ monitor_reinit(struct monitor *mon)
 	monitor_openfds(mon, 0);
 }
 
-#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
+#ifdef WINDOWS
 void
 monitor_reinit_withlogs(struct monitor* mon)
 {

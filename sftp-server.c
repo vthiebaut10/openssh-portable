@@ -51,9 +51,7 @@
 
 #include "sftp.h"
 #include "sftp-common.h"
-#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
-#include "atomicio.h"
-#endif
+
 char *sftp_realpath(const char *, char *); /* sftp-realpath.c */
 
 /* Maximum data read that we are willing to accept */
@@ -61,8 +59,10 @@ char *sftp_realpath(const char *, char *); /* sftp-realpath.c */
 
 /* Our verbosity */
 static LogLevel log_level = SYSLOG_LEVEL_ERROR;
-static SyslogFacility log_facility = SYSLOG_FACILITY_AUTH;
-int log_stderr = 0;
+#ifdef WINDOWS
+static SyslogFacility log_facility_g = SYSLOG_FACILITY_AUTH;
+int log_stderr_g = 0;
+#endif
 
 /* Our client */
 static struct passwd *pw = NULL;
@@ -1645,9 +1645,11 @@ sftp_server_cleanup_exit(int i)
 	_exit(i);
 }
 
+#ifdef WINDOWS
 void
 log_handler(LogLevel level, int forced, const char* msg, void* ctx)
 {
+	#include "atomicio.h"
 	struct sshbuf* log_msg;
 	int* log_fd = (int*)ctx;
 	int r;
@@ -1662,8 +1664,8 @@ log_handler(LogLevel level, int forced, const char* msg, void* ctx)
 	if ((r = sshbuf_put_u32(log_msg, 0)) != 0 || /* length; filled below */
 		(r = sshbuf_put_cstring(log_msg, __progname)) != 0 ||
 		(r = sshbuf_put_u32(log_msg, log_level)) != 0 ||
-		(r = sshbuf_put_u32(log_msg, log_facility)) != 0 ||
-		(r = sshbuf_put_u32(log_msg, log_stderr)) != 0 ||
+		(r = sshbuf_put_u32(log_msg, log_facility_g)) != 0 ||
+		(r = sshbuf_put_u32(log_msg, log_stderr_g)) != 0 ||
 		(r = sshbuf_put_u32(log_msg, level)) != 0 ||
 		(r = sshbuf_put_u32(log_msg, forced)) != 0 ||
 		(r = sshbuf_put_cstring(log_msg, msg)) != 0)
@@ -1677,6 +1679,7 @@ log_handler(LogLevel level, int forced, const char* msg, void* ctx)
 	sshbuf_free(log_msg);
 
 }
+#endif
 
 static void
 sftp_server_usage(void)
@@ -1696,9 +1699,9 @@ int
 sftp_server_main(int argc, char **argv, struct passwd *user_pw)
 {
 	fd_set *rset, *wset;
-	int i, r, in, out, max, ch, skipargs = 0;
+	int i, r, in, out, max, ch, skipargs = 0, log_stderr = 0;
 	ssize_t len, olen, set_size;
-	//SyslogFacility log_facility = SYSLOG_FACILITY_AUTH;
+	SyslogFacility log_facility = SYSLOG_FACILITY_AUTH;
 	char *cp, *homedir = NULL, uidstr[32], buf[4*4096];
 	long mask;
 
@@ -1780,8 +1783,15 @@ sftp_server_main(int argc, char **argv, struct passwd *user_pw)
 	}
 
 	log_init(__progname, log_level, log_facility, log_stderr);
-#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
+#ifdef WINDOWS
+	/*
+	 * SSHD process running in SYSTEM will write the logs in sftp-server.log.
+	 * That allows the logs for non-admin user processes to be written.
+	 * Log Handler sends log messages to SSHD process.
+	 */
 	int log_send_fd = SFTP_SERVER_LOG_FD;
+	log_facility_g = log_facility;
+	log_stderr_g = log_stderr;
 	if (fcntl(log_send_fd, F_SETFD, FD_CLOEXEC) != -1)
 		set_log_handler(log_handler, (void*)&log_send_fd);
 #endif

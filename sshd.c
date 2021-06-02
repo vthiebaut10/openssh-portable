@@ -137,7 +137,7 @@
 #define PRIVSEP_LOG_FD			(STDERR_FILENO + 2)
 #define PRIVSEP_UNAUTH_MIN_FREE_FD	(PRIVSEP_LOG_FD + 1)
 
-#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
+#ifdef WINDOWS
 #define PRIVSEP_AUTH_MIN_FREE_FD	(PRIVSEP_LOG_FD + 1)
 #else
 #define PRIVSEP_AUTH_MIN_FREE_FD	(PRIVSEP_MONITOR_FD + 1)
@@ -174,7 +174,7 @@ static int inetd_flag = 0;
 static int no_daemon_flag = 0;
 
 /* debug goes to stderr unless inetd_flag is set */
-#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
+#ifdef WINDOWS
 int log_stderr = 0;
 #else
 static int log_stderr = 0;
@@ -887,7 +887,7 @@ privsep_postauth(struct ssh *ssh, Authctxt *authctxt)
 	}
 
 	/* New socket pair */
-#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
+#ifdef WINDOWS
 	monitor_reinit_withlogs(pmonitor);
 #else
 	monitor_reinit(pmonitor);
@@ -900,13 +900,11 @@ privsep_postauth(struct ssh *ssh, Authctxt *authctxt)
 		if (posix_spawn_file_actions_init(&actions) != 0 ||
 		    posix_spawn_file_actions_adddup2(&actions, io_sock_in, STDIN_FILENO) != 0 ||
 		    posix_spawn_file_actions_adddup2(&actions, io_sock_out, STDOUT_FILENO) != 0 ||
+#ifdef WINDOWS
+			posix_spawn_file_actions_adddup2(&actions, pmonitor->m_log_sendfd, PRIVSEP_LOG_FD) != 0 ||
+#endif
 		    posix_spawn_file_actions_adddup2(&actions, pmonitor->m_recvfd, PRIVSEP_MONITOR_FD) != 0)
 			fatal("posix_spawn initialization failed");
-		
-#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
-		if (posix_spawn_file_actions_adddup2(&actions, pmonitor->m_log_sendfd, PRIVSEP_LOG_FD) != 0)
-			fatal("posix_spawn initialization failed");
-#endif
 
 		{
 			char** argv = privsep_child_cmdline(1);
@@ -933,7 +931,13 @@ privsep_postauth(struct ssh *ssh, Authctxt *authctxt)
 	pmonitor->m_recvfd = PRIVSEP_MONITOR_FD;
 	fcntl(pmonitor->m_recvfd, F_SETFD, FD_CLOEXEC);
 	
-#ifdef PRIVSEP_AUTH_CHILD_LOG_NOT_SUPPORTED
+#ifdef WINDOWS
+	/*
+	 * Logs for authenticated child are sent to the monitor
+	 * to be written by parent process runing in SYSTEM.
+	 * That allows logs for non-admin child processes to be
+	 * recorded. 
+	 */
 	close(pmonitor->m_log_recvfd);
 	close(pmonitor->m_log_sendfd);
 	pmonitor->m_log_sendfd = PRIVSEP_LOG_FD;

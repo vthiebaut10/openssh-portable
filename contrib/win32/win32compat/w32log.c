@@ -92,12 +92,12 @@ done:
 void
 openlog_file()
 {	
-	if (strcmp(identity, "sshd") == 0 && logfd != -1)
-		return;
-	
 	if (strcmp(identity, "sftp-server") == 0 && sftp_server_logfd != -1)
 		return;
 
+	if (strcmp(identity, "sftp-server") != 0 && logfd != -1)
+		return;
+	
 	wchar_t *logs_dir = L"\\logs\\";
 	wchar_t module_path[PATH_MAX] = { 0 }, log_file[PATH_MAX + 12] = { 0 };
 
@@ -117,37 +117,37 @@ openlog_file()
 		wcscat_s(ssh_cfg_path, _countof(ssh_cfg_path), __wprogdata); /* "%programData%" */
 		wcscat_s(ssh_cfg_path, _countof(ssh_cfg_path), L"\\ssh"); /* "%programData%\\ssh" */
 
-		if ((wcsncat_s(log_file, PATH_MAX + 12, ssh_cfg_path, wcslen(ssh_cfg_path)) != 0) ||
-			(wcsncat_s(log_file, PATH_MAX + 12, logs_dir, 6) != 0))
-			return;
-		
+		wchar_t* tmp_identity = NULL;
 		if (strcmp(identity, "sftp-server") == 0) {
-			wchar_t* id = utf8_to_utf16(identity);
-			if ((wcsncat_s(log_file, PATH_MAX + 12, id, wcslen(id)) != 0) ||
-				(wcsncat_s(log_file, PATH_MAX + 12, L".log", 4) != 0)) {
-				free(id);
+			tmp_identity = utf8_to_utf16(identity);
+			if (!tmp_identity)
 				return;
-			}
-			free(id);
+		}
+		else {
+			tmp_identity = malloc((wcslen(tail) - 4) * sizeof(wchar_t));
+			if (!tmp_identity)
+				return;
+			if (wcsncpy_s(tmp_identity, wcslen(tail) - 4, tail + 1, wcslen(tail) - 5) != 0)
+				return;
 		}
 
-		if (strcmp(identity, "sshd") == 0)
-			if ((wcsncat_s(log_file, PATH_MAX + 12, tail + 1, wcslen(tail + 1) - 3) != 0) ||
-				(wcsncat_s(log_file, PATH_MAX + 12, L"log", 3) != 0))
-				return;
+		if ((wcsncat_s(log_file, PATH_MAX + 12, ssh_cfg_path, wcslen(ssh_cfg_path)) != 0) ||
+			(wcsncat_s(log_file, PATH_MAX + 12, logs_dir, 6) != 0) ||
+			(wcsncat_s(log_file, PATH_MAX + 12, tmp_identity, wcslen(tmp_identity)) != 0) ||
+			(wcsncat_s(log_file, PATH_MAX + 12, L".log", 4) != 0))
+		{
+			free(tmp_identity);
+			return;
+		}
 
+		free(tmp_identity);
 	}
 	
 	errno_t err;
-	if (strcmp(identity, "sftp-server") == 0) {
+	if (strcmp(identity, "sftp-server") == 0)
 		err = _wsopen_s(&sftp_server_logfd, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
-		if (sftp_server_logfd != -1)
-			SetHandleInformation((HANDLE)_get_osfhandle(sftp_server_logfd), HANDLE_FLAG_INHERIT, 0);
-	} else {
+	else
 		err = _wsopen_s(&logfd, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
-		if (logfd != -1)
-			SetHandleInformation((HANDLE)_get_osfhandle(logfd), HANDLE_FLAG_INHERIT, 0);
-	}
 }
 
 void
