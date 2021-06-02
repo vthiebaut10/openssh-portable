@@ -901,7 +901,8 @@ privsep_postauth(struct ssh *ssh, Authctxt *authctxt)
 		    posix_spawn_file_actions_adddup2(&actions, io_sock_in, STDIN_FILENO) != 0 ||
 		    posix_spawn_file_actions_adddup2(&actions, io_sock_out, STDOUT_FILENO) != 0 ||
 #ifdef WINDOWS
-			posix_spawn_file_actions_adddup2(&actions, pmonitor->m_log_sendfd, PRIVSEP_LOG_FD) != 0 ||
+			/*Allow authenticated child process to foward log messages to parent for processing*/
+		    posix_spawn_file_actions_adddup2(&actions, pmonitor->m_log_sendfd, PRIVSEP_LOG_FD) != 0 ||
 #endif
 		    posix_spawn_file_actions_adddup2(&actions, pmonitor->m_recvfd, PRIVSEP_MONITOR_FD) != 0)
 			fatal("posix_spawn initialization failed");

@@ -101,6 +101,7 @@ openlog_file()
 	
 	wchar_t *logs_dir = L"\\logs\\";
 	wchar_t module_path[PATH_MAX] = { 0 }, log_file[PATH_MAX + 12] = { 0 };
+	wchar_t* tmp_identity = NULL;
 
 	if (GetModuleFileNameW(NULL, module_path, PATH_MAX) == 0)
 		return;
@@ -117,38 +118,38 @@ openlog_file()
 		wchar_t ssh_cfg_path[PATH_MAX] = {0 ,};
 		wcscat_s(ssh_cfg_path, _countof(ssh_cfg_path), __wprogdata); /* "%programData%" */
 		wcscat_s(ssh_cfg_path, _countof(ssh_cfg_path), L"\\ssh"); /* "%programData%\\ssh" */
-
-		wchar_t* tmp_identity = NULL;
 		if (strcmp(identity, "sftp-server") == 0) {
 			tmp_identity = utf8_to_utf16(identity);
 			if (!tmp_identity)
-				return;
+				goto cleanup;
 		}
 		else {
-			tmp_identity = malloc((wcslen(tail) - 4) * sizeof(wchar_t));
+			tmp_identity = malloc(wcslen(tail) * sizeof(wchar_t));
 			if (!tmp_identity)
-				return;
-			if (wcsncpy_s(tmp_identity, wcslen(tail) - 4, tail + 1, wcslen(tail) - 5) != 0)
-				return;
+				goto cleanup;
+			if (wcsncpy_s(tmp_identity, wcslen(tail), tail + 1, wcslen(tail) - 5) != 0) {
+				goto cleanup;
+			}		
 		}
 
 		if ((wcsncat_s(log_file, PATH_MAX + 12, ssh_cfg_path, wcslen(ssh_cfg_path)) != 0) ||
 		    (wcsncat_s(log_file, PATH_MAX + 12, logs_dir, 6) != 0) ||
 		    (wcsncat_s(log_file, PATH_MAX + 12, tmp_identity, wcslen(tmp_identity)) != 0) ||
 		    (wcsncat_s(log_file, PATH_MAX + 12, L".log", 4) != 0))
-		{
-			free(tmp_identity);
-			return;
-		}
-
-		free(tmp_identity);
+			goto cleanup;
 	}
 	
 	errno_t err;
+	int* fd_ptr = &logfd;
+	
 	if (strcmp(identity, "sftp-server") == 0)
-		err = _wsopen_s(&sftp_server_logfd, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
-	else
-		err = _wsopen_s(&logfd, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
+		fd_ptr = &sftp_server_logfd;
+
+	err = _wsopen_s(fd_ptr, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
+
+cleanup:
+	if (tmp_identity)
+		free(tmp_identity);
 }
 
 void

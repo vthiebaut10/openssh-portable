@@ -1785,9 +1785,9 @@ sftp_server_main(int argc, char **argv, struct passwd *user_pw)
 	log_init(__progname, log_level, log_facility, log_stderr);
 #ifdef WINDOWS
 	/*
-	 * SSHD process running in SYSTEM will write the logs in sftp-server.log.
-	 * That allows the logs for non-admin user processes to be written.
-	 * Log Handler sends log messages to SSHD process.
+	 * SFTP-Server fowards log messages to SSHD System process.
+	 * SSHD system process logs the messages to either ETW or sftp-server.log.
+	 * This allows us to log the messages of both non-admin and admin users.
 	 */
 	int log_send_fd = SFTP_SERVER_LOG_FD;
 	log_facility_g = log_facility;

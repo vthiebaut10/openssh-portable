@@ -102,6 +102,13 @@ mm_log_handler(LogLevel level, int forced, const char *msg, void *ctx)
 		fatal_fr(r, "assemble");
 
 #ifdef WINDOWS
+	/*
+	 * Log messages are fowarded to SSHD parent process from
+	 * both sshd children and sftp-server processes. 
+	 * Attach progname to the end of the message so that SSHD 
+	 * parent process can differentitate between messages
+	 * coming from sshd children and sftp-server. 
+	 */
 	if (r = sshbuf_put_cstring(log_msg, "sshd") != 0)
 		fatal_fr(r, "assemble");
 #endif
