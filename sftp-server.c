@@ -1662,13 +1662,13 @@ log_handler(LogLevel level, int forced, const char* msg, void* ctx)
 		fatal_f("sshbuf_new failed");
 
 	if ((r = sshbuf_put_u32(log_msg, 0)) != 0 || /* length; filled below */
+		(r = sshbuf_put_u32(log_msg, level)) != 0 ||
+		(r = sshbuf_put_u32(log_msg, forced)) != 0 ||
+		(r = sshbuf_put_cstring(log_msg, msg)) != 0 ||
 		(r = sshbuf_put_cstring(log_msg, __progname)) != 0 ||
 		(r = sshbuf_put_u32(log_msg, log_level)) != 0 ||
 		(r = sshbuf_put_u32(log_msg, log_facility_g)) != 0 ||
-		(r = sshbuf_put_u32(log_msg, log_stderr_g)) != 0 ||
-		(r = sshbuf_put_u32(log_msg, level)) != 0 ||
-		(r = sshbuf_put_u32(log_msg, forced)) != 0 ||
-		(r = sshbuf_put_cstring(log_msg, msg)) != 0)
+		(r = sshbuf_put_u32(log_msg, log_stderr_g)) != 0)
 		fatal_fr(r, "assemble");
 	if ((len = sshbuf_len(log_msg)) < 4 || len > 0xffffffff)
 		fatal_f("bad length %zu", len);
