@@ -424,7 +424,7 @@ monitor_read_log(struct monitor *pmonitor)
 	char *msg;
 	u_char *p;
 	int r;
-	
+
 	if ((logmsg = sshbuf_new()) == NULL)
 		fatal_f("sshbuf_new");
 

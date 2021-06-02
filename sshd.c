@@ -905,7 +905,7 @@ privsep_postauth(struct ssh *ssh, Authctxt *authctxt)
 #endif
 		    posix_spawn_file_actions_adddup2(&actions, pmonitor->m_recvfd, PRIVSEP_MONITOR_FD) != 0)
 			fatal("posix_spawn initialization failed");
-
+		
 		{
 			char** argv = privsep_child_cmdline(1);
 			if (__posix_spawn_asuser(&pmonitor->m_pid, argv[0], &actions, NULL, argv, NULL, authctxt->pw->pw_name) != 0)

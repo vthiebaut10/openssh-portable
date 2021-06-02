@@ -86,6 +86,7 @@ done:
 		free(w_payload);
 }
 
+
 /*
  * log file location will be - "%programData%\\openssh\\logs\\<module_name>.log"
  */
@@ -132,9 +133,9 @@ openlog_file()
 		}
 
 		if ((wcsncat_s(log_file, PATH_MAX + 12, ssh_cfg_path, wcslen(ssh_cfg_path)) != 0) ||
-			(wcsncat_s(log_file, PATH_MAX + 12, logs_dir, 6) != 0) ||
-			(wcsncat_s(log_file, PATH_MAX + 12, tmp_identity, wcslen(tmp_identity)) != 0) ||
-			(wcsncat_s(log_file, PATH_MAX + 12, L".log", 4) != 0))
+		    (wcsncat_s(log_file, PATH_MAX + 12, logs_dir, 6) != 0) ||
+		    (wcsncat_s(log_file, PATH_MAX + 12, tmp_identity, wcslen(tmp_identity)) != 0) ||
+		    (wcsncat_s(log_file, PATH_MAX + 12, L".log", 4) != 0))
 		{
 			free(tmp_identity);
 			return;
