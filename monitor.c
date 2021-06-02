@@ -106,9 +106,6 @@ extern ServerOptions options;
 extern u_int utmp_len;
 extern struct sshbuf *loginmsg;
 extern struct sshauthopt *auth_opts; /* XXX move to permanent ssh->authctxt? */
-#ifdef WINDOWS
-extern int log_stderr;
-#endif
 
 /* State exported from the child */
 static struct sshbuf *child_state;
@@ -464,6 +461,7 @@ monitor_read_log(struct monitor *pmonitor)
 #ifdef WINDOWS
 	char* pname;
 	u_int sftp_log_level, sftp_log_facility, sftp_log_stderr;
+	extern int log_stderr;
 	if ((r = sshbuf_get_cstring(logmsg, &pname, NULL)) != 0)
 		fatal_fr(r, "parse");
 
