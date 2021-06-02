@@ -454,8 +454,8 @@ monitor_read_log(struct monitor *pmonitor)
 		fatal_f("log fd read: %s", strerror(errno));
 
 	if ((r = sshbuf_get_u32(logmsg, &level)) != 0 ||
-		(r = sshbuf_get_u32(logmsg, &forced)) != 0 ||
-		(r = sshbuf_get_cstring(logmsg, &msg, NULL)) != 0)
+	    (r = sshbuf_get_u32(logmsg, &forced)) != 0 ||
+	    (r = sshbuf_get_cstring(logmsg, &msg, NULL)) != 0)
 		fatal_fr(r, "parse");
 	
 	if (log_level_name(level) == NULL)
