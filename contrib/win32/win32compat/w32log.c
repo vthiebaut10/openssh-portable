@@ -139,13 +139,12 @@ openlog_file()
 			goto cleanup;
 	}
 	
-	errno_t err;
 	int* fd_ptr = &logfd;
 	
 	if (strcmp(identity, "sftp-server") == 0)
 		fd_ptr = &sftp_server_logfd;
 
-	err = _wsopen_s(fd_ptr, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
+	errno_t err = _wsopen_s(fd_ptr, log_file, O_WRONLY | O_CREAT | O_APPEND, SH_DENYNO, S_IREAD | S_IWRITE);
 
 cleanup:
 	if (tmp_identity)
