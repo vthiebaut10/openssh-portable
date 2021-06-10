@@ -24,7 +24,7 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
         $nonadminusername = $OpenSSHTestInfo['NonAdminUser']
         $adminusername = $OpenSSHTestInfo['AdminUser']
         $password = $OpenSSHTestInfo['TestAccountPW']
-        $port = 47002   		
+        $port = 47003  		
         Remove-Item -Path (Join-Path $testDir "*$sshLogName") -Force -ErrorAction SilentlyContinue
 
         <# Setup sshd_config file#>
