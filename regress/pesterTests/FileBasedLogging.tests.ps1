@@ -21,25 +21,25 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
         $sshdLogName = "sshdlog.txt"
         $server = $OpenSSHTestInfo["Target"]
         $opensshbinpath = $OpenSSHTestInfo['OpenSSHBinPath']
-        $nonadminusername = $OpenSSHTestInfo['NonAdminUser']
-        $adminusername = $OpenSSHTestInfo['AdminUser']
-        $password = $OpenSSHTestInfo['TestAccountPW']
+		$nonadminusername = $OpenSSHTestInfo['NonAdminUser']
+		$adminusername = $OpenSSHTestInfo['AdminUser']
+		$password = $OpenSSHTestInfo['TestAccountPW']
         $port = 47002   		
-        Remove-Item -Path (Join-Path $testDir "*$sshLogName") -Force -ErrorAction SilentlyContinue
+		Remove-Item -Path (Join-Path $testDir "*$sshLogName") -Force -ErrorAction SilentlyContinue
 
-        <# Setup sshd_config file#>
+		<# Setup sshd_config file#>
         
-        $sshdconfig_ori = Join-Path $Global:OpenSSHTestInfo["ServiceConfigDir"] sshd_config
-        Write-Host $sshdconfig_ori
+		$sshdconfig_ori = Join-Path $Global:OpenSSHTestInfo["ServiceConfigDir"] sshd_config
+		Write-Host $sshdconfig_ori
         $sshdconfig_custom = Join-Path $Global:OpenSSHTestInfo["ServiceConfigDir"] sshd_config_custom
         if (Test-Path $sshdconfig_custom) {
             Remove-Item $sshdconfig_custom -Force
         }
         Copy-Item $sshdconfig_ori $sshdconfig_custom
         get-acl $sshdconfig_ori | set-acl $sshdconfig_custom
-        $content = Get-Content -Path $sshdconfig_custom
-        $newContent = $content -replace "Subsystem	sftp	sftp-server.exe -l DEBUG3", "Subsystem	sftp	sftp-server.exe -l DEBUG3 -f LOCAL0"
-        $newContent | Set-Content -Path $sshdconfig_custom
+		$content = Get-Content -Path $sshdconfig_custom
+		$newContent = $content -replace "Subsystem	sftp	sftp-server.exe -l DEBUG3", "Subsystem	sftp	sftp-server.exe -l DEBUG3 -f LOCAL0"
+		$newContent | Set-Content -Path $sshdconfig_custom
 				   
         #skip when the task schedular (*-ScheduledTask) cmdlets does not exist
         $ts = (get-command get-ScheduledTask -ErrorAction SilentlyContinue)
@@ -67,21 +67,21 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
 
     Context "Tests Logs for SSH connections" {
         BeforeAll {            
-            $sshdConfigPath = $sshdconfig_custom
-
-            Add-PasswordSetting -Pass $password
-
+			$sshdConfigPath = $sshdconfig_custom
+			
+			Add-PasswordSetting -Pass $password
+		  
             $tI=1
         }
         
         BeforeEach {
             $sshlog = Join-Path $testDir "$tC.$tI.$sshLogName"            
             $sshdlog = Join-Path $testDir "$tC.$tI.$sshdLogName"
-
-            if (Test-Path $sshdlog -PathType Leaf) {
-                Clear-Content $sshdlog
-            }
-
+			
+			if (Test-Path $sshdlog -PathType Leaf) {
+				Clear-Content $sshdlog
+			}
+			
             if(-not $skip)
             {
                 Stop-SSHDTestDaemon   -Port $port
@@ -94,146 +94,152 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
         }
 
         It "$tC.$tI-Nonadmin SSH Connection"  -skip:$skip {
-            Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
-            $o = ssh -vvv -p $port -E $sshlog $nonadminusername@$server echo 1234
-            $o | Should Be 1234
-            Stop-SSHDTestDaemon   -Port $port
-            $sshdlog | Should Contain "KEX done \[preauth\]"
-            $sshdlog | Should Contain "exec_command: echo 1234"
+           Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
+           $o = ssh -vvv -p $port -E $sshlog $nonadminusername@$server echo 1234
+           $o | Should Be 1234
+           Stop-SSHDTestDaemon   -Port $port
+           $sshdlog | Should Contain "KEX done \[preauth\]"
+           $sshdlog | Should Contain "exec_command: echo 1234"
         }
-
-        It "$tC.$tI-Admin SSH Connection"  -skip:$skip {
-            Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
-            $o = ssh -vvv -p $port -E $sshlog $adminusername@$server echo 1234
-            $o | Should Be 1234
-            Stop-SSHDTestDaemon   -Port $port
-            $sshdlog | Should Contain "KEX done \[preauth\]"
-            $sshdlog | Should Contain "exec_command: echo 1234"
+		
+		It "$tC.$tI-Admin SSH Connection"  -skip:$skip {
+           Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
+           $o = ssh -vvv -p $port -E $sshlog $adminusername@$server echo 1234
+           $o | Should Be 1234
+           Stop-SSHDTestDaemon   -Port $port
+           $sshdlog | Should Contain "KEX done \[preauth\]"
+           $sshdlog | Should Contain "exec_command: echo 1234"
         }
 
     }
 	
-    Context "Tests Logs for SFTP connections" {
+	Context "Tests Logs for SFTP connections" {
 		
-        BeforeAll {
-
-            $sshdConfigPath = $sshdconfig_custom
+		BeforeAll {
 			
-            function Setup-KeyBasedAuth
-            {
-                param([string] $Username, [string] $KeyFilePath, [string] $UserProfile)
-
-                $userSSHProfilePath = Join-Path $UserProfile .ssh
-                Write-Host "SSH Profile Path: $userSSHProfilePath"
-
-                if (-not (Test-Path $userSSHProfilePath -PathType Container)) {
-                    New-Item $userSSHProfilePath -ItemType directory -Force -ErrorAction Stop | Out-Null
-                }
-
-                $authorizedkeyPath = Join-Path $userSSHProfilePath authorized_keys
-
-                if($OpenSSHTestInfo["NoLibreSSL"])
-                {
-                    ssh-keygen.exe -t ed25519 -f $KeyFilePath -Z -P `"`" aes128-ctr
-                }
-                else
-                {
-                    ssh-keygen.exe -t ed25519 -f $KeyFilePath -P `"`"
-                }
-
-                Copy-Item "$keyFilePath.pub" $authorizedkeyPath -Force -ErrorAction SilentlyContinue
-
-                Repair-AuthorizedKeyPermission -Filepath $authorizedkeyPath -confirm:$false
-            }
-
-            $AdminUserProfile = $OpenSSHTestInfo['AdminUserProfile']
-            $NonAdminUserProfile = $OpenSSHTestInfo['NonAdminUserProfile']
-
-            $KeyFileName = $nonadminusername + "_sshtest_fileBasedLog_ed25519"
-            $NonadminKeyFilePath = Join-Path $testDir $keyFileName
-            Remove-Item -path "$NonadminKeyFilePath*" -Force -ErrorAction SilentlyContinue
-            Setup-KeyBasedAuth -Username $nonadminusername -KeyFilePath $NonadminKeyFilePath -UserProfile $NonAdminUserProfile
-
-            $KeyFileName = $adminusername + "_sshtest_fileBasedLog_ed25519"
-            $AdminKeyFilePath = Join-Path $testDir $keyFileName
-            Remove-Item -path "$AdminKeyFilePath*" -Force -ErrorAction SilentlyContinue
-            Setup-KeyBasedAuth -Username $adminusername -KeyFilePath $AdminKeyFilePath -UserProfile $AdminUserProfile
-
-            #create batch file
-            $commands = 
+			$sshdConfigPath = $sshdconfig_custom
+						
+			function Setup-KeyBasedAuth
+			{
+				param([string] $Username, [string] $KeyFilePath, [string] $UserProfile)
+				
+	
+				$userSSHProfilePath = Join-Path $UserProfile .ssh
+				Write-Host "SSH Profile Path: $userSSHProfilePath"
+				
+				if (-not (Test-Path $userSSHProfilePath -PathType Container)) {
+					New-Item $userSSHProfilePath -ItemType directory -Force -ErrorAction Stop | Out-Null
+				}
+				
+				$authorizedkeyPath = Join-Path $userSSHProfilePath authorized_keys
+			   
+				if($OpenSSHTestInfo["NoLibreSSL"])
+				{
+					ssh-keygen.exe -t ed25519 -f $KeyFilePath -Z -P `"`" aes128-ctr
+				}
+				else
+				{
+					ssh-keygen.exe -t ed25519 -f $KeyFilePath -P `"`"
+				}
+				
+				
+				Copy-Item "$keyFilePath.pub" $authorizedkeyPath -Force -ErrorAction SilentlyContinue
+				
+				Repair-AuthorizedKeyPermission -Filepath $authorizedkeyPath -confirm:$false
+			}
+			
+			$AdminUserProfile = $OpenSSHTestInfo['AdminUserProfile']
+			$NonAdminUserProfile = $OpenSSHTestInfo['NonAdminUserProfile']
+			
+			$KeyFileName = $nonadminusername + "_sshtest_fileBasedLog_ed25519"
+			$NonadminKeyFilePath = Join-Path $testDir $keyFileName
+			Remove-Item -path "$NonadminKeyFilePath*" -Force -ErrorAction SilentlyContinue
+			Setup-KeyBasedAuth -Username $nonadminusername -KeyFilePath $NonadminKeyFilePath -UserProfile $NonAdminUserProfile
+			
+			$KeyFileName = $adminusername + "_sshtest_fileBasedLog_ed25519"
+			$AdminKeyFilePath = Join-Path $testDir $keyFileName
+			Remove-Item -path "$AdminKeyFilePath*" -Force -ErrorAction SilentlyContinue
+			Setup-KeyBasedAuth -Username $adminusername -KeyFilePath $AdminKeyFilePath -UserProfile $AdminUserProfile
+			
+			
+			#create batch file
+			$commands = 
 "ls
 exit"
-
-            $batchFilePath = Join-Path $testDir "$tC.$tI.commands.txt"
-            Set-Content $batchFilePath -Encoding UTF8 -value $commands
-
-            # clear logs so that next testcase will get fresh logs.
+			
+		    $batchFilePath = Join-Path $testDir "$tC.$tI.commands.txt"
+		    Set-Content $batchFilePath -Encoding UTF8 -value $commands
+			
+			# clear logs so that next testcase will get fresh logs.
             Clear-Content "$env:ProgramData\ssh\logs\sftp-server.log" -Force -ErrorAction SilentlyContinue
-
-            $tI = 1
+	
+			
+			$tI = 1
 		}
 		
-        BeforeEach {
-            #clean sftp log file
-            $sshlog = Join-Path $testDir "$tC.$tI.$sshLogName"            
+		BeforeEach {
+			#clean sftp log file
+			$sshlog = Join-Path $testDir "$tC.$tI.$sshLogName"            
             $sshdlog = Join-Path $testDir "$tC.$tI.$sshdLogName"
-            if(-not $skip)
+			if(-not $skip)
             {
                 Stop-SSHDTestDaemon   -Port $port
             }
-        }
+		}
+		
+		AfterAll {
+			Remove-Item -path "$NonadminKeyFilePath*" -Force -ErrorAction SilentlyContinue
+			Remove-Item -path "$AdminKeyFilePath*" -Force -ErrorAction SilentlyContinue
+		
+			$tC++
+		}
+		
+		It "$tC.$tI-Nonadmin SFTP Connection"  -skip:$skip {
+			
+			Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
 
-        AfterAll {
-            Remove-Item -path "$NonadminKeyFilePath*" -Force -ErrorAction SilentlyContinue
-            Remove-Item -path "$AdminKeyFilePath*" -Force -ErrorAction SilentlyContinue
+			sftp -P $port -i $NonadminKeyFilePath -b $batchFilePath $nonadminusername@$server
 
-            $tC++
-        }
-
-        It "$tC.$tI-Nonadmin SFTP Connection"  -skip:$skip {
-
-            Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
-
-            sftp -P $port -i $NonadminKeyFilePath -b $batchFilePath $nonadminusername@$server
-
-            Stop-SSHDTestDaemon   -Port $port
-
-            #Copy sftp-log files into test directory
-            $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
-            Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
-   
+ 		    Stop-SSHDTestDaemon   -Port $port
+			
+			#Copy sftp-log files into test directory
+			$sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
+			Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
+               
             # clear logs so that next testcase will get fresh logs.
             Clear-Content "$env:ProgramData\ssh\logs\sftp-server.log" -Force -ErrorAction SilentlyContinue
-
-            $sshdlog | Should Contain "Accepted publickey for $nonadminusername"
-            $sshdlog | Should Contain "KEX done \[preauth\]"
-            $sshdlog | Should Contain "debug2: subsystem request for sftp by user $nonadminusername"
-            $sftplog | Should Contain "session opened for local user $nonadminusername"
-            $sftplog | Should Contain "debug3: request 3: opendir"
-            $sftplog | Should Contain "session closed for local user $nonadminusername"
+            
+			#checks
+			$sshdlog | Should Contain "Accepted publickey for $nonadminusername"
+			$sshdlog | Should Contain "KEX done \[preauth\]"
+			$sshdlog | Should Contain "debug2: subsystem request for sftp by user $nonadminusername"
+			$sftplog | Should Contain "session opened for local user $nonadminusername"
+			$sftplog | Should Contain "debug3: request 3: opendir"
+			$sftplog | Should Contain "session closed for local user $nonadminusername"
         }
+		
+		It "$tC.$tI-Admin SFTP Connection"  -skip:$skip {
+			 			
+			Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
 
-        It "$tC.$tI-Admin SFTP Connection"  -skip:$skip {
- 			
-            Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
+			sftp -P $port -i $AdminKeyFilePath -b $batchFilePath $adminusername@$server
 
-            sftp -P $port -i $AdminKeyFilePath -b $batchFilePath $adminusername@$server
-
-            Stop-SSHDTestDaemon   -Port $port
-
-            #Copy sftp-log files into test directory
-            $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
-            Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
-  
+ 		    Stop-SSHDTestDaemon   -Port $port
+			
+			#Copy sftp-log files into test directory
+			$sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
+			Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
+               
             # clear logs so that next testcase will get fresh logs.
             Clear-Content "$env:ProgramData\ssh\logs\sftp-server.log" -Force -ErrorAction SilentlyContinue
-
-            $sshdlog | Should Contain "Accepted publickey for $adminusername"
-            $sshdlog | Should Contain "KEX done \[preauth\]"
-            $sshdlog | Should Contain "debug2: subsystem request for sftp by user $adminusername"
-            $sftplog | Should Contain "session opened for local user $adminusername"
-            $sftplog | Should Contain "debug3: request 3: opendir"
-            $sftplog | Should Contain "session closed for local user $adminusername"
+            
+			#checks
+			$sshdlog | Should Contain "Accepted publickey for $adminusername"
+			$sshdlog | Should Contain "KEX done \[preauth\]"
+			$sshdlog | Should Contain "debug2: subsystem request for sftp by user $adminusername"
+			$sftplog | Should Contain "session opened for local user $adminusername"
+			$sftplog | Should Contain "debug3: request 3: opendir"
+			$sftplog | Should Contain "session closed for local user $adminusername"
         }
-    }
+	}
 }
