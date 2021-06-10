@@ -13,10 +13,8 @@ $TestSetupLogFileName = "TestSetupLog.txt"
 $SSOUser = "sshtest_ssouser"
 $PubKeyUser = "sshtest_pubkeyuser"
 $PasswdUser = "sshtest_passwduser"
-$AdminUser = "sshtest_adminuser"
-$NonAdminUser = "sshtest_nonadminuser"
 $OpenSSHTestAccountsPassword = "P@ssw0rd_1"
-$OpenSSHTestAccounts = $Script:SSOUser, $Script:PubKeyUser, $Script:PasswdUser, $Script:AdminUser, $Script:NonAdminUser
+$OpenSSHTestAccounts = $Script:SSOUser, $Script:PubKeyUser, $Script:PasswdUser
 $SSHDTestSvcName = "sshdTestSvc"
 
 $Script:TestDataPath = "$env:SystemDrive\OpenSSHTests"
@@ -67,8 +65,6 @@ function Set-OpenSSHTestEnvironment
     $Global:OpenSSHTestInfo.Add("SSOUser", $SSOUser)                                   # test user with single sign on capability
     $Global:OpenSSHTestInfo.Add("PubKeyUser", $PubKeyUser)                             # test user to be used with explicit key for key auth
     $Global:OpenSSHTestInfo.Add("PasswdUser", $PasswdUser)                             # test user to be used for password auth
-	$Global:OpenSSHTestInfo.Add("AdminUser", $AdminUser)                               # test user to be used for admin logging tests
-	$Global:OpenSSHTestInfo.Add("NonAdminUser", $NonAdminUser)                         # test user to be used for non-admin logging tests
     $Global:OpenSSHTestInfo.Add("TestAccountPW", $OpenSSHTestAccountsPassword)         # common password for all test accounts
     $Global:OpenSSHTestInfo.Add("DebugMode", $DebugMode.IsPresent)                     # run openssh E2E in debug mode
 
@@ -209,26 +205,11 @@ WARNING: Following changes will be made to OpenSSH configuration
             net user $user $Script:OpenSSHTestAccountsPassword /ADD 2>&1 >> $Script:TestSetupLogFile
         }
     }
-	
-	#setup single sign on for ssouser
+
+    #setup single sign on for ssouser
     $ssouserProfile = Get-LocalUserProfile -User $SSOUser
-	Write-Host $ssouserProfile
     $Global:OpenSSHTestInfo.Add("SSOUserProfile", $ssouserProfile)
-	
-	$PubKeyUserProfile = Get-LocalUserProfile -User $PubKeyUser
-	Write-Host $PubKeyUserProfile
-    $Global:OpenSSHTestInfo.Add("PubKeyUserProfile", $PubKeyUserProfile)
-	
-	$AdminUserProfile = Get-LocalUserProfile -User $AdminUser
-	Write-Host $AdminUserProfile
-	$Global:OpenSSHTestInfo.Add("AdminUserProfile", $AdminUserProfile)
-	
-	$NonAdminUserProfile = Get-LocalUserProfile -User $NonAdminUser
-	Write-Host $NonAdminUserProfile
-	$Global:OpenSSHTestInfo.Add("NonAdminUserProfile", $NonAdminUserProfile)
-	
-	#make $AdminUser admin
-	net localgroup Administrators $AdminUser /add
+    $Global:OpenSSHTestInfo.Add("PubKeyUserProfile", (Get-LocalUserProfile -User $PubKeyUser))
 
     New-Item -ItemType Directory -Path (Join-Path $ssouserProfile .ssh) -Force -ErrorAction SilentlyContinue  | out-null
     $authorizedKeyPath = Join-Path $ssouserProfile .ssh\authorized_keys
@@ -357,7 +338,7 @@ function Get-LocalUserProfile
     param([string]$User)
     $sid = Get-UserSID -User $User
     $userProfileRegistry = Join-Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList" $sid
-    if (-not (Test-Path $userProfileRegistry) ) { 
+    if (-not (Test-Path $userProfileRegistry) ) {        
         #create profile
         if (-not($env:DISPLAY)) { $env:DISPLAY = 1 }
         $askpass_util = Join-Path $Script:E2ETestDirectory "utilities\askpass_util\askpass_util.exe"
