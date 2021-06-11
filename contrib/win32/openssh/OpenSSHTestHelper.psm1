@@ -71,6 +71,7 @@ function Set-OpenSSHTestEnvironment
     $Global:OpenSSHTestInfo.Add("NonAdminUser", $NonAdminUser)                         # test user to be used for non-admin logging tests
     $Global:OpenSSHTestInfo.Add("TestAccountPW", $OpenSSHTestAccountsPassword)         # common password for all test accounts
     $Global:OpenSSHTestInfo.Add("DebugMode", $DebugMode.IsPresent)                     # run openssh E2E in debug mode
+    $Global:OpenSSHTestInfo.Add("DelayTime", 3)                                        # delay between stoppig sshd service and trying to access log files
 
     $Script:EnableAppVerifier = -not ($NoAppVerifier.IsPresent)
     if($Script:WindowsInBox = $true)

@@ -24,7 +24,8 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
         $nonadminusername = $OpenSSHTestInfo['NonAdminUser']
         $adminusername = $OpenSSHTestInfo['AdminUser']
         $password = $OpenSSHTestInfo['TestAccountPW']
-        $port = 47003  		
+        $port = 47003  
+        $sshdDelay = $OpenSSHTestInfo["DelayTime"]		
         Remove-Item -Path (Join-Path $testDir "*$sshLogName") -Force -ErrorAction SilentlyContinue
 
         <# Setup sshd_config file#>
@@ -46,7 +47,6 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
         if(-not $skip)
         {
             Stop-SSHDTestDaemon   -Port $port
-            sleep 3
         }
         if(($platform -eq [PlatformType]::Windows) -and ([Environment]::OSVersion.Version.Major -le 6))
         {
@@ -83,7 +83,6 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
             if(-not $skip)
             {
                 Stop-SSHDTestDaemon   -Port $port
-                sleep 3
             }
         }
 
@@ -97,7 +96,7 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
             $o = ssh -vvv -p $port -E $sshlog $nonadminusername@$server echo 1234
             $o | Should Be 1234
             Stop-SSHDTestDaemon   -Port $port
-            sleep 3
+            sleep $sshdDelay
             $sshdlog | Should Contain "KEX done \[preauth\]"
             $sshdlog | Should Contain "exec_command: echo 1234"
         }
@@ -107,7 +106,7 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
             $o = ssh -vvv -p $port -E $sshlog $adminusername@$server echo 1234
             $o | Should Be 1234
             Stop-SSHDTestDaemon   -Port $port
-            sleep 3
+            sleep $sshdDelay
             $sshdlog | Should Contain "KEX done \[preauth\]"
             $sshdlog | Should Contain "exec_command: echo 1234"
         }
@@ -175,7 +174,6 @@ exit"
             if(-not $skip)
             {
                 Stop-SSHDTestDaemon   -Port $port
-                sleep 3
             }
         }
 
@@ -188,7 +186,7 @@ exit"
             $NonAdminAuthKeysPath = Join-Path $NonAdminUserProfile $authorized_key
             Remove-Item -path "$AdminAuthKeysPath*" -Force -ErrorAction SilentlyContinue
             Remove-Item -path "$NonAdminAuthKeysPath*" -Force -ErrorAction SilentlyContinue
-            
+
             $tC++
         }
 
@@ -196,7 +194,7 @@ exit"
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
             sftp -P $port -i $NonadminKeyFilePath -b $batchFilePath $nonadminusername@$server
             Stop-SSHDTestDaemon   -Port $port
-            sleep 3
+            sleep $sshdDelay
             $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
             Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
 
@@ -212,7 +210,7 @@ exit"
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
             sftp -P $port -i $AdminKeyFilePath -b $batchFilePath $adminusername@$server
             Stop-SSHDTestDaemon   -Port $port
-            sleep 3
+            sleep $sshdDelay
             $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
             Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
   
