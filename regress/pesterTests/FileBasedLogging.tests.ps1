@@ -30,7 +30,6 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
         <# Setup sshd_config file#>
         
         $sshdconfig_ori = Join-Path $Global:OpenSSHTestInfo["ServiceConfigDir"] sshd_config
-        Write-Host $sshdconfig_ori
         $sshdconfig_custom = Join-Path $Global:OpenSSHTestInfo["ServiceConfigDir"] sshd_config_custom
         if (Test-Path $sshdconfig_custom) {
             Remove-Item $sshdconfig_custom -Force
@@ -124,7 +123,6 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
                 param([string] $Username, [string] $KeyFilePath, [string] $UserProfile)
 
                 $userSSHProfilePath = Join-Path $UserProfile .ssh
-                Write-Host "SSH Profile Path: $userSSHProfilePath"
 
                 if (-not (Test-Path $userSSHProfilePath -PathType Container)) {
                     New-Item $userSSHProfilePath -ItemType directory -Force -ErrorAction Stop | Out-Null
