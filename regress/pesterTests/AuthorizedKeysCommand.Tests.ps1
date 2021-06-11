@@ -48,6 +48,7 @@ Describe "E2E scenarios for AuthorizedKeysCommand" -Tags "CI" {
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments $sshdArgs -Port $port
             $o = ssh -p $port test_target echo 1234
             Stop-SSHDTestDaemon -Port $port
+            sleep 3
             $o | Should Be "1234"
             #check the command is run as AuthorizedKeysCommandUser
             (gc $kcOutFile).Contains($ssouser) | Should Be $true
@@ -64,6 +65,7 @@ Describe "E2E scenarios for AuthorizedKeysCommand" -Tags "CI" {
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments $sshdArgs -Port $port
             $o = ssh -p $port test_target echo 12345
             Stop-SSHDTestDaemon -Port $port
+            sleep 3
             $o | Should Be "12345"
             #check the command is run as AuthorizedKeysCommandUser
             (gc $kcOutFile).Contains("nt authority\system") | Should Be $true

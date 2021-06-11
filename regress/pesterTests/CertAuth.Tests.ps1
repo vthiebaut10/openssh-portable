@@ -82,6 +82,7 @@ Describe "E2E scenarios for certificate authentication" -Tags "CI" {
             Remove-PasswordSetting   
             
             Stop-SSHDTestDaemon -Port 47004
+            sleep 3
             $o | Should Be "2345"
             #check the command is run as AuthorizedPrincipalsCommandUser
             (gc $pcOutFile).Contains($ssouser) | Should Be $true          
