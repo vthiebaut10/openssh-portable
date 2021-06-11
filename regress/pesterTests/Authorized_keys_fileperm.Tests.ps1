@@ -170,7 +170,7 @@ Describe "Tests for authorized_keys file permission" -Tags "CI" {
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-d -f $sshdconfig -o `"AuthorizedKeysFile .testssh/authorized_keys`" -E $sshdlog" -Port $port
             ssh -p $port -E $sshlog $ssouser@$server echo 1234
             $LASTEXITCODE | Should Not Be 0
-            Stop-SSHDTestDaemon -Port $port
+            Stop-SSHDTestDaemon -Port $port                  
             sleep $sshdDelay                  
             $sshlog | Should Contain "Permission denied"
             $sshdlog | Should Contain "Authentication refused."            
