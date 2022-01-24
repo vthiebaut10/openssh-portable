@@ -85,6 +85,10 @@
 #include <prot.h>
 #endif
 
+#ifdef WINDOWS
+#include "sshTelemetry.h"
+#endif
+
 #include "xmalloc.h"
 #include "ssh.h"
 #include "ssh2.h"
@@ -490,14 +494,14 @@ privsep_preauth_child(void)
 	}
 }
 
-void
+static void
 send_rexec_state(int, struct sshbuf *);
 static void send_config_state(int fd, struct sshbuf *conf)
 {
 	send_rexec_state(fd, conf);
 }
 
-void
+static void
 recv_rexec_state(int, struct sshbuf *);
 static void recv_config_state(int fd, struct sshbuf *conf)
 {
@@ -2594,7 +2598,15 @@ done_loading_hostkeys:
 	io_sock_in = sock_in;
 	io_sock_out = sock_out;
 	if ((ssh = ssh_packet_set_connection(NULL, sock_in, sock_out)) == NULL)
+#ifdef WINDOWS
+	{
+		send_sshd_connection_telemetry(
+			"connection failed: unable to create connection");
 		fatal("Unable to create connection");
+	}
+#else
+		fatal("Unable to create connection");
+#endif 
 	the_active_state = ssh;
 	ssh_packet_set_server(ssh);
 
@@ -2612,6 +2624,10 @@ done_loading_hostkeys:
 
 	if ((remote_port = ssh_remote_port(ssh)) < 0) {
 		debug("ssh_remote_port failed");
+#ifdef WINDOWS
+		send_sshd_connection_telemetry(
+			"connection failed: ssh_remote_port failed");
+#endif
 		cleanup_exit(255);
 	}
 
@@ -2642,6 +2658,9 @@ done_loading_hostkeys:
 	    rdomain == NULL ? "" : " rdomain \"",
 	    rdomain == NULL ? "" : rdomain,
 	    rdomain == NULL ? "" : "\"");
+#ifdef WINDOWS
+	send_sshd_connection_telemetry("connection established");
+#endif
 	free(laddr);
 
 	/*
