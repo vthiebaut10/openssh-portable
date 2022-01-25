@@ -26,8 +26,8 @@ fi
 # Write cygwin path into HKCU
 if [ "$os" == "windows" ]; then
 	MYPATH="'"
-	VALUE=$(printenv PATH)
-	MYPATH+=$VALUE
+	MYPATHVALUE=$(printenv PATH)
+	MYPATH+=$MYPATHVALUE
 	MYPATH+="'"
 	echo $MYPATH
 	powershell.exe /c "[System.Environment]::SetEnvironmentVariable('Path', $MYPATH, [System.EnvironmentVariableTarget]::User)"
