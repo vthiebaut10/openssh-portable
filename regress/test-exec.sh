@@ -23,6 +23,16 @@ if [ "$os" != "windows" ]; then
 	esac
 fi
 
+# Write cygwin path into HKCU
+if [ "$os" == "windows" ]; then
+	MYPATH="'"
+	VALUE=$(printenv PATH)
+	MYPATH+=$VALUE
+	MYPATH+="'"
+	echo $MYPATH
+	powershell.exe /c "[System.Environment]::SetEnvironmentVariable('Path', $MYPATH, [System.EnvironmentVariableTarget]::User)"
+fi
+
 # If configure tells us to use a different egrep, create a wrapper function
 # to call it.  This means we don't need to change all the tests that depend
 # on a good implementation.
