@@ -359,7 +359,6 @@ function Invoke-OpenSSHTests
     }
 
     # Run UNIX bash tests.
-    '''
     Invoke-OpenSSHBashTests
     if (-not $Global:bash_tests_summary)
     {
@@ -382,7 +381,6 @@ function Invoke-OpenSSHTests
         Write-Warning "Stop running further tests!"
         return
     }
-    '''
 
     Invoke-OpenSSHUninstallTest
     if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["UninstallTestResultsFile"])))
