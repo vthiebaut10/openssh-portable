@@ -3,6 +3,8 @@
 
 tid="transfer data"
 
+echo ${DATA}
+
 rm -f ${COPY}
 ${SSH} -n -q -F $OBJ/ssh_proxy somehost cat ${DATA} > ${COPY}
 if [ $? -ne 0 ]; then

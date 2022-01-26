@@ -23,16 +23,6 @@ if [ "$os" != "windows" ]; then
 	esac
 fi
 
-# Write cygwin path into HKCU
-if [ "$os" == "windows" ]; then
-	MYPATH="'"
-	MYPATHVALUE=$(printenv PATH)
-	MYPATH+=$MYPATHVALUE
-	MYPATH+="'"
-	echo $MYPATH
-	powershell.exe /c "[System.Environment]::SetEnvironmentVariable('Path', $MYPATH, [System.EnvironmentVariableTarget]::User)"
-fi
-
 # If configure tells us to use a different egrep, create a wrapper function
 # to call it.  This means we don't need to change all the tests that depend
 # on a good implementation.
@@ -299,9 +289,13 @@ SSH="$SSHLOGWRAP"
 # The tests may assume that $DATA exists and is writable and $COPY does
 # not exist.  Tests requiring larger data files can call increase_datafile_size
 # [kbytes] to ensure the file is at least that large.
+echo ${SSHAGENT_BIN}
+echo $OBJ
 DATANAME=data
 DATA=$OBJ/${DATANAME}
+echo $DATA
 cat ${SSHAGENT_BIN} >${DATA}
+cat $DATA
 chmod u+w ${DATA}
 COPY=$OBJ/copy
 rm -f ${COPY}
@@ -320,6 +314,16 @@ increase_datafile_size()
 export SSH SSHD SSHAGENT SSHADD SSHKEYGEN SSHKEYSCAN SFTP SFTPSERVER SCP
 export SSH_PKCS11_HELPER SSH_SK_HELPER
 #echo $SSH $SSHD $SSHAGENT $SSHADD $SSHKEYGEN $SSHKEYSCAN $SFTP $SFTPSERVER $SCP
+
+# Write cygwin path into HKCU
+if [ "$os" == "windows" ]; then
+	MYPATH="'"
+	MYPATHVALUE=$(printenv PATH)
+	MYPATH+=$MYPATHVALUE
+	MYPATH+="'"
+	echo $MYPATH
+	powershell.exe /c "[System.Environment]::SetEnvironmentVariable('Path', $MYPATH, [System.EnvironmentVariableTarget]::User)"
+fi
 
 # Portable specific functions
 windows_path()
