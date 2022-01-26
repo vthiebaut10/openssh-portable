@@ -300,7 +300,6 @@ function Publish-Artifact
 #>
 function Invoke-OpenSSHTests
 {
-    '''
     Set-BasicTestInfo -Confirm:$false
     Invoke-OpenSSHSetupTest
     if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["SetupTestResultsFile"])))
@@ -406,7 +405,6 @@ function Invoke-OpenSSHTests
     {
         Write-BuildMessage -Message "Tests Should clean $Error after success." -Category Warning
     }
-    '''
 }
 
 <#
