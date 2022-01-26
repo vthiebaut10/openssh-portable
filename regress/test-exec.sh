@@ -295,7 +295,6 @@ DATANAME=data
 DATA=$OBJ/${DATANAME}
 echo $DATA
 cat ${SSHAGENT_BIN} >${DATA}
-cat $DATA
 chmod u+w ${DATA}
 COPY=$OBJ/copy
 rm -f ${COPY}
