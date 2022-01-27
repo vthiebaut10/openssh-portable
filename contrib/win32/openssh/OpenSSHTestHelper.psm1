@@ -330,6 +330,7 @@ function Set-BasicTestInfo
     $Global:OpenSSHTestInfo.Add("OpenSSHBinPath", $script:OpenSSHBinPath)
     if (-not ($env:Path.ToLower().Contains($script:OpenSSHBinPath.ToLower())))
     {
+        # is this being overwritten and causing issues?
         $env:Path = "$($script:OpenSSHBinPath);$($env:path)"
     }
 
