@@ -289,8 +289,11 @@ SSH="$SSHLOGWRAP"
 # The tests may assume that $DATA exists and is writable and $COPY does
 # not exist.  Tests requiring larger data files can call increase_datafile_size
 # [kbytes] to ensure the file is at least that large.
+echo ${SSHAGENT_BIN}
+echo $OBJ
 DATANAME=data
 DATA=$OBJ/${DATANAME}
+echo $DATA
 cat ${SSHAGENT_BIN} >${DATA}
 chmod u+w ${DATA}
 COPY=$OBJ/copy
@@ -310,6 +313,15 @@ increase_datafile_size()
 export SSH SSHD SSHAGENT SSHADD SSHKEYGEN SSHKEYSCAN SFTP SFTPSERVER SCP
 export SSH_PKCS11_HELPER SSH_SK_HELPER
 #echo $SSH $SSHD $SSHAGENT $SSHADD $SSHKEYGEN $SSHKEYSCAN $SFTP $SFTPSERVER $SCP
+
+if [ "$os" == "windows" ]; then
+	MYPATH="'"
+	MYPATHVALUE=$(printenv PATH)
+	MYPATH+=$MYPATHVALUE
+	MYPATH+="'"
+	echo $MYPATH
+	powershell.exe /c "[System.Environment]::SetEnvironmentVariable('Path', $MYPATH, [System.EnvironmentVariableTarget]::User)"
+fi
 
 # Portable specific functions
 windows_path()
