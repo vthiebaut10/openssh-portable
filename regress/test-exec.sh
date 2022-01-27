@@ -324,6 +324,7 @@ if [ "$os" == "windows" ]; then
 	powershell.exe /c "[System.Environment]::SetEnvironmentVariable('Path', $MYPATH, [System.EnvironmentVariableTarget]::User)"
 fi
 
+
 # Portable specific functions
 windows_path()
 {
