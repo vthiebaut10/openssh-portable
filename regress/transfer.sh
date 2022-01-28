@@ -5,6 +5,7 @@ tid="transfer data"
 
 rm -f ${COPY}
 ${SSH} -n -q -F $OBJ/ssh_proxy somehost printenv
+${SSH} -n -q -F $OBJ/ssh_proxy somehost cat ${DATA} > ${COPY}
 if [ $? -ne 0 ]; then
 	fail "ssh cat $DATA failed"
 fi
