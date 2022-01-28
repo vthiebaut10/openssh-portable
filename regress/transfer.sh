@@ -11,7 +11,6 @@ if [ $? -ne 0 ]; then
 fi
 cmp ${DATA} ${COPY}		|| fail "corrupted copy"
 
-
 #for s in 10 100 1k 32k 64k 128k 256k; do
 #	trace "dd-size ${s}"
 #	rm -f ${COPY}
