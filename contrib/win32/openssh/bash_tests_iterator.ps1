@@ -103,12 +103,12 @@ try
 	}
 
 	#repeat above logic for registry variable
-	$my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
-	if(!$my_path.StartsWith($TEST_SHELL_DIR, "CurrentCultureIgnoreCase"))
-	{
-		# add this path to the user
-		[System.Environment]::SetEnvironmentVariable('Path', $TEST_SHELL_DIR + ";" + $my_path, [System.EnvironmentVariableTarget]::User)
-	}
+	# $my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
+	# if(!$my_path.StartsWith($TEST_SHELL_DIR, "CurrentCultureIgnoreCase"))
+	# {
+	# 	# add this path to the user
+	# 	[System.Environment]::SetEnvironmentVariable('Path', $TEST_SHELL_DIR + ";" + $my_path, [System.EnvironmentVariableTarget]::User)
+	# }
 
 	$BashTestsPath = $BashTestsPath -replace "\\","/"
 	Push-location $BashTestsPath

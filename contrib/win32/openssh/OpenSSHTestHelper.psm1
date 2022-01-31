@@ -335,12 +335,12 @@ function Set-BasicTestInfo
     }
 
     #repeat above logic for registry
-    $my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
-	if(-not ($my_path.ToLower().Contains($script:OpenSSHBinPath.ToLower())))
-	{
-		# add this path to the user
-		[System.Environment]::SetEnvironmentVariable('Path', ($script:OpenSSHBinPath) + ";" + $my_path, [System.EnvironmentVariableTarget]::User)
-	}
+    # $my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
+	# if(-not ($my_path.ToLower().Contains($script:OpenSSHBinPath.ToLower())))
+	# {
+	# 	# add this path to the user
+	# 	[System.Environment]::SetEnvironmentVariable('Path', ($script:OpenSSHBinPath) + ";" + $my_path, [System.EnvironmentVariableTarget]::User)
+	# }
 
     $acl = get-acl (join-path $script:OpenSSHBinPath "ssh.exe")
     
