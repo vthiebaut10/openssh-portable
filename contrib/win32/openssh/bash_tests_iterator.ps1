@@ -104,6 +104,7 @@ try
 	}
 
 	#add "/usr/bin" and Test_shell_dir to the user path variable
+	[System.Environment]::SetEnvironmentVariable('Path', "/usr/bin;" + $TEST_SHELL_DIR + ";" + $OriginalUserPath, [System.EnvironmentVariableTarget]::User)
 	#repeat above logic for registry variable
 	# $my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
 	# if(!$my_path.StartsWith($TEST_SHELL_DIR, "CurrentCultureIgnoreCase"))
