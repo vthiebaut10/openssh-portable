@@ -99,19 +99,12 @@ try
 	$TEST_SHELL_DIR = split-path $ShellPath
 	if(!$env:path.StartsWith($TEST_SHELL_DIR, "CurrentCultureIgnoreCase"))
 	{
-		# add this path to the user
 		$env:path = $TEST_SHELL_DIR + ";" + $env:path
 	}
 
 	#add "/usr/bin" and Test_shell_dir to the user path variable
-	[System.Environment]::SetEnvironmentVariable('Path', "/usr/bin;" + $TEST_SHELL_DIR + ";" + $OriginalUserPath, [System.EnvironmentVariableTarget]::User)
-	#repeat above logic for registry variable
-	# $my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
-	# if(!$my_path.StartsWith($TEST_SHELL_DIR, "CurrentCultureIgnoreCase"))
-	# {
-	# 	# add this path to the user
-	# 	[System.Environment]::SetEnvironmentVariable('Path', $TEST_SHELL_DIR + ";" + $my_path, [System.EnvironmentVariableTarget]::User)
-	# }
+	#[System.Environment]::SetEnvironmentVariable('Path', "/usr/bin;" + $TEST_SHELL_DIR + ";" + $OriginalUserPath, [System.EnvironmentVariableTarget]::User)
+	[System.Environment]::SetEnvironmentVariable('Path', $TEST_SHELL_DIR + ";" + $OriginalUserPath, [System.EnvironmentVariableTarget]::User)
 
 	$BashTestsPath = $BashTestsPath -replace "\\","/"
 	Push-location $BashTestsPath

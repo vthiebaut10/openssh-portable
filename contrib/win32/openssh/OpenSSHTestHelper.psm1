@@ -330,17 +330,8 @@ function Set-BasicTestInfo
     $Global:OpenSSHTestInfo.Add("OpenSSHBinPath", $script:OpenSSHBinPath)
     if (-not ($env:Path.ToLower().Contains($script:OpenSSHBinPath.ToLower())))
     {
-        # is this being overwritten and causing issues?
         $env:Path = "$($script:OpenSSHBinPath);$($env:path)"
     }
-
-    #repeat above logic for registry
-    # $my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
-	# if(-not ($my_path.ToLower().Contains($script:OpenSSHBinPath.ToLower())))
-	# {
-	# 	# add this path to the user
-	# 	[System.Environment]::SetEnvironmentVariable('Path', ($script:OpenSSHBinPath) + ";" + $my_path, [System.EnvironmentVariableTarget]::User)
-	# }
 
     $acl = get-acl (join-path $script:OpenSSHBinPath "ssh.exe")
     
@@ -721,16 +712,11 @@ function Invoke-OpenSSHBashTests
         }
     }
 
-    #$my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
-    #$my_path = "/usr/bin;" + $my_path
-    #[System.Environment]::SetEnvironmentVariable('Path', $my_path, [System.EnvironmentVariableTarget]::User)
-
     $bashTestDirectory = Join-Path $repositoryRoot.FullName -ChildPath "regress"
     $transferTestDirectory = Join-Path $bashTestDirectory -ChildPath "transfer.sh"
 
     &"$PSScriptRoot\bash_tests_iterator.ps1" -OpenSSHBinPath $Script:OpenSSHBinPath -BashTestsPath $bashTestDirectory -ShellPath $bashPath -TestFilePath $transferTestDirectory -ArtifactsDirectoryPath $bashTestDirectory
     #&"$PSScriptRoot\bash_tests_iterator.ps1" -OpenSSHBinPath $Script:OpenSSHBinPath -BashTestsPath $bashTestDirectory -ShellPath $bashPath -ArtifactsDirectoryPath $bashTestDirectory
-
 }
 
 <#
