@@ -102,8 +102,8 @@ try
 		$env:path = $TEST_SHELL_DIR + ";" + $env:path
 	}
 
-	#add "/usr/bin" and Test_shell_dir to the user path variable
-	#[System.Environment]::SetEnvironmentVariable('Path', "/usr/bin;" + $TEST_SHELL_DIR + ";" + $OriginalUserPath, [System.EnvironmentVariableTarget]::User)
+	# Prepend shell path to User PATH in the registry so that SSHD authenticated child process can inherit it.
+	# We can probably delete the logic above to add it to the process PATH, but there is no need.
 	[System.Environment]::SetEnvironmentVariable('Path', $TEST_SHELL_DIR + ";" + $OriginalUserPath, [System.EnvironmentVariableTarget]::User)
 
 	$BashTestsPath = $BashTestsPath -replace "\\","/"
@@ -259,7 +259,7 @@ try
 }
 finally
 {
-	#Restore user path variable
+	# Restore User Path variable in the registry once the tests finish running.
 	[System.Environment]::SetEnvironmentVariable('Path', $OriginalUserPath, [System.EnvironmentVariableTarget]::User)
 	# remove temp test directory
 	if (!$SkipCleanup)
