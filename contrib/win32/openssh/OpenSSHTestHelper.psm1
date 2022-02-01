@@ -721,9 +721,9 @@ function Invoke-OpenSSHBashTests
         }
     }
 
-    $my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
-    $my_path = "/usr/bin;" + $my_path
-    [System.Environment]::SetEnvironmentVariable('Path', $my_path, [System.EnvironmentVariableTarget]::User)
+    #$my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
+    #$my_path = "/usr/bin;" + $my_path
+    #[System.Environment]::SetEnvironmentVariable('Path', $my_path, [System.EnvironmentVariableTarget]::User)
 
     $bashTestDirectory = Join-Path $repositoryRoot.FullName -ChildPath "regress"
     $transferTestDirectory = Join-Path $bashTestDirectory -ChildPath "transfer.sh"
