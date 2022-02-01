@@ -154,9 +154,10 @@ setup_session_user_vars(wchar_t* profile_path)
 			if (_wcsicmp(name, L"PATH") == 0 && j == 1) {
 				if ((required = GetEnvironmentVariableW(L"PATH", NULL, 0)) != 0) {
 					size_t user_path_size = wcslen(to_apply);
-					path_value = xmalloc((required + user_path_size + 1) * 2);
+					path_value = xmalloc((required + user_path_size + 2) * 2);
 					GOTO_CLEANUP_ON_ERR(memcpy_s(path_value, (user_path_size + 1) * 2, to_apply, (user_path_size + 1) * 2));
-					GetEnvironmentVariableW(L"PATH", path_value + user_path_size, required);
+					path_value[user_path_size] = L';';
+					GetEnvironmentVariableW(L"PATH", path_value + user_path_size + 1, required);
 					to_apply = path_value;
 				}
 			}
