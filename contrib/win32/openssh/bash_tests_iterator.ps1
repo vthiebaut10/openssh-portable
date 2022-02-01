@@ -24,6 +24,7 @@ if ($TestFilePath) {
 	# convert to bash format
 	$TestFilePath = $TestFilePath -replace "\\","/"
 }
+$OriginalUserPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User) 
 
 # Make sure config.h exists. It is used in some bashstests (Ex - sftp-glob.sh, cfgparse.sh)
 # first check in $BashTestsPath folder. If not then it's parent folder. If not then in the $OpenSSHBinPath
@@ -102,6 +103,7 @@ try
 		$env:path = $TEST_SHELL_DIR + ";" + $env:path
 	}
 
+	#add "/usr/bin" and Test_shell_dir to the user path variable
 	#repeat above logic for registry variable
 	# $my_path = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::User)
 	# if(!$my_path.StartsWith($TEST_SHELL_DIR, "CurrentCultureIgnoreCase"))
@@ -263,6 +265,8 @@ try
 }
 finally
 {
+	#Restore user path variable
+	[System.Environment]::SetEnvironmentVariable('Path', $OriginalUserPath, [System.EnvironmentVariableTarget]::User)
 	# remove temp test directory
 	if (!$SkipCleanup)
 	{

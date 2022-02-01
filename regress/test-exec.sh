@@ -313,13 +313,13 @@ export SSH_PKCS11_HELPER SSH_SK_HELPER
 
 # Write cygwin path into HKCU
 if [ "$os" == "windows" ]; then
- 	MYPATH="'"
-  	MYPATHVALUE=$(printenv PATH)
-  	MYPATH+=$MYPATHVALUE
-  	MYPATH+="'"
-  	echo $MYPATH
- 	powershell.exe /c "[System.Environment]::SetEnvironmentVariable('Path', $MYPATH, [System.EnvironmentVariableTarget]::User)"
- fi
+  	MYPATH="'"
+   	MYPATHVALUE=$(printenv PATH)
+   	MYPATH+=$MYPATHVALUE
+   	MYPATH+="'"
+   	echo $MYPATH
+  	powershell.exe /c "[System.Environment]::SetEnvironmentVariable('Path', $MYPATH, [System.EnvironmentVariableTarget]::User)"
+fi
 
 
 # Portable specific functions
