@@ -151,6 +151,11 @@ setup_session_user_vars(wchar_t* profile_path)
 				to_apply = data_expanded;
 			}
 
+			if (_wcsicmp(name, L"PROCESSOR_ARCHITECTURE") == 0) 
+			{
+				to_apply = NULL;
+			}
+
 			if (_wcsicmp(name, L"PATH") == 0 && j == 1) {
 				if ((required = GetEnvironmentVariableW(L"PATH", NULL, 0)) != 0) {
 					size_t user_path_size = wcslen(to_apply);
@@ -196,10 +201,6 @@ setup_session_env(struct ssh *ssh, Session* s)
 	char *c;
 
 	UTF8_TO_UTF16_WITH_CLEANUP(pw_dir_w, s->pw->pw_dir);
-	/* skip domain part (if present) while setting USERNAME */
-	c = strchr(s->pw->pw_name, '\\');
-	UTF8_TO_UTF16_WITH_CLEANUP(tmp, c ? c + 1 : s->pw->pw_name);
-	SetEnvironmentVariableW(L"USERNAME", tmp);
 
 	if (!s->is_subsystem) {
 		_snprintf(buf, ARRAYSIZE(buf), "%s@%s", s->pw->pw_name, getenv("COMPUTERNAME"));
@@ -215,6 +216,11 @@ setup_session_env(struct ssh *ssh, Session* s)
 	}
 
 	setup_session_user_vars(pw_dir_w); /* setup user specific env variables */
+
+	/* skip domain part (if present) while setting USERNAME */
+	c = strchr(s->pw->pw_name, '\\');
+	UTF8_TO_UTF16_WITH_CLEANUP(tmp, c ? c + 1 : s->pw->pw_name);
+	SetEnvironmentVariableW(L"USERNAME", tmp);
 
 	env = do_setup_env_proxy(ssh, s, s->pw->pw_shell);
 	while (env_name = env[i]) {
