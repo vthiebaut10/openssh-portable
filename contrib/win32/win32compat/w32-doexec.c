@@ -100,7 +100,8 @@ get_registry_operation_error_message(LONG error_code)
 }
 
 /* TODO  - built env var set and pass it along with CreateProcess */
-/* set user environment variables from user profile */
+/* Set environment variables with values from the registry */
+/* Ensure that environment of new connections reflect the current state of the machine */
 static void
 setup_session_user_vars(wchar_t* profile_path)
 {
@@ -113,6 +114,7 @@ setup_session_user_vars(wchar_t* profile_path)
 	LONG ret;
 	char* error_message;
 
+	/*These whitelisted environment variables should not be overwritten with the value from the registry*/
 	wchar_t* whitelist[] = { L"PROCESSOR_ARCHITECTURE", L"USERNAME" };
 	int whitelist_length = 2;
 
@@ -136,6 +138,8 @@ setup_session_user_vars(wchar_t* profile_path)
 
 	for (int j = 0; j < 2; j++)
 	{
+		/* First update the environment variables with the value from the System Environment, and then User. */
+		/* User variables overwrite the value of system variables with the same name (Except Path) */
 		if (j == 0) 
 			ret = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment", 0, KEY_QUERY_VALUE, &reg_key);
 		else
@@ -184,6 +188,7 @@ setup_session_user_vars(wchar_t* profile_path)
 				to_apply = data_expanded;
 			}
 
+			/* Ensure that variables in the whitelist are not being overwritten with the value from the registry */
 			for (int k = 0; k < whitelist_length; k++) {
 				if (_wcsicmp(name, whitelist[k]) == 0)
 				{
@@ -191,6 +196,7 @@ setup_session_user_vars(wchar_t* profile_path)
 				}
 			}
 
+			/* Path is a special case. The System Path value is appended to the User Path value */
 			if (_wcsicmp(name, L"PATH") == 0 && j == 1) {
 				if ((required = GetEnvironmentVariableW(L"PATH", NULL, 0)) != 0) {
 					size_t user_path_size = wcslen(to_apply);
