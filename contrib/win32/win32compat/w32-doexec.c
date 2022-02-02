@@ -78,6 +78,27 @@ do_setup_env_proxy(struct ssh *, Session *, const char *);
 		goto cleanup;					\
 } while(0)
 
+
+static
+char* get_registry_operation_error_message(LONG error_code) 
+{
+	char* message = NULL;
+	wchar_t* wmessage = NULL;
+	DWORD length = FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, 0, (wchar_t*)&wmessage, 0, NULL);
+	if (length == 0)
+		return NULL;
+
+	if (wmessage[length - 1] == L'\n')
+		wmessage[length - 1] = L'\0';
+	if (length > 1 && wmessage[length - 2] == L'\r')
+		wmessage[length - 2] = L'\0';
+
+	message = utf16_to_utf8(wmessage);
+	LocalFree(wmessage);
+
+	return message;
+}
+
 /* TODO  - built env var set and pass it along with CreateProcess */
 /* set user environment variables from user profile */
 static void
@@ -90,6 +111,10 @@ setup_session_user_vars(wchar_t* profile_path)
 	wchar_t *data = NULL, *data_expanded = NULL, *path_value = NULL, *to_apply;
 	DWORD type, name_chars = 256, data_chars = 0, data_expanded_chars = 0, required, i = 0;
 	LONG ret;
+	char* error_message;
+
+	wchar_t* whitelist[] = { L"PROCESSOR_ARCHITECTURE", L"USERNAME" };
+	int whitelist_length = 2;
 
 	SetEnvironmentVariableW(L"USERPROFILE", profile_path);
 
@@ -116,8 +141,12 @@ setup_session_user_vars(wchar_t* profile_path)
 		else
 			ret = RegOpenKeyExW(HKEY_CURRENT_USER, L"Environment", 0, KEY_QUERY_VALUE, &reg_key);
 
-		if (ret != ERROR_SUCCESS)
+		if (ret != ERROR_SUCCESS) {
+			error_message = get_registry_operation_error_message(ret);
+			error("Unable to open Registry Key %s. %s", (j==0?"HKEY_LOCAL_MACHINE":"HKEY_CURRENT_USER"), error_message);
+			free(error_message);
 			return;
+		}
 		
 		else while (1) {
 			to_apply = NULL;
@@ -134,8 +163,12 @@ setup_session_user_vars(wchar_t* profile_path)
 				i--;
 				continue;
 			}
-			else if (ret != ERROR_SUCCESS)
+			else if (ret != ERROR_SUCCESS) {
+				error_message = get_registry_operation_error_message(ret);
+				error("Failed to enumerate the value for registry key %s. %s", (j == 0 ? "HKEY_LOCAL_MACHINE" : "HKEY_CURRENT_USER"), error_message);
+				free(error_message);
 				break;
+			}
 
 			if (type == REG_SZ)
 				to_apply = data;
@@ -151,9 +184,11 @@ setup_session_user_vars(wchar_t* profile_path)
 				to_apply = data_expanded;
 			}
 
-			if (_wcsicmp(name, L"PROCESSOR_ARCHITECTURE") == 0) 
-			{
-				to_apply = NULL;
+			for (int k = 0; k < whitelist_length; k++) {
+				if (_wcsicmp(name, whitelist[k]) == 0)
+				{
+					to_apply = NULL;
+				}
 			}
 
 			if (_wcsicmp(name, L"PATH") == 0 && j == 1) {
@@ -201,6 +236,10 @@ setup_session_env(struct ssh *ssh, Session* s)
 	char *c;
 
 	UTF8_TO_UTF16_WITH_CLEANUP(pw_dir_w, s->pw->pw_dir);
+	/* skip domain part (if present) while setting USERNAME */
+	c = strchr(s->pw->pw_name, '\\');
+	UTF8_TO_UTF16_WITH_CLEANUP(tmp, c ? c + 1 : s->pw->pw_name);
+	SetEnvironmentVariableW(L"USERNAME", tmp);
 
 	if (!s->is_subsystem) {
 		_snprintf(buf, ARRAYSIZE(buf), "%s@%s", s->pw->pw_name, getenv("COMPUTERNAME"));
@@ -216,11 +255,6 @@ setup_session_env(struct ssh *ssh, Session* s)
 	}
 
 	setup_session_user_vars(pw_dir_w); /* setup user specific env variables */
-
-	/* skip domain part (if present) while setting USERNAME */
-	c = strchr(s->pw->pw_name, '\\');
-	UTF8_TO_UTF16_WITH_CLEANUP(tmp, c ? c + 1 : s->pw->pw_name);
-	SetEnvironmentVariableW(L"USERNAME", tmp);
 
 	env = do_setup_env_proxy(ssh, s, s->pw->pw_shell);
 	while (env_name = env[i]) {
