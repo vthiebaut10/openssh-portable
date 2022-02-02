@@ -79,14 +79,14 @@ do_setup_env_proxy(struct ssh *, Session *, const char *);
 } while(0)
 
 
-static
-char* get_registry_operation_error_message(LONG error_code) 
+static char*
+get_registry_operation_error_message(LONG error_code) 
 {
 	char* message = NULL;
 	wchar_t* wmessage = NULL;
-	DWORD length = FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM, NULL, error_code, 0, (wchar_t*)&wmessage, 0, NULL);
+	DWORD length = FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, NULL, error_code, 0, (wchar_t*)&wmessage, 0, NULL);
 	if (length == 0)
-		return NULL;
+		return "";
 
 	if (wmessage[length - 1] == L'\n')
 		wmessage[length - 1] = L'\0';
@@ -143,7 +143,7 @@ setup_session_user_vars(wchar_t* profile_path)
 
 		if (ret != ERROR_SUCCESS) {
 			error_message = get_registry_operation_error_message(ret);
-			error("Unable to open Registry Key %s. %s", (j==0?"HKEY_LOCAL_MACHINE":"HKEY_CURRENT_USER"), error_message);
+			error("Unable to open Registry Key %s. %s", (j == 0 ? "HKEY_LOCAL_MACHINE" : "HKEY_CURRENT_USER"), error_message);
 			free(error_message);
 			return;
 		}
