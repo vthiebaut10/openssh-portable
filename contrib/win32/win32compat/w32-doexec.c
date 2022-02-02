@@ -106,13 +106,13 @@ static void
 setup_session_user_vars(wchar_t* profile_path)
 {
 	/* retrieve and set env variables. */
-	HKEY reg_key = 0;
+	HKEY reg_key = 0, hklm_reg_key = 0, hkcu_reg_key = 0;
 	wchar_t name[256];
 	wchar_t path[PATH_MAX + 1] = { 0, };
 	wchar_t *data = NULL, *data_expanded = NULL, *path_value = NULL, *to_apply;
 	DWORD type, name_chars = 256, data_chars = 0, data_expanded_chars = 0, required, i = 0;
-	LONG ret;
-	char* error_message;
+	LONG ret, hklm_ret, hkcu_ret;
+	char *error_message, *hklm_error_message, *hkcu_error_message;
 
 	/*These whitelisted environment variables should not be overwritten with the value from the registry*/
 	wchar_t* whitelist[] = { L"PROCESSOR_ARCHITECTURE", L"USERNAME" };
@@ -135,24 +135,43 @@ setup_session_user_vars(wchar_t* profile_path)
 	swprintf_s(path, _countof(path), L"%s\\AppData\\Roaming", profile_path);
 	SetEnvironmentVariableW(L"APPDATA", path);
 
+	hklm_ret = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment", 0, KEY_QUERY_VALUE, &hklm_reg_key);
+	hkcu_ret = RegOpenKeyExW(HKEY_CURRENT_USER, L"Environment", 0, KEY_QUERY_VALUE, &hkcu_reg_key);
 
+	/* If one of the registry keys fails to be opened, the error will be logged and environment variables won't be updated */
+	if (hklm_ret != ERROR_SUCCESS && hkcu_ret != ERROR_SUCCESS) {
+		hklm_error_message = get_registry_operation_error_message(hklm_ret);
+		hkcu_error_message = get_registry_operation_error_message(hkcu_ret);
+		error("Unable to open Registry Keys HKEY_LOCAL_MACHINE(%s) and HKEY_CURRENT_USER (%s).", hklm_error_message, hkcu_error_message);
+		free(hkcu_error_message);
+		free(hklm_error_message);
+		return;
+	}
+	else if (hklm_ret != ERROR_SUCCESS) {
+		RegCloseKey(hkcu_reg_key);
+		error_message = get_registry_operation_error_message(hklm_ret);
+		error("Unable to open Registry Key HKEY_LOCAL_MACHINE. %s", error_message);
+		free(error_message);
+		return;
+	}
+	else if (hkcu_ret != ERROR_SUCCESS) {
+		RegCloseKey(hklm_reg_key);
+		error_message = get_registry_operation_error_message(hkcu_ret);
+		error("Unable to open Registry Key HKEY_CURRENT_USER. %s", error_message);
+		free(error_message);
+		return;
+	}
+		
 	for (int j = 0; j < 2; j++)
 	{
 		/* First update the environment variables with the value from the System Environment, and then User. */
 		/* User variables overwrite the value of system variables with the same name (Except Path) */
-		if (j == 0) 
-			ret = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment", 0, KEY_QUERY_VALUE, &reg_key);
+		if (j == 0)
+			reg_key = hklm_reg_key;
 		else
-			ret = RegOpenKeyExW(HKEY_CURRENT_USER, L"Environment", 0, KEY_QUERY_VALUE, &reg_key);
-
-		if (ret != ERROR_SUCCESS) {
-			error_message = get_registry_operation_error_message(ret);
-			error("Unable to open Registry Key %s. %s", (j == 0 ? "HKEY_LOCAL_MACHINE" : "HKEY_CURRENT_USER"), error_message);
-			free(error_message);
-			return;
-		}
+			reg_key = hkcu_reg_key;
 		
-		else while (1) {
+		while (1) {
 			to_apply = NULL;
 			required = data_chars * sizeof(wchar_t);
 			name_chars = 256;
