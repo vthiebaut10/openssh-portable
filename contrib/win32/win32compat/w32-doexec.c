@@ -140,8 +140,7 @@ setup_session_user_vars(wchar_t* profile_path)
 		/* First update the environment variables with the value from the System Environment, and then User. */
 		/* User variables overwrite the value of system variables with the same name (Except Path) */
 		if (j == 0)
-			//ret = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment", 0, KEY_QUERY_VALUE, &reg_key);
-			ret = ERROR_WRITE_FAULT;
+			ret = RegOpenKeyExW(HKEY_LOCAL_MACHINE, L"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment", 0, KEY_QUERY_VALUE, &reg_key);
 		else
 			ret = RegOpenKeyExW(HKEY_CURRENT_USER, L"Environment", 0, KEY_QUERY_VALUE, &reg_key);
 
