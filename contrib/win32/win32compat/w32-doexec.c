@@ -80,13 +80,13 @@ do_setup_env_proxy(struct ssh *, Session *, const char *);
 
 
 static char*
-get_registry_operation_error_message(LONG error_code) 
+get_registry_operation_error_message(const LONG error_code) 
 {
 	char* message = NULL;
 	wchar_t* wmessage = NULL;
 	DWORD length = FormatMessageW(FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ALLOCATE_BUFFER, NULL, error_code, 0, (wchar_t*)&wmessage, 0, NULL);
 	if (length == 0)
-		return "";
+		return NULL;
 
 	if (wmessage[length - 1] == L'\n')
 		wmessage[length - 1] = L'\0';
@@ -116,7 +116,6 @@ setup_session_user_vars(wchar_t* profile_path)
 
 	/*These whitelisted environment variables should not be overwritten with the value from the registry*/
 	wchar_t* whitelist[] = { L"PROCESSOR_ARCHITECTURE", L"USERNAME" };
-	int whitelist_length = 2;
 
 	SetEnvironmentVariableW(L"USERPROFILE", profile_path);
 
@@ -188,7 +187,7 @@ setup_session_user_vars(wchar_t* profile_path)
 			}
 
 			/* Ensure that variables in the whitelist are not being overwritten with the value from the registry */
-			for (int k = 0; k < whitelist_length; k++) {
+			for (int k = 0; k < ARRAYSIZE(whitelist); k++) {
 				if (_wcsicmp(name, whitelist[k]) == 0)
 				{
 					to_apply = NULL;
