@@ -1262,9 +1262,14 @@ source(int argc, char **argv)
 	off_t i, statbytes;
 	size_t amt, nr;
 	int fd = -1, haderr, indx;
-	char *last, *name, *buf, *encname;
-	int len;
+#ifdef WINDOWS
+	char* last, * name, * buf, * encname;
 	size_t encname_len, buf_len, tmp_len;
+#else
+	char* last, * name, buf[PATH_MAX + 128], encname[PATH_MAX];
+#endif
+	int len;
+	
 
 	for (indx = 0; indx < argc; ++indx) {
 		name = argv[indx];
@@ -1275,6 +1280,7 @@ source(int argc, char **argv)
 		if ((fd = open(name, O_RDONLY|O_NONBLOCK, 0)) == -1)
 			goto syserr;
 		if (strchr(name, '\n') != NULL) {
+#ifdef WINDOWS
 			if (!encname) {
 				encname = xmalloc(len + 1);
 				encname_len = len + 1;
@@ -1284,6 +1290,9 @@ source(int argc, char **argv)
 				encname = xreallocarray(encname, tmp_len + 1, sizeof(char));
 				encname_len = tmp_len;
 			}
+#else
+			strnvis(encname, name, sizeof(encname), VIS_NL);
+#endif
 			name = encname;
 		}
 		if (fstat(fd, &stb) == -1) {
@@ -1318,6 +1327,7 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 				goto next;
 		}
 #define	FILEMODEMASK	(S_ISUID|S_ISGID|S_IRWXU|S_IRWXG|S_IRWXO)
+#ifdef WINDOWS
 		buf_len = strlen(last) * 2;
 		buf = xmalloc(buf_len);
 		while (tmp_len = snprintf(buf, sizeof buf, "C%04o %lld %s\n",
@@ -1326,6 +1336,11 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 			buf = xreallocarray(buf, tmp_len + 1, sizeof(char));
 			buf_len = tmp_len + 1;
 		}
+#else
+		snprintf(buf, sizeof buf, "C%04o %lld %s\n",
+			(u_int)(stb.st_mode & FILEMODEMASK),
+			(long long)stb.st_size, last);
+#endif
 		if (verbose_mode)
 			fmprintf(stderr, "Sending file modes: %s", buf);
 		(void) atomicio(vwrite, remout, buf, strlen(buf));
@@ -1377,10 +1392,12 @@ next:			if (fd != -1) {
 		if (showprogress)
 			stop_progress_meter();
 	}
+#ifdef WINDOWS
 	if (encname)
 		free(encname);
 	if (buf)
 		free(buf);
+#endif
 }
 
 void
@@ -1388,10 +1405,14 @@ rsource(char *name, struct stat *statp)
 {
 	DIR *dirp;
 	struct dirent *dp;
-	char *last, *vect[1], *path;
+#ifndef WINDOWS
+	char* last, * vect[1], path[PATH_MAX];
+#else
+	char* last, * vect[1], * path;
 	size_t path_len = 260, len;
 
 	path = xmalloc(path_len);
+#endif
 
 	if (!(dirp = opendir(name))) {
 		run_err("%s: %s", name, strerror(errno));
@@ -1409,11 +1430,16 @@ rsource(char *name, struct stat *statp)
 		}
 	}
 
+#ifdef WINDOWS
 	while (len = snprintf(path, sizeof path, "D%04o %d %.1024s\n",
 		  (u_int)(statp->st_mode & FILEMODEMASK), 0, last) >= path_len) {
 		path = xreallocarray(path, len + 1, sizeof(char));
 		path_len = len + 1;
 	}
+#else
+	(void)snprintf(path, sizeof path, "D%04o %d %.1024s\n",
+		(u_int)(statp->st_mode & FILEMODEMASK), 0, last);
+#endif
 
 	if (verbose_mode)
 		fmprintf(stderr, "Entering directory: %s", path);
@@ -1441,8 +1467,10 @@ rsource(char *name, struct stat *statp)
 		vect[0] = path;
 		source(1, vect);
 	}
+#ifdef WINDOWS
 	if (path)
 		free(path);
+#endif
 	(void) closedir(dirp);
 	(void) atomicio(vwrite, remout, "E\n", 2);
 	(void) response();
