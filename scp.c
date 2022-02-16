@@ -1263,10 +1263,10 @@ source(int argc, char **argv)
 	size_t amt, nr;
 	int fd = -1, haderr, indx;
 #ifdef WINDOWS
-	char* last, * name, * buf, * encname;
+	char *last, *name, *buf = NULL, *encname = NULL;
 	size_t encname_len, buf_len, tmp_len;
 #else
-	char* last, * name, buf[PATH_MAX + 128], encname[PATH_MAX];
+	char *last, *name, buf[PATH_MAX + 128], encname[PATH_MAX];
 #endif
 	int len;
 	
@@ -1279,16 +1279,18 @@ source(int argc, char **argv)
 			name[--len] = '\0';
 		if ((fd = open(name, O_RDONLY|O_NONBLOCK, 0)) == -1)
 			goto syserr;
+
 		if (strchr(name, '\n') != NULL) {
 #ifdef WINDOWS
 			if (!encname) {
-				encname = xmalloc(len + 1);
-				encname_len = len + 1;
+				encname_len = ((2 * len) < MAX_PATH) ? 2 * len : MAX_PATH;
+				encname = xmalloc(encname_len);
 			}
-			while (tmp_len = strnvis(encname, name, encname_len, VIS_NL) >= encname_len) {
-				// check if tmp_len is less than MAX_PATH?
+			while ((tmp_len = strnvis(encname, name, encname_len, VIS_NL)) >= encname_len) {
+				if (tmp_len >= MAX_PATH)
+					break;
 				encname = xreallocarray(encname, tmp_len + 1, sizeof(char));
-				encname_len = tmp_len;
+				encname_len = tmp_len + 1;
 			}
 #else
 			strnvis(encname, name, sizeof(encname), VIS_NL);
@@ -1328,11 +1330,11 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 		}
 #define	FILEMODEMASK	(S_ISUID|S_ISGID|S_IRWXU|S_IRWXG|S_IRWXO)
 #ifdef WINDOWS
-		buf_len = strlen(last) * 2;
+		buf_len = strlen(last) + 20;
 		buf = xmalloc(buf_len);
-		while (tmp_len = snprintf(buf, sizeof buf, "C%04o %lld %s\n",
+		while ((tmp_len = snprintf(buf, buf_len, "C%04o %lld %s\n",
 		      (u_int) (stb.st_mode & FILEMODEMASK),
-			  (long long)stb.st_size, last) >= buf_len) {
+			  (long long)stb.st_size, last)) >= buf_len) {
 			buf = xreallocarray(buf, tmp_len + 1, sizeof(char));
 			buf_len = tmp_len + 1;
 		}
@@ -1406,10 +1408,10 @@ rsource(char *name, struct stat *statp)
 	DIR *dirp;
 	struct dirent *dp;
 #ifndef WINDOWS
-	char* last, * vect[1], path[PATH_MAX];
+	char *last, *vect[1], path[PATH_MAX];
 #else
-	char* last, * vect[1], * path;
-	size_t path_len = 260, len;
+	char *last, *vect[1], *path;
+	size_t path_len = 2, len;
 
 	path = xmalloc(path_len);
 #endif
@@ -1431,8 +1433,8 @@ rsource(char *name, struct stat *statp)
 	}
 
 #ifdef WINDOWS
-	while (len = snprintf(path, sizeof path, "D%04o %d %.1024s\n",
-		  (u_int)(statp->st_mode & FILEMODEMASK), 0, last) >= path_len) {
+	while ((len = snprintf(path, path_len, "D%04o %d %.1024s\n",
+		  (u_int)(statp->st_mode & FILEMODEMASK), 0, last)) >= path_len) {
 		path = xreallocarray(path, len + 1, sizeof(char));
 		path_len = len + 1;
 	}
@@ -1462,7 +1464,7 @@ rsource(char *name, struct stat *statp)
 			continue;
 		}
 #ifdef WINDOWS
-		while (len = snprintf(path, sizeof path, "%s/%s", name, dp->d_name) >= path_len) {
+		while ((len = snprintf(path, path_len, "%s/%s", name, dp->d_name)) >= path_len) {
 			path = xreallocarray(path, len + 1, sizeof(char));
 			path_len = len + 1;
 		}
