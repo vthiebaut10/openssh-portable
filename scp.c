@@ -1453,17 +1453,22 @@ rsource(char *name, struct stat *statp)
 			continue;
 		if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
 			continue;
+#ifdef WINDOWS
 		if (strlen(name) + 1 + strlen(dp->d_name) >= PATH_MAX - 1) {
+#else 
+		if (strlen(name) + 1 + strlen(dp->d_name) >= sizeof(path) - 1) {
+#endif
 			run_err("%s/%s: name too long", name, dp->d_name);
 			continue;
 		}
-		(void) snprintf(path, sizeof path, "%s/%s", name, dp->d_name);
-
+#ifdef WINDOWS
 		while (len = snprintf(path, sizeof path, "%s/%s", name, dp->d_name) >= path_len) {
 			path = xreallocarray(path, len + 1, sizeof(char));
 			path_len = len + 1;
 		}
-
+#else
+		(void) snprintf(path, sizeof path, "%s/%s", name, dp->d_name);
+#endif
 		vect[0] = path;
 		source(1, vect);
 	}
