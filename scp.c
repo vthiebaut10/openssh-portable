@@ -1262,8 +1262,9 @@ source(int argc, char **argv)
 	off_t i, statbytes;
 	size_t amt, nr;
 	int fd = -1, haderr, indx;
-	char *last, *name, buf[PATH_MAX + 128], encname[PATH_MAX];
+	char *last, *name, *buf, *encname;
 	int len;
+	size_t encname_len, buf_len, tmp_len;
 
 	for (indx = 0; indx < argc; ++indx) {
 		name = argv[indx];
@@ -1274,7 +1275,15 @@ source(int argc, char **argv)
 		if ((fd = open(name, O_RDONLY|O_NONBLOCK, 0)) == -1)
 			goto syserr;
 		if (strchr(name, '\n') != NULL) {
-			strnvis(encname, name, sizeof(encname), VIS_NL);
+			if (!encname) {
+				encname = xmalloc(len + 1);
+				encname_len = len + 1;
+			}
+			while (tmp_len = strnvis(encname, name, encname_len, VIS_NL) > encname_len) {
+				// check if tmp_len is less than MAX_PATH?
+				encname = xrealloc(encname, tmp_len + 1);
+				encname_len = tmp_len;
+			}
 			name = encname;
 		}
 		if (fstat(fd, &stb) == -1) {
@@ -1309,9 +1318,14 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 				goto next;
 		}
 #define	FILEMODEMASK	(S_ISUID|S_ISGID|S_IRWXU|S_IRWXG|S_IRWXO)
-		snprintf(buf, sizeof buf, "C%04o %lld %s\n",
-		    (u_int) (stb.st_mode & FILEMODEMASK),
-		    (long long)stb.st_size, last);
+		buf_len = strlen(last) * 2;
+		buf = xmalloc(buf_len);
+		while (tmp_len = snprintf(buf, sizeof buf, "C%04o %lld %s\n",
+		      (u_int) (stb.st_mode & FILEMODEMASK),
+			  (long long)stb.st_size, last) >= buf_len) {
+			buf = xrealloc(buf, tmp_len + 1);
+			buf_len = tmp_len + 1;
+		}
 		if (verbose_mode)
 			fmprintf(stderr, "Sending file modes: %s", buf);
 		(void) atomicio(vwrite, remout, buf, strlen(buf));
@@ -1363,6 +1377,10 @@ next:			if (fd != -1) {
 		if (showprogress)
 			stop_progress_meter();
 	}
+	if (encname)
+		free(encname);
+	if (buf)
+		free(buf);
 }
 
 void
@@ -1370,7 +1388,10 @@ rsource(char *name, struct stat *statp)
 {
 	DIR *dirp;
 	struct dirent *dp;
-	char *last, *vect[1], path[PATH_MAX];
+	char *last, *vect[1], *path;
+	size_t path_len = 260, len;
+
+	path = xmalloc(path_len);
 
 	if (!(dirp = opendir(name))) {
 		run_err("%s: %s", name, strerror(errno));
@@ -1387,8 +1408,13 @@ rsource(char *name, struct stat *statp)
 			return;
 		}
 	}
-	(void) snprintf(path, sizeof path, "D%04o %d %.1024s\n",
-	    (u_int) (statp->st_mode & FILEMODEMASK), 0, last);
+
+	while (len = snprintf(path, sizeof path, "D%04o %d %.1024s\n",
+		  (u_int)(statp->st_mode & FILEMODEMASK), 0, last) >= path_len) {
+		path = xrealloc(path, len + 1);
+		path_len = len + 1;
+	}
+
 	if (verbose_mode)
 		fmprintf(stderr, "Entering directory: %s", path);
 	(void) atomicio(vwrite, remout, path, strlen(path));
@@ -1401,14 +1427,22 @@ rsource(char *name, struct stat *statp)
 			continue;
 		if (!strcmp(dp->d_name, ".") || !strcmp(dp->d_name, ".."))
 			continue;
-		if (strlen(name) + 1 + strlen(dp->d_name) >= sizeof(path) - 1) {
+		if (strlen(name) + 1 + strlen(dp->d_name) >= PATH_MAX - 1) {
 			run_err("%s/%s: name too long", name, dp->d_name);
 			continue;
 		}
 		(void) snprintf(path, sizeof path, "%s/%s", name, dp->d_name);
+
+		while (len = snprintf(path, sizeof path, "%s/%s", name, dp->d_name) >= path_len) {
+			path = xrealloc(path, len + 1);
+			path_len = len + 1;
+		}
+
 		vect[0] = path;
 		source(1, vect);
 	}
+	if (path)
+		free(path);
 	(void) closedir(dirp);
 	(void) atomicio(vwrite, remout, "E\n", 2);
 	(void) response();
