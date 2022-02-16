@@ -1344,7 +1344,7 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 		}
 #else
 		snprintf(buf, sizeof buf, "C%04o %lld %s\n",
-		    (u_int)(stb.st_mode & FILEMODEMASK),
+		    (u_int) (stb.st_mode & FILEMODEMASK),
 		    (long long)stb.st_size, last);
 #endif
 		if (verbose_mode)
@@ -1446,8 +1446,8 @@ rsource(char *name, struct stat *statp)
 		path_len = len + 1;
 	}
 #else
-	(void)snprintf(path, sizeof path, "D%04o %d %.1024s\n",
-	    (u_int)(statp->st_mode & FILEMODEMASK), 0, last);
+	(void) snprintf(path, sizeof path, "D%04o %d %.1024s\n",
+	    (u_int) (statp->st_mode & FILEMODEMASK), 0, last);
 #endif
 	if (verbose_mode)
 		fmprintf(stderr, "Entering directory: %s", path);
