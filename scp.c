@@ -1263,6 +1263,8 @@ source(int argc, char **argv)
 	size_t amt, nr;
 	int fd = -1, haderr, indx;
 #ifdef WINDOWS
+	/* PATH_MAX is too large on Windows.*/
+	/* Allocate memory dynamically for encname and buf to avoid stack overflow on recursive calls.*/
 	char *last, *name, *buf = NULL, *encname = NULL;
 	size_t encname_len, buf_len, tmp_len;
 #else
@@ -1330,18 +1332,20 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 		}
 #define	FILEMODEMASK	(S_ISUID|S_ISGID|S_IRWXU|S_IRWXG|S_IRWXO)
 #ifdef WINDOWS
-		buf_len = strlen(last) + 20;
+		buf_len = ((strlen(last) + 20) < MAX_PATH) ? strlen(last) + 20 : MAX_PATH;
 		buf = xmalloc(buf_len);
 		while ((tmp_len = snprintf(buf, buf_len, "C%04o %lld %s\n",
 		      (u_int) (stb.st_mode & FILEMODEMASK),
 			  (long long)stb.st_size, last)) >= buf_len) {
+			if (tmp_len >= MAX_PATH)
+				break;
 			buf = xreallocarray(buf, tmp_len + 1, sizeof(char));
 			buf_len = tmp_len + 1;
 		}
 #else
 		snprintf(buf, sizeof buf, "C%04o %lld %s\n",
-			(u_int)(stb.st_mode & FILEMODEMASK),
-			(long long)stb.st_size, last);
+		    (u_int)(stb.st_mode & FILEMODEMASK),
+		    (long long)stb.st_size, last);
 #endif
 		if (verbose_mode)
 			fmprintf(stderr, "Sending file modes: %s", buf);
@@ -1410,8 +1414,10 @@ rsource(char *name, struct stat *statp)
 #ifndef WINDOWS
 	char *last, *vect[1], path[PATH_MAX];
 #else
+	/* PATH_MAX is too large on Windows.*/
+	/* Allocate memory dynamically for path to avoid stack overflow on recursive calls.*/
 	char *last, *vect[1], *path;
-	size_t path_len = 2, len;
+	size_t path_len = 260, len;
 
 	path = xmalloc(path_len);
 #endif
@@ -1431,18 +1437,18 @@ rsource(char *name, struct stat *statp)
 			return;
 		}
 	}
-
 #ifdef WINDOWS
 	while ((len = snprintf(path, path_len, "D%04o %d %.1024s\n",
 		  (u_int)(statp->st_mode & FILEMODEMASK), 0, last)) >= path_len) {
+		if (len >= MAX_PATH)
+			break;
 		path = xreallocarray(path, len + 1, sizeof(char));
 		path_len = len + 1;
 	}
 #else
 	(void)snprintf(path, sizeof path, "D%04o %d %.1024s\n",
-		(u_int)(statp->st_mode & FILEMODEMASK), 0, last);
+	    (u_int)(statp->st_mode & FILEMODEMASK), 0, last);
 #endif
-
 	if (verbose_mode)
 		fmprintf(stderr, "Entering directory: %s", path);
 	(void) atomicio(vwrite, remout, path, strlen(path));
