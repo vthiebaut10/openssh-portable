@@ -1279,9 +1279,9 @@ source(int argc, char **argv)
 				encname = xmalloc(len + 1);
 				encname_len = len + 1;
 			}
-			while (tmp_len = strnvis(encname, name, encname_len, VIS_NL) > encname_len) {
+			while (tmp_len = strnvis(encname, name, encname_len, VIS_NL) >= encname_len) {
 				// check if tmp_len is less than MAX_PATH?
-				encname = xrealloc(encname, tmp_len + 1);
+				encname = xreallocarray(encname, tmp_len + 1, sizeof(char));
 				encname_len = tmp_len;
 			}
 			name = encname;
@@ -1323,7 +1323,7 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 		while (tmp_len = snprintf(buf, sizeof buf, "C%04o %lld %s\n",
 		      (u_int) (stb.st_mode & FILEMODEMASK),
 			  (long long)stb.st_size, last) >= buf_len) {
-			buf = xrealloc(buf, tmp_len + 1);
+			buf = xreallocarray(buf, tmp_len + 1, sizeof(char));
 			buf_len = tmp_len + 1;
 		}
 		if (verbose_mode)
@@ -1411,7 +1411,7 @@ rsource(char *name, struct stat *statp)
 
 	while (len = snprintf(path, sizeof path, "D%04o %d %.1024s\n",
 		  (u_int)(statp->st_mode & FILEMODEMASK), 0, last) >= path_len) {
-		path = xrealloc(path, len + 1);
+		path = xreallocarray(path, len + 1, sizeof(char));
 		path_len = len + 1;
 	}
 
@@ -1434,7 +1434,7 @@ rsource(char *name, struct stat *statp)
 		(void) snprintf(path, sizeof path, "%s/%s", name, dp->d_name);
 
 		while (len = snprintf(path, sizeof path, "%s/%s", name, dp->d_name) >= path_len) {
-			path = xrealloc(path, len + 1);
+			path = xreallocarray(path, len + 1, sizeof(char));
 			path_len = len + 1;
 		}
 
