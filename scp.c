@@ -1334,6 +1334,8 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 #ifdef WINDOWS
 		if (!buf) 
 		{
+			/*Set the initial size of buf to "strlen(last) + 20" based on multiple tests that*/
+			/*inidicate that this is usually enough. If not enough, more space will be allocated below.*/
 			buf_len = ((strlen(last) + 20) < PATH_MAX) ? strlen(last) + 20 : PATH_MAX;
 			buf = xmalloc(buf_len);
 		}
