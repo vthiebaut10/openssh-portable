@@ -1291,8 +1291,8 @@ source(int argc, char **argv)
 			while ((tmp_len = strnvis(encname, name, encname_len, VIS_NL)) >= encname_len) {
 				if (tmp_len >= PATH_MAX)
 					break;
-				encname = xreallocarray(encname, tmp_len + 1, sizeof(char));
 				encname_len = tmp_len + 1;
+				encname = xreallocarray(encname, encname_len, sizeof(char));
 			}
 #else
 			strnvis(encname, name, sizeof(encname), VIS_NL);
@@ -1332,8 +1332,11 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 		}
 #define	FILEMODEMASK	(S_ISUID|S_ISGID|S_IRWXU|S_IRWXG|S_IRWXO)
 #ifdef WINDOWS
-		buf_len = ((strlen(last) + 20) < PATH_MAX) ? strlen(last) + 20 : PATH_MAX;
-		buf = xmalloc(buf_len);
+		if (!buf) 
+		{
+			buf_len = ((strlen(last) + 20) < PATH_MAX) ? strlen(last) + 20 : PATH_MAX;
+			buf = xmalloc(buf_len);
+		}
 		while ((tmp_len = snprintf(buf, buf_len, "C%04o %lld %s\n",
 		      (u_int) (stb.st_mode & FILEMODEMASK),
 			  (long long)stb.st_size, last)) >= buf_len) {
