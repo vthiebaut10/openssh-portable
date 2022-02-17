@@ -1693,7 +1693,14 @@ bad:			run_err("%s: %s", np, strerror(errno));
 		}
 		if (!wrerr && (!exists || S_ISREG(stb.st_mode)) &&
 		    ftruncate(ofd, size) != 0)
-			note_err("%s: truncate: %s", np, strerror(errno));
+			note_err("%s: truncate: %s", np, strerror(errno));	
+		if (setimes && !wrerr) {
+			setimes = 0;
+			if (utimes(np, tv) == -1) {
+				note_err("%s: set times: %s",
+					np, strerror(errno));
+			}
+		}
 		if (pflag) {
 			if (exists || omode != mode)
 #ifdef HAVE_FCHMOD
@@ -1720,13 +1727,6 @@ bad:			run_err("%s: %s", np, strerror(errno));
 		(void) response();
 		if (showprogress)
 			stop_progress_meter();
-		if (setimes && !wrerr) {
-			setimes = 0;
-			if (utimes(np, tv) == -1) {
-				note_err("%s: set times: %s",
-				    np, strerror(errno));
-			}
-		}
 		/* If no error was noted then signal success for this file */
 		if (note_err(NULL) == 0)
 			(void) atomicio(vwrite, remout, "", 1);
