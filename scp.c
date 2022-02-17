@@ -1285,11 +1285,11 @@ source(int argc, char **argv)
 		if (strchr(name, '\n') != NULL) {
 #ifdef WINDOWS
 			if (!encname) {
-				encname_len = ((2 * len) < MAX_PATH) ? 2 * len : MAX_PATH;
+				encname_len = ((2 * len) < PATH_MAX) ? 2 * len : PATH_MAX;
 				encname = xmalloc(encname_len);
 			}
 			while ((tmp_len = strnvis(encname, name, encname_len, VIS_NL)) >= encname_len) {
-				if (tmp_len >= MAX_PATH)
+				if (tmp_len >= PATH_MAX)
 					break;
 				encname = xreallocarray(encname, tmp_len + 1, sizeof(char));
 				encname_len = tmp_len + 1;
@@ -1332,15 +1332,15 @@ syserr:			run_err("%s: %s", name, strerror(errno));
 		}
 #define	FILEMODEMASK	(S_ISUID|S_ISGID|S_IRWXU|S_IRWXG|S_IRWXO)
 #ifdef WINDOWS
-		buf_len = ((strlen(last) + 20) < MAX_PATH) ? strlen(last) + 20 : MAX_PATH;
+		buf_len = ((strlen(last) + 20) < PATH_MAX) ? strlen(last) + 20 : PATH_MAX;
 		buf = xmalloc(buf_len);
 		while ((tmp_len = snprintf(buf, buf_len, "C%04o %lld %s\n",
 		      (u_int) (stb.st_mode & FILEMODEMASK),
 			  (long long)stb.st_size, last)) >= buf_len) {
-			if (tmp_len >= MAX_PATH)
+			if (tmp_len >= PATH_MAX)
 				break;
-			buf = xreallocarray(buf, tmp_len + 1, sizeof(char));
 			buf_len = tmp_len + 1;
+			buf = xreallocarray(buf, buf_len, sizeof(char));
 		}
 #else
 		snprintf(buf, sizeof buf, "C%04o %lld %s\n",
@@ -1439,11 +1439,12 @@ rsource(char *name, struct stat *statp)
 	}
 #ifdef WINDOWS
 	while ((len = snprintf(path, path_len, "D%04o %d %.1024s\n",
-		  (u_int)(statp->st_mode & FILEMODEMASK), 0, last)) >= path_len) {
-		if (len >= MAX_PATH)
+		  (u_int)(statp->st_mode & FILEMODEMASK), 0, last)) >= path_len)
+	{
+		if (len >= PATH_MAX)
 			break;
-		path = xreallocarray(path, len + 1, sizeof(char));
 		path_len = len + 1;
+		path = xreallocarray(path, path_len, sizeof(char));
 	}
 #else
 	(void) snprintf(path, sizeof path, "D%04o %d %.1024s\n",
@@ -1471,8 +1472,8 @@ rsource(char *name, struct stat *statp)
 		}
 #ifdef WINDOWS
 		while ((len = snprintf(path, path_len, "%s/%s", name, dp->d_name)) >= path_len) {
-			path = xreallocarray(path, len + 1, sizeof(char));
 			path_len = len + 1;
+			path = xreallocarray(path, path_len, sizeof(char));
 		}
 #else
 		(void) snprintf(path, sizeof path, "%s/%s", name, dp->d_name);
