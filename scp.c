@@ -1695,9 +1695,9 @@ bad:			run_err("%s: %s", np, strerror(errno));
 		    ftruncate(ofd, size) != 0)
 			note_err("%s: truncate: %s", np, strerror(errno));
 #ifdef WINDOWS
-		/* When pflag is true, and the mode of the file is set to "read-only" before the timestamps are set, 
-		the the file wouldn't inherit the timestamps of the source file. To solve that, set timestamps
-		before setting the mode.*/
+		/* When p flag is used, set timestamps before setting the
+		 * mode to avoid error caused by when the mode is set to
+		 * "read-only" and timestamps can't be set.*/
 		if (setimes && !wrerr) {
 			setimes = 0;
 			if (utimes(np, tv) == -1) {
@@ -1705,9 +1705,10 @@ bad:			run_err("%s: %s", np, strerror(errno));
 					np, strerror(errno));
 			}
 		}
-		/* When the file descriptor (ofd) is closed, the Accessed timestamp gets overwritten. 
-		Therefore, when the p flag is used, the Accessed timestamp is not inherited.
-		However, the Modify timestamp is always inherited properly. */
+		/* When the file descriptor (ofd) is closed, the Accessed
+		 * timestamp gets updated. Therefore, when the p flag is 
+		 * used, the inherited Accessed timestamp is overwritten.
+		 * However, the Modify timestamp is inherited correctly.*/
 #endif
 		if (pflag) {
 			if (exists || omode != mode)
