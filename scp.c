@@ -1271,7 +1271,6 @@ source(int argc, char **argv)
 	char *last, *name, buf[PATH_MAX + 128], encname[PATH_MAX];
 #endif
 	int len;
-	
 
 	for (indx = 0; indx < argc; ++indx) {
 		name = argv[indx];
@@ -1281,7 +1280,6 @@ source(int argc, char **argv)
 			name[--len] = '\0';
 		if ((fd = open(name, O_RDONLY|O_NONBLOCK, 0)) == -1)
 			goto syserr;
-
 		if (strchr(name, '\n') != NULL) {
 #ifdef WINDOWS
 			if (!encname) {
