@@ -1695,22 +1695,23 @@ bad:			run_err("%s: %s", np, strerror(errno));
 			ftruncate(ofd, size) != 0)
 			note_err("%s: truncate: %s", np, strerror(errno));
 #ifdef WINDOWS
-		/*if (close(ofd) == -1)
-			note_err("%s: close: %s", np, strerror(errno));
-		(void)response();
-		if (showprogress)
-			stop_progress_meter();
+		/* When pflag is true, and the mode of the file is set to "read-only" before the timestamps are set, 
+		the the file wouldn't inherit the timestamps of the source file. To solve that, set timestamps
+		before setting the mode.*/
 		if (setimes && !wrerr) {
 			setimes = 0;
 			if (utimes(np, tv) == -1) {
 				note_err("%s: set times: %s",
 					np, strerror(errno));
 			}
-		}*/
+		}
+		/* When the file descriptor (ofd) is closed, the Accessed timestamp gets overwritten. 
+		Therefore, when the p flag is used, the Accessed timestamp is not inherited.
+		However, the Modify timestamp is always inherited properly. */
 #endif
 		if (pflag) {
 			if (exists || omode != mode)
-#if defined(HAVE_FCHMOD) && !defined(WINDOWS)
+#if defined(HAVE_FCHMOD)
 				if (fchmod(ofd, omode)) {
 #else /* HAVE_FCHMOD */
 				if (chmod(np, omode)) {
@@ -1720,7 +1721,7 @@ bad:			run_err("%s: %s", np, strerror(errno));
 				}
 		} else {
 			if (!exists && omode != mode)
-#if defined(HAVE_FCHMOD) && !defined(WINDOWS)
+#if defined(HAVE_FCHMOD)
 				if (fchmod(ofd, omode & ~mask)) {
 #else /* HAVE_FCHMOD */
 				if (chmod(np, omode & ~mask)) {
@@ -1729,12 +1730,12 @@ bad:			run_err("%s: %s", np, strerror(errno));
 					    np, strerror(errno));
 				}
 		}
-//#ifndef WINDOWS
 		if (close(ofd) == -1)
 			note_err("%s: close: %s", np, strerror(errno));
 		(void) response();
 		if (showprogress)
 			stop_progress_meter();
+#ifndef WINDOWS
 		if (setimes && !wrerr) {
 			setimes = 0;
 			if (utimes(np, tv) == -1) {
@@ -1742,7 +1743,7 @@ bad:			run_err("%s: %s", np, strerror(errno));
 					np, strerror(errno));
 			}
 		}
-//#endif
+#endif
 		/* If no error was noted then signal success for this file */
 		if (note_err(NULL) == 0)
 			(void) atomicio(vwrite, remout, "", 1);
