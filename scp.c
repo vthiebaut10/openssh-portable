@@ -1692,18 +1692,25 @@ bad:			run_err("%s: %s", np, strerror(errno));
 			wrerr = 1;
 		}
 		if (!wrerr && (!exists || S_ISREG(stb.st_mode)) &&
-		    ftruncate(ofd, size) != 0)
-			note_err("%s: truncate: %s", np, strerror(errno));	
+			ftruncate(ofd, size) != 0)
+			note_err("%s: truncate: %s", np, strerror(errno));
+#ifdef WINDOWS
+		/*if (close(ofd) == -1)
+			note_err("%s: close: %s", np, strerror(errno));
+		(void)response();
+		if (showprogress)
+			stop_progress_meter();
 		if (setimes && !wrerr) {
 			setimes = 0;
 			if (utimes(np, tv) == -1) {
 				note_err("%s: set times: %s",
 					np, strerror(errno));
 			}
-		}
+		}*/
+#endif
 		if (pflag) {
 			if (exists || omode != mode)
-#ifdef HAVE_FCHMOD
+#if defined(HAVE_FCHMOD) && !defined(WINDOWS)
 				if (fchmod(ofd, omode)) {
 #else /* HAVE_FCHMOD */
 				if (chmod(np, omode)) {
@@ -1713,7 +1720,7 @@ bad:			run_err("%s: %s", np, strerror(errno));
 				}
 		} else {
 			if (!exists && omode != mode)
-#ifdef HAVE_FCHMOD
+#if defined(HAVE_FCHMOD) && !defined(WINDOWS)
 				if (fchmod(ofd, omode & ~mask)) {
 #else /* HAVE_FCHMOD */
 				if (chmod(np, omode & ~mask)) {
@@ -1722,11 +1729,20 @@ bad:			run_err("%s: %s", np, strerror(errno));
 					    np, strerror(errno));
 				}
 		}
+//#ifndef WINDOWS
 		if (close(ofd) == -1)
 			note_err("%s: close: %s", np, strerror(errno));
 		(void) response();
 		if (showprogress)
 			stop_progress_meter();
+		if (setimes && !wrerr) {
+			setimes = 0;
+			if (utimes(np, tv) == -1) {
+				note_err("%s: set times: %s",
+					np, strerror(errno));
+			}
+		}
+//#endif
 		/* If no error was noted then signal success for this file */
 		if (note_err(NULL) == 0)
 			(void) atomicio(vwrite, remout, "", 1);
