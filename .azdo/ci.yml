@@ -10,12 +10,12 @@ pr:
     include:
     - latestw_all
 
-resources:
-  repositories:
-  - repository: ComplianceRepo
-    type: github
-    endpoint: ComplianceGHRepo
-    name: PowerShell/compliance
+#resources:
+#  repositories:
+#  - repository: ComplianceRepo
+#    type: github
+#    endpoint: ComplianceGHRepo
+#    name: PowerShell/compliance
 
 stages:
 - stage: Build
