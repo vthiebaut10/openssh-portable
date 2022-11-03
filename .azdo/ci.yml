@@ -60,9 +60,9 @@ stages:
         $null = New-Item -ItemType Directory -Path $BuildDestPath -Force
         # Copy build artifacts
         $BuildDestx86Path = Join-Path -Path $BuildDestPath -ChildPath 'x86/Release'
-        Copy-BuildResult -BuildResultsPath $BuildDestx86Path -NativeHostArch x86 -Configuration Release
+        Copy-BuildResults -BuildResultsPath $BuildDestx86Path -NativeHostArch x86 -Configuration Release
         $BuildDestX64Path = Join-Path -Path $BuildDestPath -ChildPath 'x64/Release'
-        Copy-BuildResult -BuildResultsPath $BuildDestx64Path -NativeHostArch x64 -Configuration Release
+        Copy-BuildResults -BuildResultsPath $BuildDestx64Path -NativeHostArch x64 -Configuration Release
         # Upload build artifacts
         $artifactName = 'Win32-OpenSSH'
         Write-Host "##vso[artifact.upload containerfolder=$artifactName;artifactname=$artifactName;]$BuildDestPath"
