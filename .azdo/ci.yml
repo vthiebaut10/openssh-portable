@@ -24,7 +24,7 @@ stages:
   - job: BuildPkg
     displayName: Build Package
     pool:
-      name: 1ES
+      name: PS-PowerShell-x64
       demands:
       - ImageOverride -equals PSMMS2019-OpenSSH-Secure
 
