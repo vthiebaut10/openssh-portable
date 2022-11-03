@@ -91,7 +91,7 @@ stages:
   displayName: Test Win32-OpenSSH
   dependsOn: Build
   jobs:
-  - job: TestPkgWin32-OpenSSH
+  - job: TestPkgWin32OpenSSH
     pool:
       vmImage: windows-latest
     displayName: Win32-OpenSSH On Windows
