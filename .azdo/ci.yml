@@ -91,45 +91,47 @@ stages:
   displayName: Test Win32-OpenSSH
   dependsOn: Build
   jobs:
-  pool:
-    vmImage: windows-latest
-  steps:
-  - powershell: |
-      $powerShellPath = Join-Path -Path $env:AGENT_TEMPDIRECTORY -ChildPath 'powershell'
-      Invoke-WebRequest -Uri https://raw.githubusercontent.com/PowerShell/PowerShell/master/tools/install-powershell.ps1 -outfile ./install-powershell.ps1
-      ./install-powershell.ps1 -Destination $powerShellPath
-      $vstsCommandString = "vso[task.setvariable variable=PATH]$powerShellPath;$env:PATH"
-      Write-Host "sending " + $vstsCommandString
-      Write-Host "##$vstsCommandString"
-    displayName: 'Install PowerShell Core'
+  - job: TestPkgWin32-OpenSSH
+    pool:
+      vmImage: windows-latest
+    displayName: Win32-OpenSSH On Windows
+    steps:
+    - powershell: |
+        $powerShellPath = Join-Path -Path $env:AGENT_TEMPDIRECTORY -ChildPath 'powershell'
+        Invoke-WebRequest -Uri https://raw.githubusercontent.com/PowerShell/PowerShell/master/tools/install-powershell.ps1 -outfile ./install-powershell.ps1
+        ./install-powershell.ps1 -Destination $powerShellPath
+        $vstsCommandString = "vso[task.setvariable variable=PATH]$powerShellPath;$env:PATH"
+        Write-Host "sending " + $vstsCommandString
+        Write-Host "##$vstsCommandString"
+      displayName: 'Install PowerShell Core'
 
-  - task: DownloadBuildArtifacts@0
-    displayName: 'Download build artifacts'
-    inputs:
-      buildType: current
-      downloadType: single
-      artifactName: Win32-OpenSSH
-      downloadPath: '$(System.ArtifactsDirectory)'
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download build artifacts'
+      inputs:
+        buildType: current
+        downloadType: single
+        artifactName: Win32-OpenSSH
+        downloadPath: '$(System.ArtifactsDirectory)'
 
-  - pwsh: |
-      Get-ChildItem -Path "$(System.ArtifactsDirectory)/* -Recurse"
-    displayName: Capture downloaded artifact directory
+    - pwsh: |
+        Get-ChildItem -Path "$(System.ArtifactsDirectory)/* -Recurse"
+      displayName: Capture downloaded artifact directory
 
-  - pwsh: |
-      Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
-      Install-OpenSSH -SourceDir "$(System.ArtifactsDirectory)/Win32-OpenSSH/x64/Release/*" -OpenSSHDir "$env:SystemDrive/OpenSSH" -NativeHostArch x64 -Configuration Release -Verbose
-    displayName: Install Win32-OpenSSH
+    - pwsh: |
+        Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
+        Install-OpenSSH -SourceDir "$(System.ArtifactsDirectory)/Win32-OpenSSH/x64/Release/*" -OpenSSHDir "$env:SystemDrive/OpenSSH" -NativeHostArch x64 -Configuration Release -Verbose
+      displayName: Install Win32-OpenSSH
 
-  - pwsh: |
-      Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
-      Invoke-OpenSSHTests -OpenSSHBinPath "$env:SystemDrive/OpenSSH"
-      # Copy test results to results directory
-      $ResultsDirectory = "$(Build.SourcesDirectory)/Win32OpenSSHTestResults"
-      Copy-OpenSSHTestResults -ResultsPath $ResultsDirectory
-      # Upload test results artifact
-      if (Test-Path -Path $ResultsDirectory)
-      {
-        $artifactName = 'Win32-OpenSSH-TestResults'
-        Write-Host "##vso[artifact.upload containerfolder=$artifactName;artifactname=$artifactName;]$ResultsDirectory"
-      }
-    displayName: Run tests and publish results
+    - pwsh: |
+        Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
+        Invoke-OpenSSHTests -OpenSSHBinPath "$env:SystemDrive/OpenSSH"
+        # Copy test results to results directory
+        $ResultsDirectory = "$(Build.SourcesDirectory)/Win32OpenSSHTestResults"
+        Copy-OpenSSHTestResults -ResultsPath $ResultsDirectory
+        # Upload test results artifact
+        if (Test-Path -Path $ResultsDirectory)
+        {
+          $artifactName = 'Win32-OpenSSH-TestResults'
+          Write-Host "##vso[artifact.upload containerfolder=$artifactName;artifactname=$artifactName;]$ResultsDirectory"
+        }
+      displayName: Run tests and publish results
