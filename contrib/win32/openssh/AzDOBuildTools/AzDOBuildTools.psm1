@@ -482,5 +482,5 @@ function Copy-BuildResults
         [string]$Configuration = "Release"
     )
 
-    Start-OpenSSHPackage -DestinationPath $BuildResultsPath @psBoundParameters
+    Start-OpenSSHPackage -DestinationPath $BuildResultsPath -NativeHostArch $NativeHostArch -Configuration $Configuration
 }
