@@ -464,3 +464,23 @@ function Copy-OpenSSHTestResults
         throw "The checkin validation tests failed!"
     }
 }
+
+<#
+    .SYNOPSIS
+    Copy build results package to provided destination path.
+#>
+function Copy-BuildResults
+{
+    param (
+        [Parameter(Mandatory=$true)]
+        [string] $BuildResultsPath,
+
+        [ValidateSet('x86', 'x64', 'arm64', 'arm')]
+        [string]$NativeHostArch = "x64",
+
+        [ValidateSet('Debug', 'Release')]
+        [string]$Configuration = "Release"
+    )
+
+    Start-OpenSSHPackage -DestinationPath $BuildResultsPath @psBoundParameters
+}

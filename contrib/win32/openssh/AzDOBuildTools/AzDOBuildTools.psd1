@@ -32,6 +32,6 @@ FunctionsToExport = @(
     'Invoke-AzDOBuild',
     'Install-OpenSSH',
     'Invoke-OpenSSHTests',
-    'Copy-OpenSSHTestResults')
-
+    'Copy-OpenSSHTestResults',
+    'Copy-BuildResults')
 }
