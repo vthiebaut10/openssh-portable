@@ -296,6 +296,8 @@ function Invoke-OpenSSHTests
 
     Set-BasicTestInfo -OpenSSHBinPath $OpenSSHBinPath -Confirm:$false
 
+    Write-Verbose -Verbose -Message "Running OpenSSH Set up Tests..."
+
     Invoke-OpenSSHSetupTest
     if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["SetupTestResultsFile"])))
     {
@@ -325,6 +327,7 @@ function Invoke-OpenSSHTests
     #    ...
     #    FixHostFilePermissions.ps1
     #    ...
+    Write-Verbose -Verbose -Message "Running Unit Tests..."
     Write-Verbose -Verbose -Message "Unit test directory is: ${OpenSSHBinPath}"
 
     $unitTestFailed = Invoke-OpenSSHUnitTest -UnitTestDirectory $OpenSSHBinPath
@@ -342,6 +345,7 @@ function Invoke-OpenSSHTests
     }
 
     # Run all E2E tests.
+    Write-Verbose -Verbose -Message "Running E2E Tests..."
     Set-OpenSSHTestEnvironment -Confirm:$false
     Invoke-OpenSSHE2ETest
     if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["E2ETestResultsFile"])))
@@ -364,6 +368,9 @@ function Invoke-OpenSSHTests
     }
 
     # Run UNIX bash tests.
+    Write-Verbose -Verbose -Message "UNIX Bash Tests Disabled..."
+    # UNIX Bash Tests currently disabled because Cygwin install fails
+    <#
     Invoke-OpenSSHBashTests
     if (-not $Global:bash_tests_summary)
     {
@@ -386,6 +393,9 @@ function Invoke-OpenSSHTests
         Write-Warning "Stop running further tests!"
         return
     }
+    #>
+
+    Write-Verbose -Verbose -Message "Running OpenSSH Uninstall Tests..."
 
     Invoke-OpenSSHUninstallTest
     if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["UninstallTestResultsFile"])))
