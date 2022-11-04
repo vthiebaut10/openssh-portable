@@ -729,12 +729,22 @@ function Invoke-OpenSSHBashTests
     Run openssh unit tests.
 #>
 function Invoke-OpenSSHUnitTest
-{     
+{
+    param (
+        [string] $UnitTestDirectory = ""
+    )
+
     # Discover all CI tests and run them.
-    if([string]::Isnullorempty($Script:UnitTestDirectory))
+    if (Test-Path -Path $UnitTestDirectory)
+    {
+        $Script:UnitTestDirectory = $UnitTestDirectory
+        $OpenSSHTestInfo["UnitTestDirectory"] = $UnitTestDirectory
+    }
+    elseif ([string]::Isnullorempty($Script:UnitTestDirectory))
     {
         $Script:UnitTestDirectory = $OpenSSHTestInfo["UnitTestDirectory"]
     }
+    
     Push-Location $Script:UnitTestDirectory
     Write-Log -Message "Running OpenSSH unit tests..."
     if (Test-Path $Script:UnitTestResultsFile)

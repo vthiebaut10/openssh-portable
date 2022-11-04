@@ -316,6 +316,8 @@ function Invoke-OpenSSHTests
         return
     }
 
+    Write-Host "Start running unit tests"
+
     # Unit test directories are installed in the same directory as Open SSH binaries.
     #  OpenSSH Directory
     #    unittest-bitmap
@@ -323,12 +325,9 @@ function Invoke-OpenSSHTests
     #    ...
     #    FixHostFilePermissions.ps1
     #    ...
-    # Ensure the UnitTestDirectory is pointing to that location.
-    $Script:UnitTestDirectory = $OpenSSHBinPath
-    $Global:OpenSSHTestInfo['UnitTestDirectory'] = $Script:UnitTestDirectory
+    Write-Verbose -Verbose -Message "Unit test directory is: ${OpenSSHBinPath}"
 
-    Write-Host "Start running unit tests"
-    $unitTestFailed = Invoke-OpenSSHUnitTest
+    $unitTestFailed = Invoke-OpenSSHUnitTest -UnitTestDirectory $OpenSSHBinPath
 
     if($unitTestFailed)
     {
