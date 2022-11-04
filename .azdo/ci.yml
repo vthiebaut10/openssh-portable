@@ -114,12 +114,14 @@ stages:
         downloadPath: '$(System.ArtifactsDirectory)'
 
     - pwsh: |
-        Get-ChildItem -Path "$(System.ArtifactsDirectory)/* -Recurse"
+        $artifactDir = "$(System.ArtifactsDirectory)"
+        Write-Verbose -Verbose -Message "Artifacts directory: $artifactDir"
+        Get-ChildItem -Path $artifactDir -Recurse
       displayName: Capture downloaded artifact directory
 
     - pwsh: |
         Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
-        Install-OpenSSH -SourceDir "$(System.ArtifactsDirectory)/Win32-OpenSSH/x64/Release/*" -OpenSSHDir "$env:SystemDrive/OpenSSH" -NativeHostArch x64 -Configuration Release -Verbose
+        Install-OpenSSH -SourceDir "$(System.ArtifactsDirectory)/Win32-OpenSSH/x64/Release" -OpenSSHDir "$env:SystemDrive/OpenSSH" -Verbose
       displayName: Install Win32-OpenSSH
 
     - pwsh: |
