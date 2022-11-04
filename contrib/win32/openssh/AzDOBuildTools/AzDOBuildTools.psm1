@@ -21,7 +21,7 @@ function Write-BuildMessage
         [string] $Category
     )
 
-    # Write message to verbos stream.
+    # Write message to verbose stream.
     Write-Verbose -Verbose -Message "$Category--$Message"
 
     # Write it to the log file, if present.
@@ -137,7 +137,7 @@ function Install-OpenSSH
     if (! (Test-Path -Path $OpenSSHDir)) {
         $null = New-Item -Path $OpenSSHDir -ItemType Directory -Force
     }
-    
+
     Copy-Item -Path "$SourceDir/*" -Destination $OpenSSHDir -Recurse -Force -Verbose
 
     Push-Location $OpenSSHDir 
