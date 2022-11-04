@@ -33,5 +33,7 @@ FunctionsToExport = @(
     'Install-OpenSSH',
     'Invoke-OpenSSHTests',
     'Copy-OpenSSHTestResults',
-    'Copy-BuildResults')
+    'Copy-BuildResults',
+    'Copy-UnitTests',
+    'Install-UnitTests')
 }

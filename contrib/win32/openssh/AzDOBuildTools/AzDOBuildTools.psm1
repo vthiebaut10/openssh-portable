@@ -124,8 +124,7 @@ function Invoke-AzDOBuild
 function Install-OpenSSH
 {
     [CmdletBinding()]
-    param
-    ( 
+    param ( 
         [Parameter(Mandatory=$true)]
         [string]$SourceDir,
 
@@ -178,8 +177,7 @@ function Install-OpenSSH
 function UnInstall-OpenSSH
 {
     [CmdletBinding()]
-    param
-    ( 
+    param ( 
         [string]$OpenSSHDir = "$env:SystemDrive\OpenSSH"
     )
 
@@ -228,8 +226,7 @@ function UnInstall-OpenSSH
 #>
 function Add-Artifact
 {
-    param
-    (
+    param (
         [ValidateNotNull()]
         [System.Collections.ArrayList] $artifacts,
         [string] $FileToAdd
@@ -293,10 +290,21 @@ function Invoke-OpenSSHTests
 {
     [CmdletBinding()]
     param (
-        [string] $OpenSSHBinPath
+        [Parameter(Mandatory=$true)]
+        [string] $OpenSSHBinPath,
+
+        [Parameter(Mandatory=$true)]
+        [string] $UnitTestsPath,
+
+        [ValidateSet('x86', 'x64', 'arm64', 'arm')]
+        [string]$NativeHostArch = "x64",
+
+        [ValidateSet('Debug', 'Release')]
+        [string]$Configuration = "Release"
     )
 
     Set-BasicTestInfo -OpenSSHBinPath $OpenSSHBinPath -Confirm:$false
+
     Invoke-OpenSSHSetupTest
     if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["SetupTestResultsFile"])))
     {
@@ -316,6 +324,10 @@ function Invoke-OpenSSHTests
         Write-Warning "Stop running further tests!"
         return
     }
+
+    # Ensure UnitTestDirectory is set correctly
+    $Script:UnitTestDirectory = Join-Path -Path $UnitTestsPath -ChildPath "${NativeHostArch}/${Configuration}"
+    $Global:OpenSSHTestInfo['UnitTestDirectory'] = $Script:UnitTestDirectory
 
     Write-Host "Start running unit tests"
     $unitTestFailed = Invoke-OpenSSHUnitTest
@@ -483,5 +495,74 @@ function Copy-BuildResults
         [string]$Configuration = "Release"
     )
 
+    # Copy OpenSSH package to results directory
     Start-OpenSSHPackage -DestinationPath $BuildResultsPath -NativeHostArch $NativeHostArch -Configuration $Configuration
+}
+
+<#
+    .SYNOPSIS
+    Copy build unit tests to provided destination path.
+#>
+function Copy-UnitTests
+{
+    param (
+        [Parameter(Mandatory=$true)]
+        [string] $UnitTestsSrcDir,
+
+        [Parameter(Mandatory=$true)]
+        [string] $UnitTestsDestDir,
+
+        [ValidateSet('x86', 'x64', 'arm64', 'arm')]
+        [string]$NativeHostArch = "x64",
+
+        [ValidateSet('Debug', 'Release')]
+        [string]$Configuration = "Release"
+    )
+
+    if (! (Test-Path -Path $UnitTestsDestDir))
+    {
+      Write-Verbose -Verbose -Message "Creating Unit Test directory: $UnitTestsDestDir"
+      $null = New-Item -Path $UnitTestsDestDir -ItemType Directory -Force
+    }
+
+    if ($NativeHostArch -eq 'x86')
+    {
+        $unitTestsSrcPath = Join-Path -Path $UnitTestsSrcDir -ChildPath "Win32/${Configuration}"
+    }
+    else
+    {
+        $unitTestsSrcPath = Join-Path -Path $UnitTestsSrcDir -ChildPath "${NativeHostArch}/${Configuration}"
+    }
+
+    $unitTestsDestPath = Join-Path -Path $UnitTestsDestDir -ChildPath "${NativeHostArch}/${Configuration}"
+
+    if (! (Test-Path -Path $unitTestsDestPath))
+    {
+      Write-Verbose -Verbose -Message "Creating Unit Test directory: $unitTestsDestPath"
+      $null = New-Item -Path $unitTestsDestPath -ItemType Directory -Force
+    }
+
+    Write-Verbose -Verbose -Message "Copying unit tests from: ${unitTestsSrcPath} to: ${unitTestsDestPath}"
+    Copy-Item -Path $unitTestsSrcPath -Destination $unitTestsDestPath -Recurse -Force
+}
+
+<#
+    .SYNOPSIS
+    Install unit tests to provided destination.
+#>
+function Install-UnitTests
+{
+    [CmdletBinding()]
+    param ( 
+        [Parameter(Mandatory=$true)]
+        [string]$SourceDir,
+
+        [string]$OpenSSHDir = "$env:SystemDrive\OpenSSH"
+    )
+
+    if (! (Test-Path -Path $OpenSSHDir)) {
+        $null = New-Item -Path $OpenSSHDir -ItemType Directory -Force
+    }
+
+    Copy-Item -Path "$SourceDir/*" -Destination $OpenSSHDir -Recurse -Force
 }
