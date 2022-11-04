@@ -291,16 +291,7 @@ function Invoke-OpenSSHTests
     [CmdletBinding()]
     param (
         [Parameter(Mandatory=$true)]
-        [string] $OpenSSHBinPath,
-
-        [Parameter(Mandatory=$true)]
-        [string] $UnitTestsPath,
-
-        [ValidateSet('x86', 'x64', 'arm64', 'arm')]
-        [string]$NativeHostArch = "x64",
-
-        [ValidateSet('Debug', 'Release')]
-        [string]$Configuration = "Release"
+        [string] $OpenSSHBinPath
     )
 
     Set-BasicTestInfo -OpenSSHBinPath $OpenSSHBinPath -Confirm:$false
@@ -325,8 +316,15 @@ function Invoke-OpenSSHTests
         return
     }
 
-    # Ensure UnitTestDirectory is set correctly
-    $Script:UnitTestDirectory = Join-Path -Path $UnitTestsPath -ChildPath "${NativeHostArch}/${Configuration}"
+    # Unit test directories are installed in the same directory as Open SSH binaries.
+    #  OpenSSH Directory
+    #    unittest-bitmap
+    #    unittest-hostkeys
+    #    ...
+    #    FixHostFilePermissions.ps1
+    #    ...
+    # Ensure the UnitTestDirectory is pointing to that location.
+    $Script:UnitTestDirectory = $OpenSSHBinPath
     $Global:OpenSSHTestInfo['UnitTestDirectory'] = $Script:UnitTestDirectory
 
     Write-Host "Start running unit tests"
@@ -543,7 +541,7 @@ function Copy-UnitTests
     }
 
     Write-Verbose -Verbose -Message "Copying unit tests from: ${unitTestsSrcPath} to: ${unitTestsDestPath}"
-    Copy-Item -Path $unitTestsSrcPath -Destination $unitTestsDestPath -Recurse -Force
+    Copy-Item -Path "$unitTestsSrcPath/unittest-*" -Destination $unitTestsDestPath -Recurse -Force
 }
 
 <#
