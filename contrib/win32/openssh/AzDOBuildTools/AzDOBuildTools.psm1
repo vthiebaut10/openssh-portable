@@ -137,7 +137,8 @@ function Install-OpenSSH
     if (! (Test-Path -Path $OpenSSHDir)) {
         $null = New-Item -Path $OpenSSHDir -ItemType Directory -Force
     }
-    Copy-Item -Path $SourceDir -Destination $OpenSSHDir -Recurse -Force -Verbose
+    
+    Copy-Item -Path "$SourceDir/*" -Destination $OpenSSHDir -Recurse -Force -Verbose
 
     Push-Location $OpenSSHDir 
 
