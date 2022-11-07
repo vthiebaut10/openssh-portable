@@ -297,13 +297,14 @@ function Invoke-OpenSSHTests
     Set-BasicTestInfo -OpenSSHBinPath $OpenSSHBinPath -Confirm:$false
 
     Write-Verbose -Verbose -Message "Running OpenSSH Set up Tests..."
+    Set-BuildVariable -Name 'TestPassed' -Value 'True'
 
     Invoke-OpenSSHSetupTest
     if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["SetupTestResultsFile"])))
     {
         Write-Warning "Test result file $OpenSSHTestInfo["SetupTestResultsFile"] not found after tests."
         Write-BuildMessage -Message "Test result file $OpenSSHTestInfo["SetupTestResultsFile"] not found after tests." -Category Error
-        Set-BuildVariable TestPassed False
+        Set-BuildVariable -Name 'TestPassed' -Value 'False'
         Write-Warning "Stop running further tests!"
         return
     }
@@ -313,7 +314,7 @@ function Invoke-OpenSSHTests
         $errorMessage = "$($xml.'test-results'.failures) setup tests in regress\pesterTests failed. Detail test log is at $($OpenSSHTestInfo["SetupTestResultsFile"])."
         Write-Warning $errorMessage
         Write-BuildMessage -Message $errorMessage -Category Error
-        Set-BuildVariable TestPassed False
+        Set-BuildVariable -Name 'TestPassed' -Value 'False'
         Write-Warning "Stop running further tests!"
         return
     }
@@ -336,7 +337,7 @@ function Invoke-OpenSSHTests
     {
         Write-Host "At least one of the unit tests failed!" -ForegroundColor Yellow
         Write-BuildMessage "At least one of the unit tests failed!" -Category Error
-        Set-BuildVariable TestPassed False
+        Set-BuildVariable -Name 'TestPassed' -Value 'False'
     }
     else
     {
@@ -352,7 +353,7 @@ function Invoke-OpenSSHTests
     {
         Write-Warning "Test result file $OpenSSHTestInfo["E2ETestResultsFile"] not found after tests."
         Write-BuildMessage -Message "Test result file $OpenSSHTestInfo["E2ETestResultsFile"] not found after tests." -Category Error
-        Set-BuildVariable TestPassed False
+        Set-BuildVariable -Name 'TestPassed' -Value 'False'
         Write-Warning "Stop running further tests!"
         return
     }
@@ -362,7 +363,7 @@ function Invoke-OpenSSHTests
         $errorMessage = "$($xml.'test-results'.failures) tests in regress\pesterTests failed. Detail test log is at $($OpenSSHTestInfo["E2ETestResultsFile"])."
         Write-Warning $errorMessage
         Write-BuildMessage -Message $errorMessage -Category Error
-        Set-BuildVariable TestPassed False
+        Set-BuildVariable -Name 'TestPassed' -Value 'False'
         Write-Warning "Stop running further tests!"
         return
     }
@@ -377,7 +378,7 @@ function Invoke-OpenSSHTests
         $errorMessage = "Failed to start OpenSSH bash tests"
         Write-Warning $errorMessage
         Write-BuildMessage -Message $errorMessage -Category Error
-        Set-BuildVariable TestPassed False
+        Set-BuildVariable -Name 'TestPassed' -Value 'False'
         Write-Warning "Stop running further tests!"
         return
     }
@@ -389,20 +390,19 @@ function Invoke-OpenSSHTests
         $errorMessage = "At least one of the bash tests failed. [$total_bash_failed_tests of $total_bash_tests]"
         Write-Warning $errorMessage
         Write-BuildMessage -Message $errorMessage -Category Error
-        Set-BuildVariable TestPassed False
+        Set-BuildVariable -Name 'TestPassed' -Value 'False'
         Write-Warning "Stop running further tests!"
         return
     }
     #>
 
-    Write-Verbose -Verbose -Message "Running OpenSSH Uninstall Tests..."
-
+    # OpenSSH Uninstall Tests
     Invoke-OpenSSHUninstallTest
     if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["UninstallTestResultsFile"])))
     {
         Write-Warning "Test result file $OpenSSHTestInfo["UninstallTestResultsFile"] not found after tests."
         Write-BuildMessage -Message "Test result file $OpenSSHTestInfo["UninstallTestResultsFile"] not found after tests." -Category Error
-        Set-BuildVariable TestPassed False
+        Set-BuildVariable -Name 'TestPassed' -Value 'False'
     }
     else {
         $xml = [xml](Get-Content $OpenSSHTestInfo["UninstallTestResultsFile"] | out-string)
@@ -411,7 +411,7 @@ function Invoke-OpenSSHTests
             $errorMessage = "$($xml.'test-results'.failures) uninstall tests in regress\pesterTests failed. Detail test log is at $($OpenSSHTestInfo["UninstallTestResultsFile"])."
             Write-Warning $errorMessage
             Write-BuildMessage -Message $errorMessage -Category Error
-            Set-BuildVariable TestPassed False
+            Set-BuildVariable -Name 'TestPassed' -Value 'False'
         }
     }
 
@@ -474,7 +474,7 @@ function Copy-OpenSSHTestResults
         Remove-Item $env:DebugMode
     }
     
-    if($env:TestPassed -ieq 'True')
+    if ($env:TestPassed -eq 'True')
     {
         Write-BuildMessage -Message "The checkin validation tests succeeded!" -Category Information
     }
