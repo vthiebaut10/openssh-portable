@@ -282,6 +282,19 @@ function Publish-Artifact
     Write-Host -ForegroundColor Yellow "End of publishing project artifacts"
 }
 
+#
+# Install CygWin from Chocolatey and fix up install directory if needed.
+#
+function Install-CygWin
+{
+    param (
+        [string] $InstallLocation
+    )
+
+    Write-Verbose -Verbose -Message "Installing CygWin from Chocolately to location: ${InstallLocation} ..."
+    choco install cygwin -y --params "/InstallDir:${InstallLocation} /NoStartMenu"
+}
+
 <#
       .Synopsis
       Runs the tests for this repo
@@ -368,10 +381,26 @@ function Invoke-OpenSSHTests
         return
     }
 
+    # Bash tests.
+    Write-Verbose -Verbose -Message "Running Bash Tests..."
+
+    # Ensure CygWin is installed, and install from Chocolatey if needed.
+    $cygwinInstallLocation = "$env:SystemDrive/cygwin"
+    if (! (Test-Path -Path "$cygwinInstallLocation/bin/sh.exe"))
+    {
+        Write-Verbose -Verbose -Message "CygWin not found"
+        Install-CygWin -InstallLocation $cygwinInstallLocation
+
+        # Hack to fix up mangled CygWin directory, if needed.
+        $cygWinDirs = Get-Item -Path "$env:SystemDrive/cygwin"
+        if ($cygWinDirs.Count -gt 1)
+        {
+            Write-Verbose -Verbose -Message "CygWin install failed with mangled folder locations: ${cygWinDirs}"
+            # TODO: Add hack to fix up CygWin folder.
+        }
+    }
+
     # Run UNIX bash tests.
-    Write-Verbose -Verbose -Message "UNIX Bash Tests Disabled..."
-    # UNIX Bash Tests currently disabled because Cygwin install fails
-    <#
     Invoke-OpenSSHBashTests
     if (-not $Global:bash_tests_summary)
     {
@@ -394,7 +423,6 @@ function Invoke-OpenSSHTests
         Write-Warning "Stop running further tests!"
         return
     }
-    #>
 
     # OpenSSH Uninstall Tests
     Invoke-OpenSSHUninstallTest
