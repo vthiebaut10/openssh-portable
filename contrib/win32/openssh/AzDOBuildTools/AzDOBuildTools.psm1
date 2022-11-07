@@ -3,7 +3,6 @@
 ## [Add appropriate copyright]
 ##
 
-Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 $repoRoot = Get-RepositoryRoot
@@ -392,11 +391,17 @@ function Invoke-OpenSSHTests
         Install-CygWin -InstallLocation $cygwinInstallLocation
 
         # Hack to fix up mangled CygWin directory, if needed.
-        $cygWinDirs = Get-Item -Path "$env:SystemDrive/cygwin"
-        if ($cygWinDirs.Count -gt 1)
+        $expectedCygWinPath = "$env:SystemDrive/cygwin/bin/sh.exe"
+        if (! (Test-Path -Path $expectedCygWinPath))
         {
-            Write-Verbose -Verbose -Message "CygWin install failed with mangled folder locations: ${cygWinDirs}"
-            # TODO: Add hack to fix up CygWin folder.
+            Write-Verbose -Verbose -Message "CygWin did not install correctly, missing expected path: ${expectedCygWinPath}"
+
+            $cygWinDirs = Get-Item -Path "$env:SystemDrive/cygwin"
+            if ($cygWinDirs.Count -gt 1)
+            {
+                Write-Verbose -Verbose -Message "CygWin install failed with mangled folder locations: ${cygWinDirs}"
+                Write-Verbose -Verbose -Message 'TODO: Add hack to fix up CygWin folder.'
+            }
         }
     }
 
