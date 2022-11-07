@@ -396,7 +396,7 @@ function Invoke-OpenSSHTests
         {
             Write-Verbose -Verbose -Message "CygWin did not install correctly, missing expected path: ${expectedCygWinPath}"
 
-            $cygWinDirs = Get-Item -Path "$env:SystemDrive/cygwin"
+            $cygWinDirs = Get-Item -Path "$env:SystemDrive/cygwin*"
             if ($cygWinDirs.Count -gt 1)
             {
                 Write-Verbose -Verbose -Message "CygWin install failed with mangled folder locations: ${cygWinDirs}"
