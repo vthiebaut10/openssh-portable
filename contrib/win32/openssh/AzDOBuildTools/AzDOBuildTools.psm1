@@ -467,8 +467,6 @@ function Copy-OpenSSHTestResults
         [string] $ResultsPath
     )
 
-    Clear-OpenSSHTestEnvironment
-
     if (Test-Path -Path $ResultsPath)
     {
         Remove-Item -Path $ResultsPath -Force -Recurse -ErrorAction Ignore
@@ -504,6 +502,13 @@ function Copy-OpenSSHTestResults
     {
         Write-Verbose -Verbose "Unable to write test results path for test artifacts upload: $ResultsPath"
     }
+
+    try
+    {
+        Clear-OpenSSHTestEnvironment -ErrorAction Ignore
+    }
+    catch
+    { }
 
     if ($env:DebugMode)
     {

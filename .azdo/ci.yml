@@ -80,6 +80,12 @@ stages:
         Write-Verbose -Verbose -Message "Uploading unit test artifacts"
         $artifactName = 'UnitTests'
         Write-Host "##vso[artifact.upload containerfolder=$artifactName;artifactname=$artifactName;]$UnitTestDestPath"
+        #
+        # Upload bash tests config.h file
+        Write-Verbose -Verbose -Message "Uploading config.h file for bash tests"
+        $artifactName = 'ConfigFile'
+        $configFilePath = "$(Build.SourcesDirectory)/config.h"
+        Write-Host "##vso[artifact.upload containerfolder=$artifactName;artifactname=$artifactName;]$configFilePath"
       displayName: Upload Win32-OpenSSH build artifacts
 
 #- stage: Compliance
@@ -135,6 +141,14 @@ stages:
         artifactName: UnitTests
         downloadPath: '$(System.ArtifactsDirectory)'
 
+    - task: DownloadBuildArtifacts@0
+      displayName: 'Download bash test config file artifact'
+      inputs:
+        buildType: current
+        downloadType: single
+        artifactName: ConfigFile
+        downloadPath: '$(System.ArtifactsDirectory)'
+
     - pwsh: |
         $artifactDir = "$(System.ArtifactsDirectory)"
         Write-Verbose -Verbose -Message "Artifacts directory: $artifactDir"
@@ -150,6 +164,13 @@ stages:
         Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
         Install-UnitTests -SourceDir "$(System.ArtifactsDirectory)/UnitTests/x64/Release" -OpenSSHDir "$env:SystemDrive/OpenSSH" -Verbose
       displayName: Install Unit Tests
+
+    - pwsh: |
+        $configFileSrc = "$(System.ArtifactsDirectory)/ConfigFile"
+        $configFileDest = "$(Build.SourcesDirectory)/config.h"
+        Write-Verbose -Verbose -Message "Copying config file from: ${configFileSrc} to: ${configFileDest}"
+        Copy-Item -Path $configFileSrc -Dest $configFileDest -Force
+      displayName: Copy config file artifact for bash tests
 
     - pwsh: |
         $installedOpenSSHDir = "$env:SystemDrive/OpenSSH"

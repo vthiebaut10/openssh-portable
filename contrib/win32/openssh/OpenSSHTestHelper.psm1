@@ -524,8 +524,10 @@ function Get-UserSID
     Clear-OpenSSHTestEnvironment
 #>
 function Clear-OpenSSHTestEnvironment
-{   
-    if($Global:OpenSSHTestInfo -eq $null) {
+{
+    Write-Verbose -Verbose -Message "Running Clear-OpenSSHTestEnvironment..."
+
+    if ($Global:OpenSSHTestInfo -eq $null) {
         throw "OpenSSHTestInfo is not set. Did you run Set-OpenSShTestEnvironment?"
     }
 
