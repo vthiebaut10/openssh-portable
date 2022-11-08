@@ -406,6 +406,7 @@ function Invoke-OpenSSHTests
     }
 
     # Run UNIX bash tests.
+    Write-Verbose -Verbose -Message "Starting Bash Tests..."
     Invoke-OpenSSHBashTests
     if (-not $Global:bash_tests_summary)
     {
@@ -465,6 +466,8 @@ function Copy-OpenSSHTestResults
         [Parameter(Mandatory=$true)]
         [string] $ResultsPath
     )
+
+    Clear-OpenSSHTestEnvironment
 
     if (Test-Path -Path $ResultsPath)
     {

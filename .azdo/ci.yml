@@ -76,7 +76,7 @@ stages:
         Copy-UnitTests -UnitTestsSrcDir $BuildOutPath -UnitTestsDestDir $UnitTestDestPath -NativeHostArch x86 -Configuration Release
         Copy-UnitTests -UnitTestsSrcDir $BuildOutPath -UnitTestsDestDir $UnitTestDestPath -NativeHostArch x64 -Configuration Release
         #
-        # Upload build artifacts
+        # Upload unit test artifacts
         Write-Verbose -Verbose -Message "Uploading unit test artifacts"
         $artifactName = 'UnitTests'
         Write-Host "##vso[artifact.upload containerfolder=$artifactName;artifactname=$artifactName;]$UnitTestDestPath"
@@ -155,7 +155,7 @@ stages:
         $installedOpenSSHDir = "$env:SystemDrive/OpenSSH"
         Write-Verbose -Verbose -Message "Installed OpenSSH directory: $installedOpenSSHDir"
         Get-ChildItem -Path $installedOpenSSHDir -Recurse
-      displayName: Capture installed OpensSH directory
+      displayName: Capture installed OpenSSH directory
 
     - pwsh: |
         Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
