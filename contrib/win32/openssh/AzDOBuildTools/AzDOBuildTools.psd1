@@ -35,5 +35,6 @@ FunctionsToExport = @(
     'Copy-OpenSSHTestResults',
     'Copy-BuildResults',
     'Copy-UnitTests',
-    'Install-UnitTests')
+    'Install-UnitTests',
+    'Clear-TestEnvironmentSetup')
 }

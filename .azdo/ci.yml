@@ -200,3 +200,8 @@ stages:
           Write-Host "##vso[artifact.upload containerfolder=$artifactName;artifactname=$artifactName;]$ResultsDirectory"
         }
       displayName: Run tests and publish results
+
+    - pwsh: |
+        Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
+        Clear-TestEnvironmentSetup
+      displayName: Clean up OpenSSH test environment

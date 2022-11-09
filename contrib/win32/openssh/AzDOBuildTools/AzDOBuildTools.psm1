@@ -503,13 +503,6 @@ function Copy-OpenSSHTestResults
         Write-Verbose -Verbose "Unable to write test results path for test artifacts upload: $ResultsPath"
     }
 
-    try
-    {
-        Clear-OpenSSHTestEnvironment -ErrorAction Ignore
-    }
-    catch
-    { }
-
     if ($env:DebugMode)
     {
         Remove-Item $env:DebugMode
@@ -524,6 +517,20 @@ function Copy-OpenSSHTestResults
         Write-BuildMessage -Message "The checkin validation tests failed!" -Category Error
         throw "The checkin validation tests failed!"
     }
+}
+
+function Clear-TestEnvironmentSetup
+{
+    Write-Verbose -Verbose -Message "Running OpenSSH test environment cleanup..."
+
+    try
+    {
+        $null = Clear-OpenSSHTestEnvironment -ErrorAction Ignore
+    }
+    catch
+    { }
+
+    Write-Verbose -Verbose -Message "OpenSSH test environment cleanup complete."
 }
 
 <#
