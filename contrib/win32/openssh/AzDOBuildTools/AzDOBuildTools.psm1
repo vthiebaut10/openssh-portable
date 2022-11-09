@@ -15,9 +15,8 @@ function Write-BuildMessage
         [ValidateNotNullOrEmpty()]
         [string] $Message,
 
-        [Parameter(Mandatory=$true)]
         [ValidateNotNullOrEmpty()]
-        [string] $Category
+        [string] $Category = "Information"
     )
 
     # Write message to verbose stream.
@@ -236,7 +235,7 @@ function Invoke-OpenSSHTests
         }
         else
         {
-            Write-BuildMessage -Message "All E2E tests passed!"
+            Write-BuildMessage -Message "All E2E tests passed!" -Category Information
         }
     }
 
@@ -264,7 +263,7 @@ function Invoke-OpenSSHTests
                 Write-Verbose -Verbose -Message 'TODO: Add hack to fix up CygWin folder.'
             }
 
-            Write-BuildMessage -Message "All bash tests failed because CygWin install failed"
+            Write-BuildMessage -Message "All bash tests failed because CygWin install failed" -Category Error
             $AllTestsPassed = $false
             $cygwinInstalled = $false
         }
@@ -320,11 +319,11 @@ function Invoke-OpenSSHTests
 
     if ($AllTestsPassed)
     {
-        Write-BuildMessage -Message "All OpenSSH validation tests have passed!"
+        Write-BuildMessage -Message "All OpenSSH validation tests have passed!" -Category Information
     }
     else
     {
-        Write-BuildMessage -Message "Some OpenSSH validation tests have failed."
+        Write-BuildMessage -Message "Some OpenSSH validation tests have failed." -Category Error
         throw "OpenSSH validation tests failed!"
     }
 }

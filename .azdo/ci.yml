@@ -191,6 +191,7 @@ stages:
       displayName: Run tests
 
     - pwsh: |
+        Import-Module -Name "$(Build.SourcesDirectory)/contrib/win32/openssh/AzDOBuildTools" -Force
         #
         # Copy test results to results directory
         $ResultsDirectory = "$(Build.SourcesDirectory)/Win32OpenSSHTestResults"
