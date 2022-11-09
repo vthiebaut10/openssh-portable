@@ -32,6 +32,17 @@ function Write-BuildMessage
 
 <#
     .Synopsis
+    Implements the AzDO build package step
+#>
+function Invoke-AzDOBuild
+{
+      Start-OpenSSHBuild -Configuration Release -NativeHostArch x64 -Verbose
+      Start-OpenSSHBuild -Configuration Release -NativeHostArch x86 -Verbose
+      Write-BuildMessage -Message "OpenSSH binaries build success!" -Category Information
+}
+
+<#
+    .Synopsis
     Deploy all required files to a location and install the binaries
 #>
 function Install-OpenSSH
