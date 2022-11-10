@@ -26,12 +26,6 @@ if ($TestFilePath) {
 }
 $OriginalSystemPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
 
-# TODO: Debugging
-Write-Verbose -Verbose -Message "Bash Tests Iterator:OpenSSHBinPath:${OpenSSHBinPath}"
-Write-Verbose -Verbose -Message "Bash Tests Iterator:BashTestsPath:${BashTestsPath}"
-Write-Verbose -Verbose -Message "Bash Tests Iterator:ShellPath:${ShellPath}"
-Write-Verbose -Verbose -Message "Bash Tests Iterator:ArtifactsDirectoryPath:${ArtifactsDirectoryPath}"
-#
 $debugExpectedConfigPath = "$BashTestsPath\..\config.h"
 Write-Verbose -Verbose -Message "Bash Tests Iterator:Expected config file path:${debugExpectedConfigPath}"
 Get-Item -Path $debugExpectedConfigPath -ErrorAction SilentlyContinue

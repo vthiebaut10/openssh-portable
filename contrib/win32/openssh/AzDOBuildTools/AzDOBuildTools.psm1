@@ -431,9 +431,6 @@ function Copy-BuildResults
 {
     param (
         [Parameter(Mandatory=$true)]
-        [string] $BuildSrcPath,
-
-        [Parameter(Mandatory=$true)]
         [string] $BuildResultsPath,
 
         [ValidateSet('x86', 'x64', 'arm64', 'arm')]
@@ -445,31 +442,6 @@ function Copy-BuildResults
 
     # Copy OpenSSH package to results directory
     Start-OpenSSHPackage -DestinationPath $BuildResultsPath -NativeHostArch $NativeHostArch -Configuration $Configuration
-
-    # Copy Openssh-events.man manifest file to results directory, as it is needed for tests.
-    $buildDestPath = Join-Path -Path $BuildResultsPath -ChildPath "${NativeHostArch}/${Release}"
-    if (! (Test-Path -Path $buildDestPath))
-    {
-        Write-Verbose -Verbose -Message "Cannot copy Openssh-events.man manifest file because the destination path:${buildDestPath} does not exist."
-        return
-    }
-
-    if ($NativeHostArch -eq 'x86')
-    {
-        $manifestSrcPath = Join-Path -Path $BuildSrcPath -ChildPath "Win32/${Configuration}/Openssh-events.man"
-    }
-    else
-    {
-        $manifestSrcPath = Join-Path -Path $BuildSrcPath -ChildPath "${NativeHostArch}/${Configuration}/Openssh-events.man"
-    }
-    if (! (Test-Path -Path $manifestSrcPath))
-    {
-        Write-Verbose -Verbose -Message "Cannot copy manifest file because source path:${manifestSrcPath} does not exist."
-        return
-    }
-
-    Write-Verbose -Verbose -Message "Copying manifest file ${manifestSrcPath} to ${buildDestPath}"
-    Copy-Item -Path $manifestSrcPath -Dest $buildDestPath -Force
 }
 
 <#

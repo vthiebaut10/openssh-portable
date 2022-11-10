@@ -723,12 +723,6 @@ function Invoke-OpenSSHBashTests
 
     $bashTestDirectory = Join-Path $repositoryRoot.FullName -ChildPath "regress"
 
-    # TODO: Debugging
-    Write-Verbose -Verbose -Message "Bash Tests Start:OpenSSHBinPath:${Script:OpenSSHBinPath}"
-    Write-Verbose -Verbose -Message "Bash Tests Start:BashTestsPath:${bashTestDirectory}"
-    Write-Verbose -Verbose -Message "Bash Tests Start:ShellPath:${bashPath}"
-    Write-Verbose -Verbose -Message "Bash Tests Start:ArtifactsDirectoryPath:${bashTestDirectory}"
-
     & "$PSScriptRoot\bash_tests_iterator.ps1" -OpenSSHBinPath $Script:OpenSSHBinPath -BashTestsPath $bashTestDirectory -ShellPath $bashPath -ArtifactsDirectoryPath $bashTestDirectory
 }
 
