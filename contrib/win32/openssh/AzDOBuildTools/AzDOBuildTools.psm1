@@ -311,6 +311,9 @@ function Invoke-OpenSSHTests
         }
     }
 
+    # Save OpenSSHTestInfo for later test results uploading.
+    $OpenSSHTestInfo | Export-Clixml -Path "$repoRoot/OpenSSHTestInfo.xml" -Depth 10
+
     # Writing out warning when the $Error.Count is non-zero. Tests Should clean $Error after success.
     if ($Error.Count -gt 0) 
     {
@@ -347,32 +350,44 @@ function Copy-OpenSSHTestResults
     Write-Verbose -Verbose "Creating test results directory for artifacts upload: $ResultsPath"
     $null = New-Item -Path $ResultsPath -ItemType Directory -Force
     
-    if (Test-Path -Path $ResultsPath)
+    if (! (Test-Path -Path $ResultsPath))
     {
-        $setupresultFile = Resolve-Path $Global:OpenSSHTestInfo["SetupTestResultsFile"] -ErrorAction Ignore
-        if ($setupresultFile)
-        {
-            Write-Verbose -Verbose "Copying set-up test results file, $setupresultFile, to results directory"
-            Copy-Item -Path $setupresultFile -Destination $ResultsPath
-        }
-
-        $E2EresultFile = Resolve-Path $Global:OpenSSHTestInfo["E2ETestResultsFile"] -ErrorAction Ignore
-        if ($E2EresultFile)
-        {
-            Write-Verbose -Verbose "Copying end-to-end test results file, $E2EresultFile, to results directory"
-            Copy-Item -Path $E2EresultFile -Destination $ResultsPath
-        }
-
-        $uninstallResultFile = Resolve-Path $Global:OpenSSHTestInfo["UninstallTestResultsFile"] -ErrorAction Ignore
-        if ($uninstallResultFile)
-        {
-            Write-Verbose -Verbose "Copying uninstall test results file, $uninstallResultFile, to results directory"
-            Copy-Item -Path $uninstallResultFile -Destination $ResultsPath
-        }
+        Write-BuildMessage -Message "Unable to write to test results path for test artifacts upload: $ResultsPath" -Category Error
+        return
     }
-    else
+
+    $OpenSSHTestInfo = $null
+    $openSSHTestInfoFilePath = "repoRoot/OpenSSHTestInfo.xml"
+    if (Test-Path -Path $openSSHTestInfoFilePath)
     {
-        Write-Verbose -Verbose "Unable to write to test results path for test artifacts upload: $ResultsPath"
+        $OpenSSHTestInfo = Import-Clixml -Path $openSSHTestInfoFilePath
+    }
+
+    if (! $OpenSSHTestInfo)
+    {
+        Write-BuildMessage -Message "Unable to get OpenSSHTestInfo object from: ${openSSHTestInfoFilePath}"
+        return
+    }
+
+    $setupresultFile = Resolve-Path $OpenSSHTestInfo["SetupTestResultsFile"] -ErrorAction Ignore
+    if ($setupresultFile)
+    {
+        Write-Verbose -Verbose "Copying set-up test results file, $setupresultFile, to results directory"
+        Copy-Item -Path $setupresultFile -Destination $ResultsPath
+    }
+
+    $E2EresultFile = Resolve-Path $OpenSSHTestInfo["E2ETestResultsFile"] -ErrorAction Ignore
+    if ($E2EresultFile)
+    {
+        Write-Verbose -Verbose "Copying end-to-end test results file, $E2EresultFile, to results directory"
+        Copy-Item -Path $E2EresultFile -Destination $ResultsPath
+    }
+
+    $uninstallResultFile = Resolve-Path $OpenSSHTestInfo["UninstallTestResultsFile"] -ErrorAction Ignore
+    if ($uninstallResultFile)
+    {
+        Write-Verbose -Verbose "Copying uninstall test results file, $uninstallResultFile, to results directory"
+        Copy-Item -Path $uninstallResultFile -Destination $ResultsPath
     }
 }
 
