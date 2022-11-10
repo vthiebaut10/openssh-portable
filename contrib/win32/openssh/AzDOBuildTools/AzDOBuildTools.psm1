@@ -357,7 +357,7 @@ function Copy-OpenSSHTestResults
     }
 
     $OpenSSHTestInfo = $null
-    $openSSHTestInfoFilePath = "repoRoot/OpenSSHTestInfo.xml"
+    $openSSHTestInfoFilePath = "$repoRoot/OpenSSHTestInfo.xml"
     if (Test-Path -Path $openSSHTestInfoFilePath)
     {
         $OpenSSHTestInfo = Import-Clixml -Path $openSSHTestInfoFilePath
