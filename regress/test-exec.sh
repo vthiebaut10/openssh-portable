@@ -715,7 +715,9 @@ for t in ${SSH_HOSTKEY_TYPES}; do
 	(umask 077; $SUDO cp $OBJ/$t $OBJ/host.$t)
 	if [ "$os" == "windows" ]; then
 		# set the file permissions (ACLs) properly
-		powershell.exe /c "get-acl $OBJ_WIN_FORMAT/$t | set-acl $OBJ_WIN_FORMAT/host.$t"
+		# TODO: Debug Test
+		powershell.exe /ExecutionPolicy ByPass /c "Write-Verbose -Verbose '$env:PROCESSOR_ARCHITECTURE';import-module Microsoft.PowerShell.Security;get-acl $OBJ_WIN_FORMAT/$t | set-acl $OBJ_WIN_FORMAT/host.$t"
+		#powershell.exe /c "get-acl $OBJ_WIN_FORMAT/$t | set-acl $OBJ_WIN_FORMAT/host.$t"
 	fi
 
 	echo HostKey $OBJ/host.$t >> $OBJ/sshd_config
@@ -726,7 +728,9 @@ done
 
 if [ "$os" == "windows" ]; then
 	# set the file permissions (ACLs) properly
-	powershell.exe /c "get-acl $OBJ_WIN_FORMAT/$first_key_type | set-acl $OBJ_WIN_FORMAT/authorized_keys_$USER"
+	# TODO: Debug Test
+	powershell.exe /ExecutionPolicy ByPass /c "Write-Verbose -Verbose '$env:PROCESSOR_ARCHITECTURE';import-module Microsoft.PowerShell.Security;get-acl $OBJ_WIN_FORMAT/$first_key_type | set-acl $OBJ_WIN_FORMAT/authorized_keys_$USER"
+	#powershell.exe /c "get-acl $OBJ_WIN_FORMAT/$first_key_type | set-acl $OBJ_WIN_FORMAT/authorized_keys_$USER"
 fi
 
 # Activate Twisted Conch tests if the binary is present
