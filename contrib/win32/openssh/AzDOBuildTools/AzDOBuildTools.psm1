@@ -290,6 +290,9 @@ function Invoke-OpenSSHTests
                 Write-BuildMessage -Message $errorMessage -Category Error
                 $AllTestsPassed = $false
             }
+
+            $OpenSSHTestInfo["BashTestSummaryFile"] = $Global:bash_tests_summary["BashTestSummaryFile"]
+            $OpenSSHTestInfo["BashTestLogFile"] = $Global:bash_tests_summary["BashTestLogFile"]
         }
     }
 
@@ -369,25 +372,39 @@ function Copy-OpenSSHTestResults
         return
     }
 
-    $setupresultFile = Resolve-Path $OpenSSHTestInfo["SetupTestResultsFile"] -ErrorAction Ignore
+    try { $setupresultFile = Resolve-Path -Path $OpenSSHTestInfo["SetupTestResultsFile"] -ErrorAction Ignore } catch { }
     if ($setupresultFile)
     {
-        Write-Verbose -Verbose "Copying set-up test results file, $setupresultFile, to results directory"
+        Write-Verbose -Verbose -Message "Copying set-up test results file, $setupresultFile, to results directory"
         Copy-Item -Path $setupresultFile -Destination $ResultsPath
     }
 
-    $E2EresultFile = Resolve-Path $OpenSSHTestInfo["E2ETestResultsFile"] -ErrorAction Ignore
+    try { $E2EresultFile = Resolve-Path -Path $OpenSSHTestInfo["E2ETestResultsFile"] -ErrorAction Ignore } catch { }
     if ($E2EresultFile)
     {
-        Write-Verbose -Verbose "Copying end-to-end test results file, $E2EresultFile, to results directory"
+        Write-Verbose -Verbose -Message "Copying end-to-end test results file, $E2EresultFile, to results directory"
         Copy-Item -Path $E2EresultFile -Destination $ResultsPath
     }
 
-    $uninstallResultFile = Resolve-Path $OpenSSHTestInfo["UninstallTestResultsFile"] -ErrorAction Ignore
+    try { $uninstallResultFile = Resolve-Path $OpenSSHTestInfo["UninstallTestResultsFile"] -ErrorAction Ignore } catch { }
     if ($uninstallResultFile)
     {
-        Write-Verbose -Verbose "Copying uninstall test results file, $uninstallResultFile, to results directory"
+        Write-Verbose -Verbose -Message "Copying uninstall test results file, $uninstallResultFile, to results directory"
         Copy-Item -Path $uninstallResultFile -Destination $ResultsPath
+    }
+
+    try { $bashTestsSummaryFile = Resolve-Path -Path $OpenSSHTestInfo["BashTestSummaryFile"] -ErrorAction Ignore } catch { }
+    if ($bashTestsSummaryFile)
+    {
+        Write-Verbose -Verbose -Message "Copying bash tests summary file, $bashTestsSummaryFile, to results directory"
+        Copy-Item -Path $bashTestsSummaryFile -Destination $ResultsPath
+    }
+
+    try { $bashTestsLogFile = Resolve-Path -Path $OpenSSHTestInfo["BashTestLogFile"] -ErrorAction Ignore } catch { }
+    if ($bashTestsLogFile)
+    {
+        Write-Verbose -Verbose -Message "Copying bash tests log file, $bashTestsLogFile, to results directory"
+        Copy-Item -Path $bashTestsLogFile -Destination $ResultsPath
     }
 }
 
@@ -414,6 +431,9 @@ function Copy-BuildResults
 {
     param (
         [Parameter(Mandatory=$true)]
+        [string] $BuildSrcPath,
+
+        [Parameter(Mandatory=$true)]
         [string] $BuildResultsPath,
 
         [ValidateSet('x86', 'x64', 'arm64', 'arm')]
@@ -425,6 +445,31 @@ function Copy-BuildResults
 
     # Copy OpenSSH package to results directory
     Start-OpenSSHPackage -DestinationPath $BuildResultsPath -NativeHostArch $NativeHostArch -Configuration $Configuration
+
+    # Copy Openssh-events.man manifest file to results directory, as it is needed for tests.
+    $buildDestPath = Join-Path -Path $BuildResultsPath -ChildPath "${NativeHostArch}/${Release}"
+    if (! (Test-Path -Path $buildDestPath))
+    {
+        Write-Verbose -Verbose -Message "Cannot copy Openssh-events.man manifest file because the destination path:${buildDestPath} does not exist."
+        return
+    }
+
+    if ($NativeHostArch -eq 'x86')
+    {
+        $manifestSrcPath = Join-Path -Path $BuildSrcPath -ChildPath "Win32/${Configuration}/Openssh-events.man"
+    }
+    else
+    {
+        $manifestSrcPath = Join-Path -Path $BuildSrcPath -ChildPath "${NativeHostArch}/${Configuration}/Openssh-events.man"
+    }
+    if (! (Test-Path -Path $manifestSrcPath))
+    {
+        Write-Verbose -Verbose -Message "Cannot copy manifest file because source path:${manifestSrcPath} does not exist."
+        return
+    }
+
+    Write-Verbose -Verbose -Message "Copying manifest file ${manifestSrcPath} to ${buildDestPath}"
+    Copy-Item -Path $manifestSrcPath -Dest $buildDestPath -Force
 }
 
 <#
