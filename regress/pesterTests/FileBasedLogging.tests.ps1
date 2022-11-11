@@ -117,42 +117,7 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
         BeforeAll {
             $sshdConfigPath = $sshdconfig_custom
 
-            function Setup-KeyBasedAuth
-            {
-                param([string] $Username, [string] $KeyFilePath, [string] $UserProfile)
-
-                $userSSHProfilePath = Join-Path $UserProfile .ssh
-
-                if (-not (Test-Path $userSSHProfilePath -PathType Container)) {
-                    New-Item $userSSHProfilePath -ItemType directory -Force -ErrorAction Stop | Out-Null
-                }
-
-                $authorizedkeyPath = Join-Path $userSSHProfilePath authorized_keys
-
-                if($OpenSSHTestInfo["NoLibreSSL"])
-                {
-                    ssh-keygen.exe -t ed25519 -f $KeyFilePath -Z -P `"`" aes128-ctr
-                }
-                else
-                {
-                    ssh-keygen.exe -t ed25519 -f $KeyFilePath -P `"`"
-                }
-                Copy-Item "$keyFilePath.pub" $authorizedkeyPath -Force -ErrorAction SilentlyContinue
-                Repair-AuthorizedKeyPermission -Filepath $authorizedkeyPath -confirm:$false
-            }
-
-            $AdminUserProfile = $OpenSSHTestInfo['AdminUserProfile']
-            $NonAdminUserProfile = $OpenSSHTestInfo['NonAdminUserProfile']
-
-            $KeyFileName = $nonadminusername + "_sshtest_fileBasedLog_ed25519"
-            $NonadminKeyFilePath = Join-Path $testDir $keyFileName
-            Remove-Item -path "$NonadminKeyFilePath*" -Force -ErrorAction SilentlyContinue
-            Setup-KeyBasedAuth -Username $nonadminusername -KeyFilePath $NonadminKeyFilePath -UserProfile $NonAdminUserProfile
-
-            $KeyFileName = $adminusername + "_sshtest_fileBasedLog_ed25519"
-            $AdminKeyFilePath = Join-Path $testDir $keyFileName
-            Remove-Item -path "$AdminKeyFilePath*" -Force -ErrorAction SilentlyContinue
-            Setup-KeyBasedAuth -Username $adminusername -KeyFilePath $AdminKeyFilePath -UserProfile $AdminUserProfile
+            Add-PasswordSetting -Pass $password
 
             #create batch file
             $commands = 
@@ -178,15 +143,7 @@ exit"
         }
 
         AfterAll {
-            Remove-Item -path "$NonadminKeyFilePath*" -Force -ErrorAction SilentlyContinue
-            Remove-Item -path "$AdminKeyFilePath*" -Force -ErrorAction SilentlyContinue
-
-            $authorized_key = Join-Path .ssh authorized_keys
-            $AdminAuthKeysPath = Join-Path $AdminUserProfile $authorized_key
-            $NonAdminAuthKeysPath = Join-Path $NonAdminUserProfile $authorized_key
-            Remove-Item -path "$AdminAuthKeysPath*" -Force -ErrorAction SilentlyContinue
-            Remove-Item -path "$NonAdminAuthKeysPath*" -Force -ErrorAction SilentlyContinue
-
+            Remove-PasswordSetting
             $tC++
         }
 
@@ -198,7 +155,7 @@ exit"
             $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
             Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
 
-            $sshdlog | Should Contain "Accepted publickey for $nonadminusername"
+            #$sshdlog | Should Contain "Accepted publickey for $nonadminusername"
             $sshdlog | Should Contain "KEX done \[preauth\]"
             $sshdlog | Should Contain "debug2: subsystem request for sftp by user $nonadminusername"
             $sftplog | Should Contain "session opened for local user $nonadminusername"
@@ -214,7 +171,7 @@ exit"
             $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
             Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
   
-            $sshdlog | Should Contain "Accepted publickey for $adminusername"
+            #$sshdlog | Should Contain "Accepted publickey for $adminusername"
             $sshdlog | Should Contain "KEX done \[preauth\]"
             $sshdlog | Should Contain "debug2: subsystem request for sftp by user $adminusername"
             $sftplog | Should Contain "session opened for local user $adminusername"
