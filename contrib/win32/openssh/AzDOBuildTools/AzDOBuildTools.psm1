@@ -200,20 +200,20 @@ function Invoke-OpenSSHTests
     #    ...
     #    FixHostFilePermissions.ps1
     #    ...
-    Write-Verbose -Verbose -Message "Running Unit Tests..."
-    Write-Verbose -Verbose -Message "Unit test directory is: ${OpenSSHBinPath}"
+    # Write-Verbose -Verbose -Message "Running Unit Tests..."
+    # Write-Verbose -Verbose -Message "Unit test directory is: ${OpenSSHBinPath}"
 
-    $unitTestFailed = Invoke-OpenSSHUnitTest -UnitTestDirectory $OpenSSHBinPath
+    # $unitTestFailed = Invoke-OpenSSHUnitTest -UnitTestDirectory $OpenSSHBinPath
 
-    if($unitTestFailed)
-    {
-        Write-BuildMessage "At least one of the unit tests failed!" -Category Error
-        $AllTestsPassed = $false
-    }
-    else
-    {
-        Write-BuildMessage -Message "All Unit tests passed!" -Category Information
-    }
+    # if($unitTestFailed)
+    # {
+    #     Write-BuildMessage "At least one of the unit tests failed!" -Category Error
+    #     $AllTestsPassed = $false
+    # }
+    # else
+    # {
+    #     Write-BuildMessage -Message "All Unit tests passed!" -Category Information
+    # }
 
     # Run all E2E tests.
     Write-Verbose -Verbose -Message "Running E2E Tests..."
@@ -239,62 +239,62 @@ function Invoke-OpenSSHTests
         }
     }
 
-    # Bash tests.
-    Write-Verbose -Verbose -Message "Running Bash Tests..."
+    # # Bash tests.
+    # Write-Verbose -Verbose -Message "Running Bash Tests..."
 
-    # Ensure CygWin is installed, and install from Chocolatey if needed.
-    $cygwinInstalled = $true
-    $cygwinInstallLocation = "$env:SystemDrive/cygwin"
-    if (! (Test-Path -Path "$cygwinInstallLocation/bin/sh.exe"))
-    {
-        Write-Verbose -Verbose -Message "CygWin not found"
-        Install-CygWin -InstallLocation $cygwinInstallLocation
+    # # Ensure CygWin is installed, and install from Chocolatey if needed.
+    # $cygwinInstalled = $true
+    # $cygwinInstallLocation = "$env:SystemDrive/cygwin"
+    # if (! (Test-Path -Path "$cygwinInstallLocation/bin/sh.exe"))
+    # {
+    #     Write-Verbose -Verbose -Message "CygWin not found"
+    #     Install-CygWin -InstallLocation $cygwinInstallLocation
 
-        # Hack to fix up mangled CygWin directory, if needed.
-        $expectedCygWinPath = "$env:SystemDrive/cygwin/bin/sh.exe"
-        if (! (Test-Path -Path $expectedCygWinPath))
-        {
-            Write-Verbose -Verbose -Message "CygWin did not install correctly, missing expected path: ${expectedCygWinPath}"
+    #     # Hack to fix up mangled CygWin directory, if needed.
+    #     $expectedCygWinPath = "$env:SystemDrive/cygwin/bin/sh.exe"
+    #     if (! (Test-Path -Path $expectedCygWinPath))
+    #     {
+    #         Write-Verbose -Verbose -Message "CygWin did not install correctly, missing expected path: ${expectedCygWinPath}"
 
-            $cygWinDirs = Get-Item -Path "$env:SystemDrive/cygwin*"
-            if ($cygWinDirs.Count -gt 1)
-            {
-                Write-Verbose -Verbose -Message "CygWin install failed with mangled folder locations: ${cygWinDirs}"
-                Write-Verbose -Verbose -Message 'TODO: Add hack to fix up CygWin folder.'
-            }
+    #         $cygWinDirs = Get-Item -Path "$env:SystemDrive/cygwin*"
+    #         if ($cygWinDirs.Count -gt 1)
+    #         {
+    #             Write-Verbose -Verbose -Message "CygWin install failed with mangled folder locations: ${cygWinDirs}"
+    #             Write-Verbose -Verbose -Message 'TODO: Add hack to fix up CygWin folder.'
+    #         }
 
-            Write-BuildMessage -Message "All bash tests failed because CygWin install failed" -Category Error
-            $AllTestsPassed = $false
-            $cygwinInstalled = $false
-        }
-    }
+    #         Write-BuildMessage -Message "All bash tests failed because CygWin install failed" -Category Error
+    #         $AllTestsPassed = $false
+    #         $cygwinInstalled = $false
+    #     }
+    # }
 
-    # Run UNIX bash tests.
-    if ($cygwinInstalled)
-    {
-        Write-Verbose -Verbose -Message "Starting Bash Tests..."
-        Invoke-OpenSSHBashTests
-        if (-not $Global:bash_tests_summary)
-        {
-            $errorMessage = "Failed to start OpenSSH bash tests"
-            Write-BuildMessage -Message $errorMessage -Category Error
-            $AllTestsPassed = $false
-        }
-        else
-        {
-            if ($Global:bash_tests_summary["TotalBashTestsFailed"] -ne 0)
-            {
-                $total_bash_failed_tests = $Global:bash_tests_summary["TotalBashTestsFailed"]
-                $total_bash_tests = $Global:bash_tests_summary["TotalBashTests"]
-                $errorMessage = "At least one of the bash tests failed. [$total_bash_failed_tests of $total_bash_tests]"
-                Write-BuildMessage -Message $errorMessage -Category Error
-                $AllTestsPassed = $false
-            }
+    # # Run UNIX bash tests.
+    # if ($cygwinInstalled)
+    # {
+    #     Write-Verbose -Verbose -Message "Starting Bash Tests..."
+    #     Invoke-OpenSSHBashTests
+    #     if (-not $Global:bash_tests_summary)
+    #     {
+    #         $errorMessage = "Failed to start OpenSSH bash tests"
+    #         Write-BuildMessage -Message $errorMessage -Category Error
+    #         $AllTestsPassed = $false
+    #     }
+    #     else
+    #     {
+    #         if ($Global:bash_tests_summary["TotalBashTestsFailed"] -ne 0)
+    #         {
+    #             $total_bash_failed_tests = $Global:bash_tests_summary["TotalBashTestsFailed"]
+    #             $total_bash_tests = $Global:bash_tests_summary["TotalBashTests"]
+    #             $errorMessage = "At least one of the bash tests failed. [$total_bash_failed_tests of $total_bash_tests]"
+    #             Write-BuildMessage -Message $errorMessage -Category Error
+    #             $AllTestsPassed = $false
+    #         }
 
-            $OpenSSHTestInfo["BashTestSummaryFile"] = $Global:bash_tests_summary["BashTestSummaryFile"]
-            $OpenSSHTestInfo["BashTestLogFile"] = $Global:bash_tests_summary["BashTestLogFile"]
-        }
-    }
+    #         $OpenSSHTestInfo["BashTestSummaryFile"] = $Global:bash_tests_summary["BashTestSummaryFile"]
+    #         $OpenSSHTestInfo["BashTestLogFile"] = $Global:bash_tests_summary["BashTestLogFile"]
+    #     }
+    # }
 
     # OpenSSH Uninstall Tests
     Invoke-OpenSSHUninstallTest
