@@ -27,9 +27,8 @@ Describe "E2E scenarios for ssh client" -Tags "CI" {
         $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($ssouser, $rights, "ContainerInherit,Objectinherit", "None", "Allow")
         $acl.SetAccessRule($accessRule)
         Set-Acl -Path $testDir -AclObject $acl
-        $platform = Get-Platform
         #skip on ps 2 becase non-interactive cmd require a ENTER before it returns on ps2
-        $skip = ($platform -eq [PlatformType]::Windows) -and ($PSVersionTable.PSVersion.Major -le 2)
+        $skip = $IsWindows -and ($PSVersionTable.PSVersion.Major -le 2)
 
         <#$testData = @(
             @{

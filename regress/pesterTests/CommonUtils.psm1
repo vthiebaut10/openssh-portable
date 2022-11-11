@@ -9,16 +9,6 @@ Add-Type -TypeDefinition @"
    }
 "@
 
-function Get-Platform {
-    if($IsMacOS) {
-        [PlatformType]::OSX
-    } elseif($IsLinux) {
-        [PlatformType]::Linux
-    } else {        
-        [PlatformType]::Windows    
-    }
-}
-
 function Set-FilePermission
 {    
     param(
@@ -77,8 +67,7 @@ function Set-FilePermission
 function Add-PasswordSetting 
 {
     param([string] $pass)
-    $platform = Get-Platform
-    if ($platform -eq [PlatformType]::Windows) {
+    if ($IsWindows) {
         if (-not($env:DISPLAY)) {$env:DISPLAY = 1}
         $askpass_util = Join-Path $PSScriptRoot "utilities\askpass_util\askpass_util.exe"
         $env:SSH_ASKPASS=$askpass_util
