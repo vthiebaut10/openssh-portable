@@ -737,7 +737,7 @@ function Invoke-OpenSSHUnitTest
     )
 
     # Discover all CI tests and run them.
-    if (Test-Path -Path $UnitTestDirectory)
+    if (! [string]::IsNullOrEmpty($UnitTestDirectory) -and (Test-Path -Path $UnitTestDirectory))
     {
         $Script:UnitTestDirectory = $UnitTestDirectory
         $OpenSSHTestInfo["UnitTestDirectory"] = $UnitTestDirectory

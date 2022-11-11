@@ -26,10 +26,6 @@ if ($TestFilePath) {
 }
 $OriginalSystemPath = [System.Environment]::GetEnvironmentVariable('Path', [System.EnvironmentVariableTarget]::Machine)
 
-$debugExpectedConfigPath = "$BashTestsPath\..\config.h"
-Write-Verbose -Verbose -Message "Bash Tests Iterator:Expected config file path:${debugExpectedConfigPath}"
-Get-Item -Path $debugExpectedConfigPath -ErrorAction SilentlyContinue
-
 # Make sure config.h exists. It is used in some bashstests (Ex - sftp-glob.sh, cfgparse.sh)
 # first check in $BashTestsPath folder. If not then it's parent folder. If not then in the $OpenSSHBinPath
 if(Test-Path "$BashTestsPath\config.h" -PathType Leaf) {
