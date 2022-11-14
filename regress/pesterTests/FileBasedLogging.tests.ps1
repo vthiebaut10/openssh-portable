@@ -149,7 +149,7 @@ exit"
 
         It "$tC.$tI-Nonadmin SFTP Connection"  -skip:$skip {
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
-            sftp -P $port -i $NonadminKeyFilePath -b $batchFilePath $nonadminusername@$server
+            sftp -P $port -b $batchFilePath $nonadminusername@$server
             Stop-SSHDTestDaemon   -Port $port
             sleep $sshdDelay
             $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
@@ -165,7 +165,7 @@ exit"
 
         It "$tC.$tI-Admin SFTP Connection"  -skip:$skip {	
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
-            sftp -P $port -i $AdminKeyFilePath -b $batchFilePath $adminusername@$server
+            sftp -P $port -b $batchFilePath $adminusername@$server
             Stop-SSHDTestDaemon   -Port $port
             sleep $sshdDelay
             $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
