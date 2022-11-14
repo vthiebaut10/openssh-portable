@@ -131,11 +131,11 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
 
                 if($OpenSSHTestInfo["NoLibreSSL"])
                 {
-                    ssh-keygen.exe -t rsa -f $KeyFilePath -Z -P `"`" aes128-ctr
+                    ssh-keygen.exe -t rsa -f $KeyFilePath -Z -P "" aes128-ctr
                 }
                 else
                 {
-                    ssh-keygen.exe -t rsa -f $KeyFilePath -P `"`"
+                    ssh-keygen.exe -t rsa -f $KeyFilePath -P ""
                 }
                 Copy-Item "$keyFilePath.pub" $authorizedkeyPath -Force -ErrorAction SilentlyContinue
                 Repair-AuthorizedKeyPermission -Filepath $authorizedkeyPath -confirm:$false
@@ -191,24 +191,11 @@ exit"
 
         It "$tC.$tI-Nonadmin SFTP Connection"  -skip:$skip {
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
-            
-            Write-Verbose $NonadminKeyFilePath
-
-            Write-Verbose -Verbose "Running SSH"
-            ssh -vvv -p $port -vvv -i $NonadminKeyFilePath $nonadminusername@$server echo 1234
-            Get-Content $sshlog | Write-Verbose -Verbose
-
-            Write-Verbose -Verbose "Runing SFTP"
             sftp -P $port -i $NonadminKeyFilePath -b $batchFilePath $nonadminusername@$server
             Stop-SSHDTestDaemon   -Port $port
             sleep $sshdDelay
             $sftplog = Join-Path $testDir "$tC.$tI.sftp-server.log"
             Copy-Item "$env:ProgramData\ssh\logs\sftp-server.log" $sftplog -Force -ErrorAction SilentlyContinue
-
-            Write-Verbose -Verbose "---------------------------------------"
-            Write-Verbose -Verbose SFTP LOGS
-            Get-Content $sftplog | Write-Verbose -Verbose
-            Write-Verbose -Verbose "---------------------------------------"
 
             #$sshdlog | Should Contain "Accepted publickey for $nonadminusername"
             $sshdlog | Should Contain "KEX done \[preauth\]"
