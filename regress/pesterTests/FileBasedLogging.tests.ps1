@@ -131,11 +131,11 @@ Describe "Tests for admin and non-admin file based logs" -Tags "CI" {
 
                 if($OpenSSHTestInfo["NoLibreSSL"])
                 {
-                    ssh-keygen.exe -t ed25519 -f $KeyFilePath -Z -P `"`" aes128-ctr
+                    ssh-keygen.exe -t rsa -f $KeyFilePath -Z -P `"`" aes128-ctr
                 }
                 else
                 {
-                    ssh-keygen.exe -t ed25519 -f $KeyFilePath -P `"`"
+                    ssh-keygen.exe -t rsa -f $KeyFilePath -P `"`"
                 }
                 Copy-Item "$keyFilePath.pub" $authorizedkeyPath -Force -ErrorAction SilentlyContinue
                 Repair-AuthorizedKeyPermission -Filepath $authorizedkeyPath -confirm:$false
@@ -192,14 +192,13 @@ exit"
         It "$tC.$tI-Nonadmin SFTP Connection"  -skip:$skip {
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
             
+            Write-Verbose $NonadminKeyFilePath
+
             Write-Verbose -Verbose "Running SSH"
-            $o = ssh -vvv -p $port -E $sshlog -i $NonadminKeyFilePath $nonadminusername@$server echo 1234
-            Write-Verbose -Verbose "---------------------------------------"
-            Write-Verbose -Verbose $o
-            Write-Verbose -Verbose "---------------------------------------"
+            ssh -vvv -p $port -vvv -i $NonadminKeyFilePath $nonadminusername@$server echo 1234
             Get-Content $sshlog | Write-Verbose -Verbose
 
-            Write-Verbose -Verbose "Runing SSHD"
+            Write-Verbose -Verbose "Runing SFTP"
             sftp -P $port -i $NonadminKeyFilePath -b $batchFilePath $nonadminusername@$server
             Stop-SSHDTestDaemon   -Port $port
             sleep $sshdDelay
