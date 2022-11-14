@@ -191,6 +191,13 @@ exit"
 
         It "$tC.$tI-Nonadmin SFTP Connection"  -skip:$skip {
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
+            
+            Write-Verbose -Verbose $NonadminKeyFilePath
+
+            Write-Verbose -Verbose "Running SSH"
+            ssh -vvv -p $port -E $sshlog -i $NonadminKeyFilePath $nonadminusername@$server echo 1234
+            Get-Content $sshlog | Write-Verbose -Verbose
+
             sftp -P $port -i $NonadminKeyFilePath -b $batchFilePath $nonadminusername@$server
             Stop-SSHDTestDaemon   -Port $port
             sleep $sshdDelay
