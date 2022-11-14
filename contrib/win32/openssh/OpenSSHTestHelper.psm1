@@ -689,8 +689,9 @@ function Invoke-OpenSSHE2ETest
     # Discover all CI tests and run them.
     Push-Location $Script:E2ETestDirectory
     Write-Log -Message "Running OpenSSH E2E tests..."
-    $testFolders = @(Get-ChildItem FileBasedLogging.tests.ps1 -Recurse | ForEach-Object{ Split-Path $_.FullName} | Sort-Object -Unique)
-    Invoke-Pester $testFolders -OutputFormat NUnitXml -OutputFile $Script:E2ETestResultsFile -Tag $pri -PassThru
+    #$testFolders = @(Get-ChildItem FileBasedLogging.tests.ps1 -Recurse | ForEach-Object{ Split-Path $_.FullName} | Sort-Object -Unique)
+    #Invoke-Pester $testFolders -OutputFormat NUnitXml -OutputFile $Script:E2ETestResultsFile -Tag $pri -PassThru
+    Invoke-Pester .\FileBasedLogging.tests.ps1 -OutputFormat NUnitXml -OutputFile $Script:E2ETestResultsFile -Tag $pri -PassThru
     Pop-Location
 }
 

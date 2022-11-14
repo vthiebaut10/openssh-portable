@@ -165,6 +165,13 @@ exit"
 
         It "$tC.$tI-Admin SFTP Connection"  -skip:$skip {	
             Start-SSHDTestDaemon -WorkDir $opensshbinpath -Arguments "-ddd -f $sshdConfigPath -E $sshdlog" -Port $port
+
+            # try connecting via ssh to the same user and see if it works
+            # If it does, it is an sftp problem, else it is probably a setup problem
+            $o = ssh -vvv -p $port -E $sshlog $adminusername@$server echo 1234
+            $o | Should Be 1234
+            Write-Verbose -Verbose $o
+
             sftp -P $port -b $batchFilePath $adminusername@$server
             Stop-SSHDTestDaemon   -Port $port
             sleep $sshdDelay
