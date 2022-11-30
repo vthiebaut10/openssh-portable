@@ -1736,6 +1736,7 @@
 #define HAVE_STRUCT_POLLFD_FD 1
 #define HAVE_KILLPG 1
 
+/* Definitions needed to prevent re-definition of OpenSSL functions and structs */
 #define HAVE_DSA_GET0_PQG 1
 #define HAVE_DSA_SET0_PQG 1
 #define HAVE_DSA_GET0_KEY 1
