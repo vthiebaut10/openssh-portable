@@ -247,7 +247,7 @@ ssh_kex2(struct ssh *ssh, char *host, struct sockaddr *hostaddr, u_short port,
 	/* Expand or fill in HostkeyAlgorithms */
 	all_key = sshkey_alg_list(0, 0, 1, ',');
 	if ((r = kex_assemble_names(&options.hostkeyalgorithms,
-	    kex_default_pk_alg(), all_key)) != 0)
+	    kex_default_pk_alg(), all_key)) != 0)   // CodeQL [SM02311] false positive: kex_assemble_names handle null all_key.
 		fatal_fr(r, "kex_assemble_namelist");
 	free(all_key);
 

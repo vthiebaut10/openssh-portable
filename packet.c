@@ -1449,6 +1449,9 @@ ssh_packet_read_poll2_mux(struct ssh *ssh, u_char *typep, u_int32_t *seqnr_p)
 		return SSH_ERR_INTERNAL_ERROR;
 	*typep = SSH_MSG_NONE;
 	cp = sshbuf_ptr(state->input);
+	if (cp == NULL) {
+		return SSH_ERR_INTERNAL_ERROR;
+	}
 	if (state->packlen == 0) {
 		if (sshbuf_len(state->input) < 4 + 1)
 			return 0; /* packet is incomplete */

@@ -1943,7 +1943,7 @@ parse_hex_u64(const char *s, uint64_t *up)
 	unsigned long long ull;
 
 	errno = 0;
-	ull = strtoull(s, &ep, 16);
+	ull = strtoull(s, &ep, 16);  // CodeQL [SM02313] false positive: strtoull will initialize ep.
 	if (*s == '\0' || *ep != '\0')
 		fatal("Invalid certificate time: not a number");
 	if (errno == ERANGE && ull == ULONG_MAX)
@@ -3211,7 +3211,7 @@ do_download_sk(const char *skprovider, const char *device)
 		/* Save the key with the application string as the comment */
 		if (pass == NULL)
 			pass = private_key_passphrase();
-		if ((r = sshkey_save_private(key, path, pass,
+		if ((r = sshkey_save_private(key, path, pass,  // CodeQL [SM02311] false positive: private_key_passphrase() will never return null.
 		    key->sk_application, private_key_format,
 		    openssh_format_cipher, rounds)) != 0) {
 			error_r(r, "Saving key \"%s\" failed", path);
@@ -3932,7 +3932,7 @@ main(int argc, char **argv)
 	}
 
 	/* Save the key with the given passphrase and comment. */
-	if ((r = sshkey_save_private(private, identity_file, passphrase,
+	if ((r = sshkey_save_private(private, identity_file, passphrase,    // CodeQL [SM02311] false positive: private_key_passphrase() will never return null.
 	    comment, private_key_format, openssh_format_cipher, rounds)) != 0) {
 		error_r(r, "Saving key \"%s\" failed", identity_file);
 		freezero(passphrase, strlen(passphrase));
