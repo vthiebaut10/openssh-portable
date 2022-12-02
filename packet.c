@@ -1449,8 +1449,7 @@ ssh_packet_read_poll2_mux(struct ssh *ssh, u_char *typep, u_int32_t *seqnr_p)
 		return SSH_ERR_INTERNAL_ERROR;
 	*typep = SSH_MSG_NONE;
 	cp = sshbuf_ptr(state->input);
-	if (cp == NULL) // fix CodeQL SM02311
-		return SSH_ERR_INTERNAL_ERROR;
+	if (cp == NULL) { // fix CodeQL SM02311
 		return SSH_ERR_INTERNAL_ERROR;
 	}
 	if (state->packlen == 0) {
