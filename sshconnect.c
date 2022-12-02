@@ -168,7 +168,7 @@ ssh_proxy_fdpass_connect(struct ssh *ssh, const char *host,
 		 * Execute the proxy command.
 		 * Note that we gave up any extra privileges above.
 		 */
-		execv(argv[0], argv);
+		execv(argv[0], argv); // CodeQL [SM01925] false positive: Command strings are controlled by application.
 		perror(argv[0]);
 		exit(1);
 	}
