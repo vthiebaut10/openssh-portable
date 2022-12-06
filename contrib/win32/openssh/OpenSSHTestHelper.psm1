@@ -723,7 +723,7 @@ function Invoke-OpenSSHBashTests
 
     $bashTestDirectory = Join-Path $repositoryRoot.FullName -ChildPath "regress"
 
-    & "$PSScriptRoot\bash_tests_iterator.ps1" -OpenSSHBinPath $Script:OpenSSHBinPath -BashTestsPath $bashTestDirectory -ShellPath $bashPath -ArtifactsDirectoryPath $bashTestDirectory
+    & "$PSScriptRoot\bash_tests_iterator.ps1" -OpenSSHBinPath $Script:OpenSSHBinPath -BashTestsPath $bashTestDirectory -ShellPath $bashPath -ArtifactsDirectoryPath $bashTestDirectory -TestFilePath $bashTestDirectory\transfer.sh 
 }
 
 <#

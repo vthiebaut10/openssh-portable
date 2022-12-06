@@ -166,32 +166,32 @@ function Invoke-OpenSSHTests
 
     Set-BasicTestInfo -OpenSSHBinPath $OpenSSHBinPath -Confirm:$false
 
-    Write-Verbose -Verbose -Message "Running OpenSSH Set up Tests..."
+    # Write-Verbose -Verbose -Message "Running OpenSSH Set up Tests..."
 
-    $AllTestsPassed = $true
+    # $AllTestsPassed = $true
 
-    Invoke-OpenSSHSetupTest
+    # Invoke-OpenSSHSetupTest
 
-    if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["SetupTestResultsFile"])))
-    {
-        Write-BuildMessage -Message "Test result file $OpenSSHTestInfo["SetupTestResultsFile"] not found after tests." -Category Error
-        $AllTestsPassed = $false
-        Write-Warning "Stop running further tests!"
-        return
-    }
+    # if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["SetupTestResultsFile"])))
+    # {
+    #     Write-BuildMessage -Message "Test result file $OpenSSHTestInfo["SetupTestResultsFile"] not found after tests." -Category Error
+    #     $AllTestsPassed = $false
+    #     Write-Warning "Stop running further tests!"
+    #     return
+    # }
 
-    $xml = [xml](Get-Content $OpenSSHTestInfo["SetupTestResultsFile"] | out-string)
-    if ([int]$xml.'test-results'.failures -gt 0) 
-    {
-        $errorMessage = "$($xml.'test-results'.failures) Setup Tests in regress\pesterTests failed. Detail test log is at $($OpenSSHTestInfo["SetupTestResultsFile"])."
-        Write-BuildMessage -Message $errorMessage -Category Error
-        $AllTestsPassed = $False
-        Write-Warning "Stop running further tests!"
-        return
-    }
+    # $xml = [xml](Get-Content $OpenSSHTestInfo["SetupTestResultsFile"] | out-string)
+    # if ([int]$xml.'test-results'.failures -gt 0) 
+    # {
+    #     $errorMessage = "$($xml.'test-results'.failures) Setup Tests in regress\pesterTests failed. Detail test log is at $($OpenSSHTestInfo["SetupTestResultsFile"])."
+    #     Write-BuildMessage -Message $errorMessage -Category Error
+    #     $AllTestsPassed = $False
+    #     Write-Warning "Stop running further tests!"
+    #     return
+    # }
 
-    Write-BuildMessage -Message "All Setup tests passed!" -Category Information
-    $AllTestsPassed = $true
+    # Write-BuildMessage -Message "All Setup tests passed!" -Category Information
+    # $AllTestsPassed = $true
 
     # Unit test directories are installed in the same directory as Open SSH binaries.
     #  OpenSSH Directory
@@ -200,44 +200,44 @@ function Invoke-OpenSSHTests
     #    ...
     #    FixHostFilePermissions.ps1
     #    ...
-    Write-Verbose -Verbose -Message "Running Unit Tests..."
-    Write-Verbose -Verbose -Message "Unit test directory is: ${OpenSSHBinPath}"
+    # Write-Verbose -Verbose -Message "Running Unit Tests..."
+    # Write-Verbose -Verbose -Message "Unit test directory is: ${OpenSSHBinPath}"
 
-    $unitTestFailed = Invoke-OpenSSHUnitTest -UnitTestDirectory $OpenSSHBinPath
+    # $unitTestFailed = Invoke-OpenSSHUnitTest -UnitTestDirectory $OpenSSHBinPath
 
-    if($unitTestFailed)
-    {
-        Write-BuildMessage "At least one of the unit tests failed!" -Category Error
-        $AllTestsPassed = $false
-    }
-    else
-    {
-        Write-BuildMessage -Message "All Unit tests passed!" -Category Information
-    }
+    # if($unitTestFailed)
+    # {
+    #     Write-BuildMessage "At least one of the unit tests failed!" -Category Error
+    #     $AllTestsPassed = $false
+    # }
+    # else
+    # {
+    #     Write-BuildMessage -Message "All Unit tests passed!" -Category Information
+    # }
 
-    # Run all E2E tests.
-    Write-Verbose -Verbose -Message "Running E2E Tests..."
-    Set-OpenSSHTestEnvironment -Confirm:$false
-    Invoke-OpenSSHE2ETest
-    if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["E2ETestResultsFile"])))
-    {
-        Write-BuildMessage -Message "Test result file $OpenSSHTestInfo["E2ETestResultsFile"] not found after tests." -Category Error
-        $AllTestsPassed =  $false
-    }
-    else
-    {
-        $xml = [xml](Get-Content $OpenSSHTestInfo["E2ETestResultsFile"] | out-string)
-        if ([int]$xml.'test-results'.failures -gt 0)
-        {
-            $errorMessage = "$($xml.'test-results'.failures) E2E tests in regress\pesterTests failed. Detail test log is at $($OpenSSHTestInfo["E2ETestResultsFile"])."
-            Write-BuildMessage -Message $errorMessage -Category Error
-            $AllTestsPassed = $false
-        }
-        else
-        {
-            Write-BuildMessage -Message "All E2E tests passed!" -Category Information
-        }
-    }
+    # # Run all E2E tests.
+    # Write-Verbose -Verbose -Message "Running E2E Tests..."
+    # Set-OpenSSHTestEnvironment -Confirm:$false
+    # Invoke-OpenSSHE2ETest
+    # if (($OpenSSHTestInfo -eq $null) -or (-not (Test-Path $OpenSSHTestInfo["E2ETestResultsFile"])))
+    # {
+    #     Write-BuildMessage -Message "Test result file $OpenSSHTestInfo["E2ETestResultsFile"] not found after tests." -Category Error
+    #     $AllTestsPassed =  $false
+    # }
+    # else
+    # {
+    #     $xml = [xml](Get-Content $OpenSSHTestInfo["E2ETestResultsFile"] | out-string)
+    #     if ([int]$xml.'test-results'.failures -gt 0)
+    #     {
+    #         $errorMessage = "$($xml.'test-results'.failures) E2E tests in regress\pesterTests failed. Detail test log is at $($OpenSSHTestInfo["E2ETestResultsFile"])."
+    #         Write-BuildMessage -Message $errorMessage -Category Error
+    #         $AllTestsPassed = $false
+    #     }
+    #     else
+    #     {
+    #         Write-BuildMessage -Message "All E2E tests passed!" -Category Information
+    #     }
+    # }
 
     # Bash tests.
     Write-Verbose -Verbose -Message "Running Bash Tests..."
