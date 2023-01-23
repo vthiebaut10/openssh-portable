@@ -3686,7 +3686,7 @@ channel_setup_fwd_listener_tcpip(struct ssh *ssh, int type,
 #ifndef WINDOWS
 		/*
 		Setting the SO_REUSEADDR flag on a socket behaves differently on Windows than on *NIX OS.
-		On *NIX OS, the flag is used for  handling specific edge cases and allows the tag to be reused
+		On *NIX OS, the flag is used for  handling specific edge cases and allows the port to be reused
 		while busy only during TIME_WAIT state in the short period after termination.
 		On Windows, the option allows a socket to forcibly bind to a port in use by another socket in any
 		state.
