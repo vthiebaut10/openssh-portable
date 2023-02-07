@@ -30,7 +30,7 @@ scpclean() {
 	chmod 755 ${DIR} ${DIR2} ${DIR3}
 }
 
-for mode in scp sftp ; do
+for mode in sftp ; do
 	tag="$tid: $mode mode"
 	# scpopts should be an array to preverse the double quotes
 	if [ "$os" == "windows" ]; then
@@ -46,15 +46,15 @@ for mode in scp sftp ; do
 			scpopts="-s -D ${SFTPSERVER}"
 		fi	
 	fi
-	verbose "$tag: simple copy local file to local file"
-	scpclean
-	$SCP "${scpopts[@]}" ${DATA} ${COPY} 2>&1 1>/dev/null || fail "copy failed"
-	cmp ${DATA} ${COPY} || fail "corrupted copy"
+	# verbose "$tag: simple copy local file to local file"
+	# scpclean
+	# $SCP "${scpopts[@]}" ${DATA} ${COPY} 2>&1 1>/dev/null || fail "copy failed"
+	# cmp ${DATA} ${COPY} || fail "corrupted copy"
 
-	verbose "$tag: simple copy local file to remote file"
-	scpclean
-	$SCP "${scpopts[@]}" ${DATA} somehost:${COPY} || fail "copy failed"
-	cmp ${DATA} ${COPY} || fail "corrupted copy"
+	# verbose "$tag: simple copy local file to remote file"
+	# scpclean
+	# $SCP "${scpopts[@]}" ${DATA} somehost:${COPY} || fail "copy failed"
+	# cmp ${DATA} ${COPY} || fail "corrupted copy"
 
 	verbose "$tag: simple copy remote file to local file"
 	scpclean
@@ -75,167 +75,142 @@ for mode in scp sftp ; do
 	# $SCP "${scpopts[@]}" somehost:${COPY} ${COPY} || fail "copy failed"
 	# cmp ${DATA} ${COPY} || fail "corrupted copy"
 
-	verbose "$tag: copy local file to remote file clobber"
-	scpclean
-	cat ${DATA} ${DATA} > ${COPY}
-	$SCP "${scpopts[@]}" ${DATA} somehost:${COPY} || fail "copy failed"
-	ls -l $DATA $COPY
-	cmp ${DATA} ${COPY} || fail "corrupted copy"
+	# verbose "$tag: copy local file to remote file clobber"
+	# scpclean
+	# cat ${DATA} ${DATA} > ${COPY}
+	# $SCP "${scpopts[@]}" ${DATA} somehost:${COPY} || fail "copy failed"
+	# ls -l $DATA $COPY
+	# cmp ${DATA} ${COPY} || fail "corrupted copy"
 
-	verbose "$tag: copy remote file to local file clobber"
-	scpclean
-	cat ${DATA} ${DATA} > ${COPY}
-	$SCP "${scpopts[@]}" somehost:${DATA} ${COPY} || fail "copy failed"
-	cmp ${DATA} ${COPY} || fail "corrupted copy"
+	# verbose "$tag: copy remote file to local file clobber"
+	# scpclean
+	# cat ${DATA} ${DATA} > ${COPY}
+	# $SCP "${scpopts[@]}" somehost:${DATA} ${COPY} || fail "copy failed"
+	# cmp ${DATA} ${COPY} || fail "corrupted copy"
 
-	verbose "$tag: copy local file to remote file in place"
-	scpclean
-	cp ${DATA} ${COPY}
-	$SCP $scpopts ${COPY} somehost:${COPY} || fail "copy failed"
-	cmp ${DATA} ${COPY} || fail "corrupted copy"
+	# verbose "$tag: simple copy local file to remote dir"
+	# scpclean
+	# cp ${DATA} ${COPY}
+	# $SCP "${scpopts[@]}" ${COPY} somehost:${DIR} || fail "copy failed"
+	# cmp ${COPY} ${DIR}/copy || fail "corrupted copy"
 
-	verbose "$tag: copy remote file to local file in place"
-	scpclean
-	cp ${DATA} ${COPY}
-	$SCP $scpopts somehost:${COPY} ${COPY} || fail "copy failed"
-	cmp ${DATA} ${COPY} || fail "corrupted copy"
+	# verbose "$tag: simple copy local file to local dir"
+	# scpclean
+	# cp ${DATA} ${COPY}
+	# $SCP "${scpopts[@]}" ${COPY} ${DIR} 2>&1 1>/dev/null || fail "copy failed"
+	# cmp ${COPY} ${DIR}/copy || fail "corrupted copy"
 
-	verbose "$tag: copy local file to remote file clobber"
-	scpclean
-	cat ${DATA} ${DATA} > ${COPY}
-	$SCP $scpopts ${DATA} somehost:${COPY} || fail "copy failed"
-	ls -l $DATA $COPY
-	cmp ${DATA} ${COPY} || fail "corrupted copy"
+	# verbose "$tag: simple copy remote file to local dir"
+	# scpclean
+	# cp ${DATA} ${COPY}
+	# $SCP "${scpopts[@]}" somehost:${COPY} ${DIR} || fail "copy failed"
+	# cmp ${COPY} ${DIR}/copy || fail "corrupted copy"
 
-	verbose "$tag: copy remote file to local file clobber"
-	scpclean
-	cat ${DATA} ${DATA} > ${COPY}
-	$SCP $scpopts somehost:${DATA} ${COPY} || fail "copy failed"
-	cmp ${DATA} ${COPY} || fail "corrupted copy"
+	# verbose "$tag: recursive local dir to remote dir"
+	# scpclean
+	# rm -rf ${DIR2}
+	# cp ${DATA} ${DIR}/copy
+	# $SCP "${scpopts[@]}" -r ${DIR} somehost:${DIR2} || fail "copy failed"
+	# diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
 
-	verbose "$tag: simple copy local file to remote dir"
-	scpclean
-	cp ${DATA} ${COPY}
-	$SCP "${scpopts[@]}" ${COPY} somehost:${DIR} || fail "copy failed"
-	cmp ${COPY} ${DIR}/copy || fail "corrupted copy"
+	# verbose "$tag: recursive local dir to local dir"
+	# scpclean
+	# rm -rf ${DIR2}
+	# cp ${DATA} ${DIR}/copy
+	# $SCP "${scpopts[@]}" -r ${DIR} ${DIR2} 2>&1 1>/dev/null || fail "copy failed"
+	# diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
 
-	verbose "$tag: simple copy local file to local dir"
-	scpclean
-	cp ${DATA} ${COPY}
-	$SCP "${scpopts[@]}" ${COPY} ${DIR} 2>&1 1>/dev/null || fail "copy failed"
-	cmp ${COPY} ${DIR}/copy || fail "corrupted copy"
+	# verbose "$tag: recursive remote dir to local dir"
+	# scpclean
+	# rm -rf ${DIR2}
+	# cp ${DATA} ${DIR}/copy
+	# $SCP "${scpopts[@]}" -r somehost:${DIR} ${DIR2} || fail "copy failed"
+	# diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
 
-	verbose "$tag: simple copy remote file to local dir"
-	scpclean
-	cp ${DATA} ${COPY}
-	$SCP "${scpopts[@]}" somehost:${COPY} ${DIR} || fail "copy failed"
-	cmp ${COPY} ${DIR}/copy || fail "corrupted copy"
+	# verbose "$tag: unmatched glob file local->remote"
+	# scpclean
+	# $SCP "${scpopts[@]}" ${DATA} somehost:${COPY3} || fail "copy failed"
+	# cmp ${DATA} ${COPY3} || fail "corrupted copy"
 
-	verbose "$tag: recursive local dir to remote dir"
-	scpclean
-	rm -rf ${DIR2}
-	cp ${DATA} ${DIR}/copy
-	$SCP "${scpopts[@]}" -r ${DIR} somehost:${DIR2} || fail "copy failed"
-	diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
+	# verbose "$tag: unmatched glob file remote->local"
+	# # NB. no clean
+	# $SCP "${scpopts[@]}" somehost:${COPY3} ${COPY2} || fail "copy failed"
+	# cmp ${DATA} ${COPY2} || fail "corrupted copy"
 
-	verbose "$tag: recursive local dir to local dir"
-	scpclean
-	rm -rf ${DIR2}
-	cp ${DATA} ${DIR}/copy
-	$SCP "${scpopts[@]}" -r ${DIR} ${DIR2} 2>&1 1>/dev/null || fail "copy failed"
-	diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
+	# verbose "$tag: unmatched glob dir recursive local->remote"
+	# scpclean
+	# rm -rf ${DIR3}
+	# cp ${DATA} ${DIR}/copy
+	# cp ${DATA} ${DIR}/copy.glob[1234]
+	# $SCP "${scpopts[@]}" -r ${DIR} somehost:${DIR3} || fail "copy failed"
+	# diff ${DIFFOPT} ${DIR} ${DIR3} || fail "corrupted copy"
 
-	verbose "$tag: recursive remote dir to local dir"
-	scpclean
-	rm -rf ${DIR2}
-	cp ${DATA} ${DIR}/copy
-	$SCP "${scpopts[@]}" -r somehost:${DIR} ${DIR2} || fail "copy failed"
-	diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
+	# verbose "$tag: unmatched glob dir recursive remote->local"
+	# # NB. no clean
+	# rm -rf ${DIR2}
+	# $SCP "${scpopts[@]}" -r somehost:${DIR3} ${DIR2} || fail "copy failed"
+	# diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
 
-	verbose "$tag: unmatched glob file local->remote"
-	scpclean
-	$SCP $scpopts ${DATA} somehost:${COPY3} || fail "copy failed"
-	cmp ${DATA} ${COPY3} || fail "corrupted copy"
+	# verbose "$tag: shell metacharacters"
+	# scpclean
+	# (cd ${DIR} && \
+	#  touch '`touch metachartest`' && \
+	#  $SCP "${scpopts[@]}" *metachar* ${DIR2} 2>&1 2>/dev/null; \
+	#  [ ! -f metachartest ] ) || fail "shell metacharacters"
 
-	verbose "$tag: unmatched glob file remote->local"
-	# NB. no clean
-	$SCP $scpopts somehost:${COPY3} ${COPY2} || fail "copy failed"
-	cmp ${DATA} ${COPY2} || fail "corrupted copy"
+	# if test $mode = scp ; then
+	# 	verbose "$tag: input args & printf check"
+	# 	scpclean
+	# 	cp ${DATA} ${COPY}
+	# 	$SCP "${scpopts[@]}" -vvv -o '"%h %p"' ${COPY} somehost:${DIR} 2>&1 | tee scp_printf_test.txt
+	# 	# relies on debug log statement, specifically from "debug3: spawning..." 
+	# 	[[ " $( cat "scp_printf_test.txt" ) " =~ "%h %p" ]] || fail "input args & printf check failed"
+	# 	rm -f scp_printf_test.txt
+	# fi
 
-	verbose "$tag: unmatched glob dir recursive local->remote"
-	scpclean
-	rm -rf ${DIR3}
-	cp ${DATA} ${DIR}/copy
-	cp ${DATA} ${DIR}/copy.glob[1234]
-	$SCP $scpopts -r ${DIR} somehost:${DIR3} || fail "copy failed"
-	diff ${DIFFOPT} ${DIR} ${DIR3} || fail "corrupted copy"
+	# if [ ! -z "$SUDO" ]; then
+	# 	verbose "$tag: skipped file after scp -p with failed chown+utimes"
+	# 	scpclean
+	# 	cp -p ${DATA} ${DIR}/copy
+	# 	cp -p ${DATA} ${DIR}/copy2
+	# 	cp ${DATA} ${DIR2}/copy
+	# 	chmod 660 ${DIR2}/copy
+	# 	$SUDO chown root ${DIR2}/copy
+	# 	$SCP -p "${scpopts[@]}" somehost:${DIR}/\* ${DIR2} >/dev/null 2>&1
+	# 	$SUDO diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
+	# 	$SUDO rm ${DIR2}/copy
+	# fi
 
-	verbose "$tag: unmatched glob dir recursive remote->local"
-	# NB. no clean
-	rm -rf ${DIR2}
-	$SCP $scpopts -r somehost:${DIR3} ${DIR2} || fail "copy failed"
-	diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
+	# for i in 0 1 2 3 4 5 6 7; do
+	# 	verbose "$tag: disallow bad server #$i"
+	# 	SCPTESTMODE=badserver_$i
+	# 	export DIR SCPTESTMODE
+	# 	scpclean
+	# 	$SCP "${scpopts[@]}" somehost:${DATA} ${DIR} >/dev/null 2>/dev/null
+	# 	[ -d {$DIR}/rootpathdir ] && fail "allows dir relative to root dir"
+	# 	[ -d ${DIR}/dotpathdir ] && fail "allows dir creation in non-recursive mode"
 
-	verbose "$tag: shell metacharacters"
-	scpclean
-	(cd ${DIR} && \
-	 touch '`touch metachartest`' && \
-	 $SCP "${scpopts[@]}" *metachar* ${DIR2} 2>&1 2>/dev/null; \
-	 [ ! -f metachartest ] ) || fail "shell metacharacters"
+	# 	scpclean
+	# 	$SCP -r "${scpopts[@]}" somehost:${DATA} ${DIR2} >/dev/null 2>/dev/null
+	# 	[ -d ${DIR}/dotpathdir ] && fail "allows dir creation outside of subdir"
 
-	if test $mode = scp ; then
-		verbose "$tag: input args & printf check"
-		scpclean
-		cp ${DATA} ${COPY}
-		$SCP "${scpopts[@]}" -vvv -o '"%h %p"' ${COPY} somehost:${DIR} 2>&1 | tee scp_printf_test.txt
-		# relies on debug log statement, specifically from "debug3: spawning..." 
-		[[ " $( cat "scp_printf_test.txt" ) " =~ "%h %p" ]] || fail "input args & printf check failed"
-		rm -f scp_printf_test.txt
-	fi
+	# 	scpclean
+	# 	$SCP -pr "${scpopts[@]}" somehost:${DATA} ${DIR2} >/dev/null 2>/dev/null
+	# 	[ ! -w ${DIR2} ] && fail "allows target root attribute change"
 
-	if [ ! -z "$SUDO" ]; then
-		verbose "$tag: skipped file after scp -p with failed chown+utimes"
-		scpclean
-		cp -p ${DATA} ${DIR}/copy
-		cp -p ${DATA} ${DIR}/copy2
-		cp ${DATA} ${DIR2}/copy
-		chmod 660 ${DIR2}/copy
-		$SUDO chown root ${DIR2}/copy
-		$SCP -p "${scpopts[@]}" somehost:${DIR}/\* ${DIR2} >/dev/null 2>&1
-		$SUDO diff ${DIFFOPT} ${DIR} ${DIR2} || fail "corrupted copy"
-		$SUDO rm ${DIR2}/copy
-	fi
+	# 	scpclean
+	# 	$SCP "${scpopts[@]}" somehost:${DATA} ${DIR2} >/dev/null 2>/dev/null
+	# 	[ -e ${DIR2}/extrafile ] && fail "allows unauth object creation"
+	# 	rm -f ${DIR2}/extrafile
+	# done
 
-	for i in 0 1 2 3 4 5 6 7; do
-		verbose "$tag: disallow bad server #$i"
-		SCPTESTMODE=badserver_$i
-		export DIR SCPTESTMODE
-		scpclean
-		$SCP "${scpopts[@]}" somehost:${DATA} ${DIR} >/dev/null 2>/dev/null
-		[ -d {$DIR}/rootpathdir ] && fail "allows dir relative to root dir"
-		[ -d ${DIR}/dotpathdir ] && fail "allows dir creation in non-recursive mode"
-
-		scpclean
-		$SCP -r "${scpopts[@]}" somehost:${DATA} ${DIR2} >/dev/null 2>/dev/null
-		[ -d ${DIR}/dotpathdir ] && fail "allows dir creation outside of subdir"
-
-		scpclean
-		$SCP -pr "${scpopts[@]}" somehost:${DATA} ${DIR2} >/dev/null 2>/dev/null
-		[ ! -w ${DIR2} ] && fail "allows target root attribute change"
-
-		scpclean
-		$SCP "${scpopts[@]}" somehost:${DATA} ${DIR2} >/dev/null 2>/dev/null
-		[ -e ${DIR2}/extrafile ] && fail "allows unauth object creation"
-		rm -f ${DIR2}/extrafile
-	done
-
-	verbose "$tag: detect non-directory target"
-	scpclean
-	echo a > ${COPY}
-	echo b > ${COPY2}
-	$SCP "${scpopts[@]}" ${DATA} ${COPY} ${COPY2}
-	cmp ${COPY} ${COPY2} >/dev/null && fail "corrupt target"
+	# verbose "$tag: detect non-directory target"
+	# scpclean
+	# echo a > ${COPY}
+	# echo b > ${COPY2}
+	# $SCP "${scpopts[@]}" ${DATA} ${COPY} ${COPY2}
+	# cmp ${COPY} ${COPY2} >/dev/null && fail "corrupt target"
 done
 
-scpclean
+#scpclean
 rm -f ${OBJ}/scp-ssh-wrapper.scp

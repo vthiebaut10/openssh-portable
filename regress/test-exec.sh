@@ -641,6 +641,7 @@ Host *
 	BatchMode		yes
 	StrictHostKeyChecking	yes
 	LogLevel		DEBUG3
+
 EOF
 
 if [ ! -z "$TEST_SSH_SSH_CONFOPTS" ]; then

@@ -275,7 +275,7 @@ finally
 	if (!$SkipCleanup)
 	{
 		# remove temp test folder
-		&$ShellPath -c "rm -rf $BashTestsPath/temp_test"
+		#&$ShellPath -c "rm -rf $BashTestsPath/temp_test"
 
 		if(!$SkipInstallSSHD) {
 			# Uninstall the sshd, ssh-agent service
