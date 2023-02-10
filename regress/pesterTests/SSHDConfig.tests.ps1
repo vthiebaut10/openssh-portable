@@ -218,8 +218,8 @@ Match User matchuser
             Add-UserToLocalGroup -UserName $localuser1 -Password $password -GroupName $allowGroup1
 
             # Start SSH process with Remote Forwarding Option to create a connection that doesn't prevent "Unused Connection Timeout"
-            $p = Start-Process -FilePath ssh -ArgumentList "-p $port -N -T -R 8080 $localuser1@$server" -PassThru
-            Wait-Process $p.Id -Timeout 5 -ErrorAction SilentlyContinue -ErrorVariable timeouted
+            $p = Start-Process -FilePath ssh -ArgumentList "-p $port -N -T -R 35000 $localuser1@$server" -PassThru
+            Wait-Process $p.Id -Timeout 10 -ErrorAction SilentlyContinue -ErrorVariable timeouted
             if (-not $p.HasExited) 
             {
                 Stop-Process $p.Id -Force
