@@ -222,7 +222,7 @@ Match User matchuser
             Wait-Process $p.Id -Timeout 5 -ErrorAction SilentlyContinue -ErrorVariable timeouted
             if (-not $p.HasExited) 
             {
-                Stop-Process $p.Id
+                Stop-Process $p.Id -Force
             }
 
             $timeouted | Should Be $null
