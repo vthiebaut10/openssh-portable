@@ -768,7 +768,7 @@ function Get-BuildToolPath
 function Get-Windows10SDKVersion
 {  
    #Temporary fix - Onecore builds are failing with latest windows 10 SDK (10.0.18362.0)
-   $requiredSDKVersion = [version]"10.0.17763.0" 
+   $requiredSDKVersion = [version]"10.0.22621.0" 
    ## Search for latest windows sdk available on the machine
    $windowsSDKPath = Join-Path ${env:ProgramFiles(x86)} "Windows Kits\10\bin\$requiredSDKVersion\x86\register_app.vbs"
    if (test-path $windowsSDKPath) {
