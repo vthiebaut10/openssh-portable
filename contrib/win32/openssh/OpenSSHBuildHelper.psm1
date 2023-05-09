@@ -188,47 +188,53 @@ function Start-OpenSSHBootstrap
         }
     }
 
-    $MSBuildPath = Get-MSBuildPath
+    $VisualStudioPath = Get-VisualStudioPath -NativeHostArch $NativeHostArch
+    Write-Host $VisualStudioPath
+    if ($null -ne $VisualStudioPath) {
+        $MSBuildPath = Get-MSBuildPath -VSInstallPath $VisualStudioPath
+    }
+    else {
+        $MSBuildPath = Get-VS2015BuildToolPath
+    }
     if ($MSBuildPath | Select-String "2022") 
     {
-        $env:vctargetspath = (Split-Path((Split-Path(Split-Path (Split-Path $MSBuildPath))))).ToString() + "\Microsoft\VC\v170\"
-        write-host
+        $env:vctargetspath = Join-Path $VisualStudioPath "MSBuild\Microsoft\VC\v170\"
         if ($null -eq $env:VS170COMNTOOLS)
         {
-            $env:VS170COMNTOOLS = Get-BuildToolPath -VSInstallPath $MSBuildPath -version "2022"
+            $env:VS170COMNTOOLS = Get-BuildToolPath -VSInstallPath $VisualStudioPath -version "2022"
         }
         elseif (-not (Test-Path $env:VS170COMNTOOLS))
         {
             Write-BuildMsg -AsError -ErrorAction Stop -Message "$env:VS170COMNTOOLS build tools path is invalid"   
         }
-        $VSBuildToolsPath = Get-Item(Join-Path -Path $env:VS170COMNTOOLS -ChildPath '../../vc/auxiliary/build')
+        $VSBuildToolsPath = Get-Item(Join-Path $VisualStudioPath 'vc/auxiliary/build')
     }
     elseif ($MSBuildPath | Select-String "2019") 
     {
-        $env:vctargetspath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\BuildTools\Common7\IDE\VC\VCTargets"
+        $env:vctargetspath = Join-Path $VisualStudioPath "Common7\IDE\VC\VCTargets"
         Write-BuildMsg -AsVerbose -Message "Setting vctargetspath env var to ${env:vctargetspath}"
         if ($null -eq $env:VS160COMNTOOLS)
         {
-            $env:VS160COMNTOOLS = Get-BuildToolPath -VSInstallPath $MSBuildPath -version "2019"
+            $env:VS160COMNTOOLS = Get-BuildToolPath -VSInstallPath $VisualStudioPath -version "2019"
         }
         elseif (-not (Test-Path $env:VS160COMNTOOLS))
         {
             Write-BuildMsg -AsError -ErrorAction Stop -Message "$env:VS160COMNTOOLS build tools path is invalid"   
         }
-        $VSBuildToolsPath = Get-Item(Join-Path -Path $env:VS160COMNTOOLS -ChildPath '../../vc/auxiliary/build')
+        $VSBuildToolsPath = Get-Item(Join-Path $VisualStudioPath 'vc/auxiliary/build')
     }
     elseif ($MSBuildPath | Select-String "2017") 
     {
-        $env:vctargetspath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2017\BuildTools\Common7\IDE\VC\VCTargets"
+        $env:vctargetspath = Join-Path $VisualStudioPath "Common7\IDE\VC\VCTargets"
         if ($null -eq $env:VS150COMNTOOLS)
         {
-            $env:VS150COMNTOOLS = Get-BuildToolPath -VSInstallPath $MSBuildPath -version "2017"
+            $env:VS150COMNTOOLS = Get-BuildToolPath -VSInstallPath $VisualStudioPath -version "2017"
         }
         elseif (-not (Test-Path $env:VS150COMNTOOLS))
         {
             Write-BuildMsg -AsError -ErrorAction Stop -Message "$env:VS150COMNTOOLS build tools path is invalid"   
         }
-        $VSBuildToolsPath = Get-Item(Join-Path -Path $env:VS150COMNTOOLS -ChildPath '../../vc/auxiliary/build')
+        $VSBuildToolsPath = Get-Item(Join-Path $VisualStudioPath 'vc/auxiliary/build')
     }
     else 
     {
@@ -237,13 +243,10 @@ function Start-OpenSSHBootstrap
             #TODO: Install VS2019 or VS2017 build tools
             Write-BuildMsg -AsError -ErrorAction Stop -Message "The required msbuild 15.0, or greater, is not installed on the machine."
         }
-        if ($MSBuildPath | Select-String "2015") {
-            $env:vctargetspath = "${env:ProgramFiles(x86)}\MSBuild\Microsoft.Cpp\v4.0\v140"
-        }
-        else {
-            $VSBuildToolsPath = Get-Item(Join-Path -Path $env:VS140COMNTOOLS -ChildPath '../../vc')
-            Write-BuildMsg -AsVerbose -Message 'VC++ 2015 Build Tools already present.'
-        }
+
+        $VSBuildToolsPath = Get-Item(Join-Path -Path $env:VS140COMNTOOLS -ChildPath '../../vc')
+        Write-BuildMsg -AsVerbose -Message 'VC++ 2015 Build Tools already present.'
+        
         if (!$MSBuildPath -or ($null -eq $env:VS140COMNTOOLS)) {
             Get-Chocolatey
             $packageName = "vcbuildtools"
@@ -567,7 +570,13 @@ function Start-OpenSSHBuild
         $cmdMsg += "/noconlog"
     }
 
-    $msbuildCmd = Get-MSBuildPath
+    $VisualStudioPath = Get-VisualStudioPath -NativeHostArch $NativeHostArch
+    if ($null -ne $VisualStudioPath) {
+        $msbuildCmd = Get-MSBuildPath -VSInstallPath $VisualStudioPath
+    }
+    else {
+        $msbuildCmd = Get-VS2015BuildToolPath
+    }
     Write-BuildMsg -AsInfo -Message "Using MSBuild path: $msbuildCmd"
 
     Write-BuildMsg -AsInfo -Message "Starting Open SSH build; Build Log: $($script:BuildLogFile)."
@@ -582,56 +591,6 @@ function Start-OpenSSHBuild
     }    
 
     Write-BuildMsg -AsInfo -Message "SSH build successful."
-}
-
-function Get-VS2022BuildToolPath
-{
-    $searchPath = "C:\Program Files\Microsoft Visual Studio\2022\*\MSBuild\Current\Bin"
-    if($env:PROCESSOR_ARCHITECTURE -ieq "AMD64")
-    {
-        $searchPath += "\amd64"
-    }
-    write-host "setting search path to $searchpath"
-    $toolAvailable = @()
-    $toolAvailable += Get-ChildItem -path $searchPath\* -Filter "MSBuild.exe" -ErrorAction SilentlyContinue
-    if($toolAvailable.count -eq 0)
-    {
-        return $null
-    }
-    return $toolAvailable[0].FullName
-}
-
-function Get-VS2019BuildToolPath
-{
-    $searchPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\*\MSBuild\Current\Bin"
-    if($env:PROCESSOR_ARCHITECTURE -ieq "AMD64")
-    {
-        $searchPath += "\amd64"
-    }
-    $toolAvailable = @()
-    $toolAvailable += Get-ChildItem -path $searchPath\* -Filter "MSBuild.exe" -ErrorAction SilentlyContinue
-    if($toolAvailable.count -eq 0)
-    {
-        return $null
-    }
-    return $toolAvailable[0].FullName
-}
-
-function Get-VS2017BuildToolPath
-{
-    # TODO: Should use vswhere: https://github.com/microsoft/vswhere/wiki/Find-MSBuild
-    $searchPath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2017\*\MSBuild\15.0\Bin"
-    if($env:PROCESSOR_ARCHITECTURE -ieq "AMD64")
-    {
-        $searchPath += "\amd64"
-    }
-    $toolAvailable = @()
-    $toolAvailable += Get-ChildItem -path $searchPath\* -Filter "MSBuild.exe" -ErrorAction SilentlyContinue
-    if($toolAvailable.count -eq 0)
-    {
-        return $null
-    }
-    return $toolAvailable[0].FullName
 }
 
 function Get-VS2015BuildToolPath
@@ -650,43 +609,63 @@ function Get-VS2015BuildToolPath
     return $toolAvailable[0].FullName
 }
 
-function Get-MSBuildPath {
-    if($env:PROCESSOR_ARCHITECTURE -ieq "AMD64") {
-        $VSPath = Get-VS2022BuildToolPath
-        if ($null -ne $VSPath) { return $VSPath };
-        $VSPath = Get-VS2019BuildToolPath
-        if ($null -ne $VSPath) { return $VSPath };
-        $VSPath = Get-VS2017BuildToolPath
-        if ($null -ne $VSPath) { return $VSPath };
-        $VSPath = Get-VS2015BuildToolPath
-        if ($null -ne $VSPath) { return $VSPath };
-    }
-    else {
-        $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
-        if (Test-Path $vsWherePath) {
-            $buildToolPath = (& $vsWherePath -latest -requires Microsoft.Component.MSBuild -find MSBuild\**\Bin\MSBuild.exe)
-            if ($null -ne $buildToolPath) {
-                return $buildToolPath
-            }
-            else {
-                Write-BuildMsg -AsError -ErrorAction Stop -Message "MSBuild not found, please install"
-            }
+function Get-VisualStudioPath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('x86', 'x64', 'arm64', 'arm')]
+        [string]$NativeHostArch
+    )
+    $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
+    if (Test-Path $vsWherePath) {
+        $requiredToolset = 'Microsoft.Component.MSBuild'
+        $requiredVCtools = 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64'
+        if ($NativeHostArch -eq 'arm') {
+            $requiredVCtools = 'Microsoft.VisualStudio.Component.VC.Tools.ARM'
+        }
+        elseif ($NativeHostArch -eq 'arm64') {
+            $requiredVCtools = 'Microsoft.VisualStudio.Component.VC.Tools.ARM64'
+        }
+        write-host "$vsWherePath -latest  -products * -requires $requiredToolset -requires $requiredVCtools -property installationPath"
+        $VSPath = (& $vsWherePath -latest -products * -requires $requiredToolset -requires $requiredVCtools -property installationPath)
+        if ($null -ne $VSPath) {
+            return $VSPath
         }
         else {
-            Write-BuildMsg -AsError -ErrorAction Stop -Message "VSWhere not found - please install VS 2017 Update 2, or newer"
+            Write-BuildMsg -AsError -ErrorAction Stop -Message "Visual Studio with required components not found, please ensure both $requiredToolset & $requiredVCtools are installed"
         }
     }
+    else {
+        Write-BuildMsg -AsWarning -Message "VSWhere not found - please install VS 2017 Update 2, or newer, defaulting to Visual Studio 2015"
+        return $null
+    }
+}
+function Get-MSBuildPath {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$VSInstallPath
+    )
+    $searchPath = "MSBuild\**\Bin\"
+    if($env:PROCESSOR_ARCHITECTURE -ieq "AMD64")
+    {
+        $searchPath += "\amd64"
+    }
+    $fullSearchPath = Join-Path $VSInstallPath $searchPath
+    $toolAvailable = Get-ChildItem -path $fullSearchPath\* -Filter "MSBuild.exe" -ErrorAction SilentlyContinue
+    if($null -eq $toolAvailable)
+    {
+        Write-BuildMsg -AsError -ErrorAction Stop -Message "MSBuild not found, please install"
+    }
+    return $toolAvailable[0].FullName
 }
 
 function Get-BuildToolPath
 {
-    param
-    (
-        [Parameter(Mandatory = $true)]
+    param (
         [string]$VSInstallPath,
-        [string]$version)
+        [string]$version
+    )
 
-    $buildToolsPath = Get-Item(Join-Path -Path $VSInstallPath -ChildPath '../../../../../Common7/Tools/') | % {$_.FullName}
+    $buildToolsPath = Get-Item(Join-Path $VSInstallPath 'Common7/Tools/') | % {$_.FullName}
     if (-not (Test-Path $buildToolsPath))
     {
         Get-Chocolatey
