@@ -92,13 +92,13 @@ extern struct passwd *privsep_pw;
 extern struct sshauthopt *auth_opts;
 
 /* Debugging messages */
-#ifdef WINDOWS
+#ifndef WINDOWS
+	static struct sshbuf *auth_debug;
+#else
 	/* removing static declaration due to access
 	violation thrown when compiling with platform
 	toolsets newer than v140 (VS2017 or above) */
 	struct sshbuf *auth_debug;
-#else
-	static struct sshbuf *auth_debug;
 #endif
 
 /*
