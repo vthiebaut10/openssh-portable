@@ -601,8 +601,8 @@ function Get-VS2015BuildToolPath
         $searchPath += "\amd64"
     }
     $toolAvailable = @()
-    $toolAvailable += Get-ChildItem -path $searchPath\* -Filter "MSBuild.exe" -ErrorAction SilentlyContinue
-    if($toolAvailable.count -eq 0)
+    $toolAvailable = Get-ChildItem -path $searchPath\* -Filter "MSBuild.exe" -ErrorAction SilentlyContinue
+    if($null -eq $toolAvailable)
     {
         return $null
     }
@@ -689,7 +689,7 @@ function Get-Windows10SDKVersion
     $minSDKVersion = [version]"10.0.17763.0"
     $versionsAvailable = @()
     $versionsAvailable = Get-ChildItem $windowsSDKPath | ? {$_.Name.StartsWith("10.")} | % {$version = [version]$_.Name; if(($version.CompareTo($minSDKVersion) -ge 0)) {$version.ToString()}}
-    if(0 -eq $versionsAvailable.count)
+    if($null -eq $versionsAvailable)
     {
          return $null
     }
