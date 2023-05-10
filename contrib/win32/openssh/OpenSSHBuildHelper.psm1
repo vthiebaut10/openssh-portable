@@ -264,7 +264,7 @@ function Start-OpenSSHBootstrap
                     }
                 } until ($input -match "^(y(es)?|N(o)?)$")
                 [string]$ret = $Matches[0]
-                if ($ret.ToLower().Startswith('y'))
+                if ($ret -like 'y*')
                 {
                     Write-BuildMsg -AsWarning -Message "restarting machine ..."
                     Restart-Computer -Force
