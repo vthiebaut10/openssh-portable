@@ -617,7 +617,6 @@ function Get-VisualStudioPath {
     )
     $vsWherePath = "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe"
     if (Test-Path $vsWherePath) {
-        $requiredToolset = 'Microsoft.Component.MSBuild'
         $requiredVCtools = 'Microsoft.VisualStudio.Component.VC.Tools.x86.x64'
         if ($NativeHostArch -eq 'arm') {
             $requiredVCtools = 'Microsoft.VisualStudio.Component.VC.Tools.ARM'
@@ -625,13 +624,20 @@ function Get-VisualStudioPath {
         elseif ($NativeHostArch -eq 'arm64') {
             $requiredVCtools = 'Microsoft.VisualStudio.Component.VC.Tools.ARM64'
         }
-        write-host "$vsWherePath -latest  -products * -requires $requiredToolset -requires $requiredVCtools -property installationPath"
-        $VSPath = (& $vsWherePath -latest -products * -requires $requiredToolset -requires $requiredVCtools -property installationPath)
-        if ($null -ne $VSPath) {
-            return $VSPath
+        write-host "$vsWherePath -products * -requires $requiredVCtools -property installationPath"
+        $VSPaths = (& $vsWherePath -products * -requires $requiredVCtools -property installationPath)
+        # for some reason, VSWhere does not seem to find MSBuild so check manually
+        if ($null -ne $VSPaths) {
+            foreach ($VSPath in $VSPaths) {
+                if (Get-MSBuildPath -VSInstallPath $VSPath) {
+                    return $VSPath
+                }
+            }
+            # if none of the VS installs have MSBuild, then build cannot proceed
+            Write-BuildMsg -AsError -ErrorAction Stop -Message "Visual Studio with required components not found, please ensure Microsoft.VisualStudio.Workload.MSBuildTools are installed"
         }
         else {
-            Write-BuildMsg -AsError -ErrorAction Stop -Message "Visual Studio with required components not found, please ensure both $requiredToolset & $requiredVCtools are installed"
+            Write-BuildMsg -AsError -ErrorAction Stop -Message "Visual Studio with required components not found, please ensure $requiredVCtools are installed"
         }
     }
     else {
@@ -653,7 +659,7 @@ function Get-MSBuildPath {
     $toolAvailable = Get-ChildItem -path $fullSearchPath\* -Filter "MSBuild.exe" -ErrorAction SilentlyContinue
     if($null -eq $toolAvailable)
     {
-        Write-BuildMsg -AsError -ErrorAction Stop -Message "MSBuild not found, please install"
+        return $null
     }
     return $toolAvailable[0].FullName
 }
