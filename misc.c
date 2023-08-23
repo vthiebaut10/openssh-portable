@@ -316,14 +316,25 @@ static int
 waitfd(int fd, int *timeoutp, short events, volatile sig_atomic_t *stop)
 {
 	struct pollfd pfd;
+#ifdef WINDOWS
+	struct timeval t_start;
+	int oerrno, r, have_timeout = (*timeoutp >= 0);
+#else
 	struct timespec timeout;
 	int oerrno, r;
 	sigset_t nsigset, osigset;
 
 	if (timeoutp && *timeoutp == -1)
 		timeoutp = NULL;
+#endif /* WINDOWS */
+
 	pfd.fd = fd;
 	pfd.events = events;
+#ifdef WINDOWS
+	for (; !have_timeout || *timeoutp >= 0;) {
+		monotime_tv(&t_start);
+		r = poll(&pfd, 1, *timeoutp);
+#else
 	ptimeout_init(&timeout);
 	if (timeoutp != NULL)
 		ptimeout_deadline_ms(&timeout, *timeoutp);
@@ -339,12 +350,18 @@ waitfd(int fd, int *timeoutp, short events, volatile sig_atomic_t *stop)
 			}
 		}
 		r = ppoll(&pfd, 1, ptimeout_get_tsp(&timeout),
-		    stop != NULL ? &osigset : NULL);
+			stop != NULL ? &osigset : NULL);
+#endif /* WINDOWS */
 		oerrno = errno;
+#ifdef WINDOWS
+		if (have_timeout)
+			ms_subtract_diff(&t_start, timeoutp);
+#else
 		if (stop != NULL)
 			sigprocmask(SIG_SETMASK, &osigset, NULL);
 		if (timeoutp)
 			*timeoutp = ptimeout_get_ms(&timeout);
+#endif /* WINDOWS */
 		errno = oerrno;
 		if (r > 0)
 			return 0;

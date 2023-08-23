@@ -2031,8 +2031,8 @@ main(int ac, char **av)
 
 	/* Parse command-line arguments. */
 #ifdef WINDOWS
-	while ((opt = getopt(ac, av,
-	    "C:E:b:c:f:g:h:k:o:p:u:46DGQRTdeiqrtVyz")) != -1) {
+	while ((opt = getopt(ac, av, 
+		"C:E:b:c:f:g:h:k:o:p:u:46DGQRTdeiqrtVyz")) != -1) {
 #else
 	while ((opt = getopt(ac, av,
 		"C:E:b:c:f:g:h:k:o:p:u:46DGQRTdeiqrtV")) != -1) {

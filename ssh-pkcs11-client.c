@@ -856,7 +856,7 @@ pkcs11_add_provider(char *name, char *pin, struct sshkey ***keysp,
 		return -1;
 #else
 	struct pkcs11_provider *p;
-	if (fd < 0 && pkcs11_start_helper(name) < 0)	
+	if (fd < 0 && pkcs11_start_helper() < 0)	
 		return (-1);
 #endif /* WINDOWS */
 
