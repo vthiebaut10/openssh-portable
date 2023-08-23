@@ -2030,8 +2030,13 @@ main(int ac, char **av)
 	initialize_server_options(&options);
 
 	/* Parse command-line arguments. */
+#ifdef WINDOWS
 	while ((opt = getopt(ac, av,
-	    "C:E:b:c:f:g:h:k:o:p:u:46DGQRTdeiqrtV")) != -1) {
+	    "C:E:b:c:f:g:h:k:o:p:u:46DGQRTdeiqrtVyz")) != -1) {
+#else
+	while ((opt = getopt(ac, av,
+		"C:E:b:c:f:g:h:k:o:p:u:46DGQRTdeiqrtV")) != -1) {
+#endif /* WINDOWS */
 		switch (opt) {
 		case '4':
 			options.address_family = AF_INET;
@@ -2139,6 +2144,7 @@ main(int ac, char **av)
 			fprintf(stderr, "%s, %s\n",
 			    SSH_VERSION, SSH_OPENSSL_VERSION);
 			exit(0);
+#ifdef WINDOWS
 		case 'y':
 			privsep_unauth_child = 1;
 			rexec_flag = 0;
@@ -2151,6 +2157,7 @@ main(int ac, char **av)
 			logfile = NULL;
 			//Sleep(10 * 1000);
 			break;
+#endif /* WINDOWS */
 		default:
 			usage();
 			break;
