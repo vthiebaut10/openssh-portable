@@ -1,0 +1,2228 @@
+{
+  "files": [
+    {
+      "fileName": "./bin/desktop/arm/libcrypto.lib",
+      "SPDXID": "SPDXRef-File--bin-desktop-arm-libcrypto.lib-23D34CB02E4035DEACAF44903099D55EB879E517",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5d7e509d82e5ec56a78587294055c92252e7f5b617a4ce4ff5ee5aaee4c86fd3"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "23d34cb02e4035deacaf44903099d55eb879e517"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/x64/libcrypto.lib",
+      "SPDXID": "SPDXRef-File--bin-desktop-x64-libcrypto.lib-37A1AF1A709DA45B2E747EED7DD94C9133B5FD7A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a6416d3aa4bf6ef20adee47d13a70c5ff75692d0d1150df5b0dd59e5c2bd260e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "37a1af1a709da45b2e747eed7dd94c9133b5fd7a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/arm/libcrypto.lib",
+      "SPDXID": "SPDXRef-File--bin-onecore-arm-libcrypto.lib-23D34CB02E4035DEACAF44903099D55EB879E517",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5d7e509d82e5ec56a78587294055c92252e7f5b617a4ce4ff5ee5aaee4c86fd3"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "23d34cb02e4035deacaf44903099d55eb879e517"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/x64/libcrypto.lib",
+      "SPDXID": "SPDXRef-File--bin-onecore-x64-libcrypto.lib-37A1AF1A709DA45B2E747EED7DD94C9133B5FD7A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a6416d3aa4bf6ef20adee47d13a70c5ff75692d0d1150df5b0dd59e5c2bd260e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "37a1af1a709da45b2e747eed7dd94c9133b5fd7a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/aes.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-aes.h-00419B2FB8B2A193A696DBFDBECE1DF241382C03",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d94d26fddb47d1647c7aeff7c20a582fde943797e70a9160580cb6c2ca82af4e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "00419b2fb8b2a193a696dbfdbece1df241382c03"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/cast.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-cast.h-DB408978AC939FECDDADB976632702169ECC7130",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6efabc4a15c3bd0b1caa5c92abac4676f739f6dd9527bc211e138ac7c24ac635"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "db408978ac939fecddadb976632702169ecc7130"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ct.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ct.h-307BF2460427724E815E2B92D62C75A64D2D0EF6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3c83f653ebe4c2772837fdd936ecf268658aa5ee29346eefc128263097cd960b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "307bf2460427724e815e2b92d62c75a64d2d0ef6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ecdh.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ecdh.h-D455BCB8D7ECF73D23370C17C30E78D6F08D409A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c6059b305f72a2fe1b49ed1783c159ad8451c8b555c96e3582727bf3e787f698"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d455bcb8d7ecf73d23370c17c30e78d6f08d409a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/idea.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-idea.h-A9AEA1DF3E32BD84DAE839F2626AD175A9F8AED9",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "dc636a8d5c3924265b818ea40501922e9511d67cd4866c1a4eb4ff3fccf31b65"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "a9aea1df3e32bd84dae839f2626ad175a9f8aed9"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ocsp.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ocsp.h-2BF68B6E6E45120E04E496889FA356486256FF9E",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "86b8a100e16450bc03172d8c74f9dd84e3b9ad886bcc2982c5fcbfad2d197ceb"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "2bf68b6e6e45120e04e496889fa356486256ff9e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/pkcs7.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-pkcs7.h-258B595562759AA2F53940003EB8C5F6E0734633",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3f258787f8a3e5caf1dd1522bf97d91b4c637a5f7cc2f56e7d2907665c149ac9"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "258b595562759aa2f53940003eb8c5f6e0734633"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/sha.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-sha.h-CF98367915FDC11B20B5AC26345C95D451E6F944",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4f484b1f432911ee5d03d45cfa55651f89e6a7b60d7c62edc628a188489beb1d"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "cf98367915fdc11b20b5ac26345c95d451e6f944"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/stack.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-stack.h-CFA1D875EB9A94099C2C68EB8F6DA6F5FF3E46DF",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f66475d8702c830d3d6791db70ae3dcff35617d25f3890bb6d3940866531517b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "cfa1d875eb9a94099c2c68eb8f6da6f5ff3e46df"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/x509v3.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-x509v3.h-6EFD623C035CE485D1F11C631073B1DFB0AF3BD6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "68eabefb2926e71023985e402c1bc14112d6da876d86dd59dcb544a29d362910"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6efd623c035ce485d1f11c631073b1dfb0af3bd6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/arm/libcrypto.dll",
+      "SPDXID": "SPDXRef-File--bin-desktop-arm-libcrypto.dll-F6B5390C18C0B11FE444DB1C27588C15AD0F7809",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7fe3e41517d3581dd84b85f33c8d08567b2a54ca6127c5b18fb3730ad9f0a9fd"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "f6b5390c18c0b11fe444db1c27588c15ad0f7809"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/x64/libcrypto.dll",
+      "SPDXID": "SPDXRef-File--bin-desktop-x64-libcrypto.dll-CE495C2071719E40B64EF81C51B743C3870BCA06",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e86fb09dcbe188aee4bf2f487b963c8171f38628e07b70e76f6f6266a9fa230f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "ce495c2071719e40b64ef81c51b743c3870bca06"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/arm/libcrypto.dll",
+      "SPDXID": "SPDXRef-File--bin-onecore-arm-libcrypto.dll-564887FB7008477BBA81229987BC7D351DCA476E",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a638de8bde26556f1026f3d6556aabc4491a820b62d62ccfb11001d92cb16f85"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "564887fb7008477bba81229987bc7d351dca476e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/x64/libcrypto.dll",
+      "SPDXID": "SPDXRef-File--bin-onecore-x64-libcrypto.dll-469EFAF16EB939320330A5C0B4AC4D7F02AF334C",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5f61077d3a59b061aba1bd2a6d74f516d5759b35368244433add3ea876eded6f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "469efaf16eb939320330a5c0b4ac4d7f02af334c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/pqueue.h",
+      "SPDXID": "SPDXRef-File--sdk-include-pqueue.h-20EB70C7C2EAE1D6A018906409011A9F887381A1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "14b3f162fe2f5d66fc5164fdedff46a7eba90e50808c81627c29b4fe7084b1ed"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "20eb70c7c2eae1d6a018906409011a9f887381a1"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/buffer.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-buffer.h-43F9E53A72580860DA6824DD405DED13D4777FBA",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0c1842782d225918b175a4ea1f0f6ae5ce3cdbc860487a668d2d386b31e59350"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "43f9e53a72580860da6824dd405ded13d4777fba"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/conf_api.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-conf-api.h-6D01037B91EE4B5EE810544503FF03030A668699",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ae05a4127183cbba960e4929dae7d31c54668fa0510b9ace35b11895c0336d55"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6d01037b91ee4b5ee810544503ff03030a668699"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/dtls1.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-dtls1.h-FB28CA14AF812EDC52E737C4F99883858BE52F5C",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2e93b372e98c6cfb90ee7a2ef01454c3d831cf124e26cd2f740a18d08ad8733b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "fb28ca14af812edc52e737c4f99883858be52f5c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/hkdf.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-hkdf.h-9C23717CE580CD98322A163B73399B06CE0365D5",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ee4a49a236316f0a025df3367f7e64a637a169468b8b12dca397cc1a1d8ca4bb"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9c23717ce580cd98322a163b73399b06ce0365d5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/objects.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-objects.h-80A7A5C864891C5F70F01B012423B18DF27FF108",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "089c880d7712c6584153a4ca6687fba0206929641264db70b2da6f8a1c4d8324"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "80a7a5c864891c5f70f01b012423b18df27ff108"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/pem2.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-pem2.h-33494A8407389929DA6B28C7F2A0525AD170E98A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4205a411729f21e125cae300df7a816bf899b4941e5a0fdce80eb17665374ae9"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "33494a8407389929da6b28c7f2a0525ad170e98a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/rsa.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-rsa.h-D7E4A4557F987701B1F7DCD151F28041BF7B39AB",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "50e5e6128a815983cb1bb4145c7ac4a65a3070b332d977b791ef5b1f48c4380f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d7e4a4557f987701b1f7dcd151f28041bf7b39ab"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ssl23.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ssl23.h-B6839F704651C8BC732400F4DC8788AFFC538D3A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "aec14ff11cd81aa3085f6bd5d72e561b80e16434713af975667ff36538b88350"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "b6839f704651c8bc732400f4dc8788affc538d3a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/whrlpool.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-whrlpool.h-4B8CF565E8B963576BF5A1E6A58ED74AECE0AE4D",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "79544aa0def6846e5692cb924a2e5ab37f89feb5c425952d792764c2c88f7412"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "4b8cf565e8b963576bf5a1e6a58ed74aece0ae4d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/arm/libcrypto.exp",
+      "SPDXID": "SPDXRef-File--bin-desktop-arm-libcrypto.exp-9EEE9F80FA5BA6FC39E8668587037CCEFE6C0BEB",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3c47de08919048c2787186ce514275fa86b6b816dc98d3b3cec962dcf541778b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9eee9f80fa5ba6fc39e8668587037ccefe6c0beb"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/x64/libcrypto.exp",
+      "SPDXID": "SPDXRef-File--bin-desktop-x64-libcrypto.exp-8DCA0C9C58E761ABF37B4D4BF5B60ED88B015028",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "55b2ad761397be9705c22312f490fc817edc0907c82ac96b637cfe540f09a640"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "8dca0c9c58e761abf37b4d4bf5b60ed88b015028"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/arm/libcrypto.exp",
+      "SPDXID": "SPDXRef-File--bin-onecore-arm-libcrypto.exp-9EEE9F80FA5BA6FC39E8668587037CCEFE6C0BEB",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "3c47de08919048c2787186ce514275fa86b6b816dc98d3b3cec962dcf541778b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9eee9f80fa5ba6fc39e8668587037ccefe6c0beb"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/x64/libcrypto.exp",
+      "SPDXID": "SPDXRef-File--bin-onecore-x64-libcrypto.exp-8DCA0C9C58E761ABF37B4D4BF5B60ED88B015028",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "55b2ad761397be9705c22312f490fc817edc0907c82ac96b637cfe540f09a640"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "8dca0c9c58e761abf37b4d4bf5b60ed88b015028"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/tls.h",
+      "SPDXID": "SPDXRef-File--sdk-include-tls.h-11B142BEC992ABEE6EDE2781E7CCC5B9284CBD6B",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a3807a4d67a89b39d9cd06088435e1a91b27cdf5ab037c41238fb45006d2bcd9"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "11b142bec992abee6ede2781e7ccc5b9284cbd6b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/camellia.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-camellia.h-061E56C47E3CC4AF9EDBB61FC1ABB1E809F421D5",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d1e0d48d6d5bae0753090b5d93bced72a17078011cad4fb0e870e692f4b9d4b4"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "061e56c47e3cc4af9edbb61fc1abb1e809f421d5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/crypto.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-crypto.h-13B23715EC333BECD9BA8749FD737A69D5F4B711",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "68f1a72194329c083312c08fc733b61e0fc194e9c32f2143552250b7ecec49f4"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "13b23715ec333becd9ba8749fd737a69d5f4b711"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ec.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ec.h-DA936DC6A544E9D6B0D5BC39FE3C1F56E3BD06B3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "21f9a3bebc51c6a903bb00abcc94ec7ef860781f2df2a99289d66afc826df073"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "da936dc6a544e9d6b0d5bc39fe3c1f56e3bd06b3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/hmac.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-hmac.h-D00A4A05416447B69AF0ABAB20290A8A7E0A9024",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2daaeb4fdff899f89342110ebdabd948c75ec1e343dbd40c83efc068711a2e1b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d00a4a05416447b69af0abab20290a8a7e0a9024"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/obj_mac.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-obj-mac.h-95315856C86E1C28E31133A993F629060AC768C0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "dae31035fca4dbf64c242fb7b4106e22879c183dbd3e0aa1e1a9bcba09453a3e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "95315856c86e1c28e31133a993f629060ac768c0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/pkcs12.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-pkcs12.h-64169DE703D85A421BD512927685D6318A6F941B",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "347ccef094a7b1298ba85c2226783424e04a38cdd1b9536167b6216b6e1b5c74"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "64169de703d85a421bd512927685d6318a6f941b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/safestack.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-safestack.h-9060DA95D73C261334289FFA79AA1829E891C8BC",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "dcad5be8350b32bdaed476ecd6c8db170e48bbbd7912dcd8e96cf3b865836d1c"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9060da95d73c261334289ffa79aa1829e891c8bc"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ssl3.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ssl3.h-DD78DCD09BAC38DC8D378841D7839787B589A419",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5bf7044842aedaf13858fbee8f18d21cb9472084e11a030c648b57542c22c02e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "dd78dcd09bac38dc8d378841d7839787b589a419"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/x509.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-x509.h-25AF628B1A0F64A6507C9E1145EDC20F8C8C9AE8",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f10ecc0db1146c4565f2e7a74da79d85c4f676aeb06e469a4cd5b060c0910b3d"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "25af628b1a0f64a6507c9e1145edc20f8c8c9ae8"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/arm64/libcrypto.dll",
+      "SPDXID": "SPDXRef-File--bin-desktop-arm64-libcrypto.dll-D77F9DA34DA239B162D7E45B0913ADE82479F4E0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "40ce98a0fa89b63dd8bea8d62976cf42993976dfc8a38f447c5d89e9be7fb358"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d77f9da34da239b162d7e45b0913ade82479f4e0"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/x86/libcrypto.dll",
+      "SPDXID": "SPDXRef-File--bin-desktop-x86-libcrypto.dll-299236060BEFBD95A9B5BB5663BD1D69772DD9F8",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7a406734af75fc74fa061c59b569a487b8002dd6db4c44f2177fcecd17df0f44"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "299236060befbd95a9b5bb5663bd1d69772dd9f8"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/arm64/libcrypto.dll",
+      "SPDXID": "SPDXRef-File--bin-onecore-arm64-libcrypto.dll-6283D3C24663FF5B01CCE9DD4BF0295A53DA1A36",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ae10bb9f67bcc09b083625050eb7892f14b062a0bb851d63a5dd43771558ae81"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6283d3c24663ff5b01cce9dd4bf0295a53da1a36"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/x86/libcrypto.dll",
+      "SPDXID": "SPDXRef-File--bin-onecore-x86-libcrypto.dll-26C238263C33EF92AC135B1B175D87494CE78D80",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "97a7b2cf80442c1b578766e1f16a5a9ad7cb1d235e2cd1ce86ebbbe7eecb0390"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "26c238263c33ef92ac135b1b175d87494ce78d80"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/asn1t.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-asn1t.h-923EA1813C88D60DF0B532F95F91C01C431B3604",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2255704f6391a89188a8d3161ebfb86a43205a6d0e85789e920ed82cdbca2ecb"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "923ea1813c88d60df0b532f95f91c01c431b3604"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/cmac.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-cmac.h-15D3305D5509073B8D965C1E9C5DEC785C60B876",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a1ac4d7e7dc42b960fe8278c5244909c10384eb63518d4af4539b572e4580feb"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "15d3305d5509073b8d965c1e9c5dec785c60b876"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/des.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-des.h-B3165665DA5651C700588E467BD61FDF8C0392C2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ac19f41e760919fde4d8a7912149c96873df2a99710d9dec1f29b9ff4506838b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "b3165665da5651c700588e467bd61fdf8c0392c2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/engine.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-engine.h-BA14D55CDEEAA0082D489D398321D0363CB23A51",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "12fd7ffb61302481c831e2e6d712d2b61075b7ffd2b66f817db3fcb07c0e2219"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "ba14d55cdeeaa0082d489d398321d0363cb23a51"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/lhash.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-lhash.h-86A41032B239613CD138000C57859338DB5EFA21",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f78582a9e6373158b67c6aea95d3c21cf70881ed3bd4e59852460836ce876862"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "86a41032b239613cd138000c57859338db5efa21"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/opensslfeatures.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-opensslfeatures.h-B590EA068B957C742C4A52F2F4B8BEFF6B6B246A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "90a0e74355a07bdd39d37cb532e9593436131ad9afe13082230383dff4db158e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "b590ea068b957c742c4a52f2f4b8beff6b6b246a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/rand.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-rand.h-6C6CF7ABDC79E428D0FD4444DA6A43FA4841407A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "66112f86abc37b3ee5ca80cd99f136afd943217932c25dd1624724933e92b32c"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6c6cf7abdc79e428d0fd4444da6a43fa4841407a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/sm4.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-sm4.h-AF3FEE2E0A0F3396887B4E2C53BB28A34D948501",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9e657bceb7671f5ae02deb94f80f3085bc95324a861754d5ff3f1b383af33ad0"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "af3fee2e0a0f3396887b4e2c53bb28a34d948501"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ts.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ts.h-722F84A1C594745ABBEDFD76AE4E6A7694130F2D",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "57780810012a92801e0471b8eb0eb89633f19b1a3b6360bd7041dc21b5ca453b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "722f84a1c594745abbedfd76ae4e6a7694130f2d"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/x509_vfy.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-x509-vfy.h-1DACB996F0510938B932633B755DA52D55800BD3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8a6b99db304bce76c5ee58305534ca1e622bb1c0fb73649e35185025918e289e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "1dacb996f0510938b932633b755da52d55800bd3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/arm/libcrypto.pdb",
+      "SPDXID": "SPDXRef-File--bin-desktop-arm-libcrypto.pdb-42A8D5ADE9312CB2724F386D259C12BABFDADD53",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7a3d1d2150c151efe8d1b2a9b348bca5f990add6f9db61f36c3f6bee637c1bed"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "42a8d5ade9312cb2724f386d259c12babfdadd53"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/x64/libcrypto.pdb",
+      "SPDXID": "SPDXRef-File--bin-desktop-x64-libcrypto.pdb-AC8A7E54B4CDF99F336A698B1B8D3E2D6D2AAF73",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ae7a12eb535b798047648e77b071db959d58043a6109ee6d868d4d0190869c51"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "ac8a7e54b4cdf99f336a698b1b8d3e2d6d2aaf73"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/arm64/libcrypto.exp",
+      "SPDXID": "SPDXRef-File--bin-desktop-arm64-libcrypto.exp-BEFC35E07279BA48D9C46464EFFEF13D4FDE32F2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1e2e688222b0da4e35f40730866c4447f77f7d543aa0bf134d6192b34639ce1f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "befc35e07279ba48d9c46464effef13d4fde32f2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/arm64/libcrypto.lib",
+      "SPDXID": "SPDXRef-File--bin-desktop-arm64-libcrypto.lib-F06184D3832ADA821015DBE93DEC8166E5C08579",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "93d1db9de2d130ec5c3e04497d3308874502e7f9b3d75f8cb0626e0ab4d1e5e3"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "f06184d3832ada821015dbe93dec8166e5c08579"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/x86/libcrypto.lib",
+      "SPDXID": "SPDXRef-File--bin-desktop-x86-libcrypto.lib-709E0A3C6180EFD2EE7E652209AA5B905F9E8871",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ca023435295bbb8373eaba79f680fbf363782e1ec96d5e6b5647ab8b0e9c2056"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "709e0a3c6180efd2ee7e652209aa5b905f9e8871"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/arm64/libcrypto.lib",
+      "SPDXID": "SPDXRef-File--bin-onecore-arm64-libcrypto.lib-F06184D3832ADA821015DBE93DEC8166E5C08579",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "93d1db9de2d130ec5c3e04497d3308874502e7f9b3d75f8cb0626e0ab4d1e5e3"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "f06184d3832ada821015dbe93dec8166e5c08579"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/x86/libcrypto.lib",
+      "SPDXID": "SPDXRef-File--bin-onecore-x86-libcrypto.lib-709E0A3C6180EFD2EE7E652209AA5B905F9E8871",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ca023435295bbb8373eaba79f680fbf363782e1ec96d5e6b5647ab8b0e9c2056"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "709e0a3c6180efd2ee7e652209aa5b905f9e8871"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/blowfish.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-blowfish.h-FB1D3E29AB4067D45788D7B5FF20E8FAD4AACA8E",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f07bbf2d36bd4cbf689b5d5a53c5ea31c5961504a781e9e635440cc72c2123f4"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "fb1d3e29ab4067d45788d7b5ff20e8fad4aaca8e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/comp.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-comp.h-E8EDD2395EDABBEDAAD20F9CC6B4E670A2D264A6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4fc14f66bc72aa9d1ac871044c39f5b42cab6a400c63e777ee1586f34d51edf7"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e8edd2395edabbedaad20f9cc6b4e670a2d264a6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/dsa.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-dsa.h-17B3DF1BE0B0D7F91D2AD1A8095B0A7515F02A15",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7df7c341b35435a8f62537e241487584cddbef7dd147b2b9fa1cb386584f1671"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "17b3df1be0b0d7f91d2ad1a8095b0a7515f02a15"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/evp.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-evp.h-AAC13526549CA07F74B70918F5B01FA263389965",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "023c36bebe1789b63a87808f330a745f48d457f5720d04c0d9491606449b1e72"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "aac13526549ca07f74b70918f5b01fa263389965"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/md5.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-md5.h-D44D895326531BB6FB4CEC831885D06312CF7052",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2a5f0066bd465e065112da75634462cf74c5e19216bef211abae5ab40c3d7cca"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d44d895326531bb6fb4cec831885d06312cf7052"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ossl_typ.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ossl-typ.h-D0388707096DAD190A1B643D1F9BDDE9F052C6AB",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "08d143d0b676f6b3b81097be52b7899cb7f07f379f9b73511cc5d80e7838153b"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d0388707096dad190a1b643d1f9bdde9f052c6ab"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/rc4.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-rc4.h-15E2AA1FE0CCE6B2C8F6605F4BF3AD0D4ECF9749",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "accc670272af1e1eb7987c72a79070645938f18cbeee9199b0f2339921265094"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "15e2aa1fe0cce6b2c8f6605f4bf3ad0d4ecf9749"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ssl.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ssl.h-E65D122377F95AA2646C8CFFDC8AC573AAE82C6B",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "26aab16308432560a0bc495e852c92022cd6c348b38cc821af121328c225601f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e65d122377f95aa2646c8cffdc8ac573aae82c6b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ui.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ui.h-C54621A6BAC6FA8AD972B4112AD66EFCEC1ACE2E",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "13e4f1eaece3ec8fa363e8edd4aec1302e78fc23acce1ee3f1aeda7ef90cbd8e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "c54621a6bac6fa8ad972b4112ad66efcec1ace2e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/x86/libcrypto.exp",
+      "SPDXID": "SPDXRef-File--bin-desktop-x86-libcrypto.exp-F2C260B8D44FEEFC29CD4E3EF3F320F33B4B38BD",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "935a094ea7ec4de3423aca2436f28ec9aa595e0ef6ba16402bc9b0cc97a30035"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "f2c260b8d44feefc29cd4e3ef3f320f33b4b38bd"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/arm64/libcrypto.exp",
+      "SPDXID": "SPDXRef-File--bin-onecore-arm64-libcrypto.exp-BEFC35E07279BA48D9C46464EFFEF13D4FDE32F2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1e2e688222b0da4e35f40730866c4447f77f7d543aa0bf134d6192b34639ce1f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "befc35e07279ba48d9c46464effef13d4fde32f2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/x86/libcrypto.exp",
+      "SPDXID": "SPDXRef-File--bin-onecore-x86-libcrypto.exp-F2C260B8D44FEEFC29CD4E3EF3F320F33B4B38BD",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "935a094ea7ec4de3423aca2436f28ec9aa595e0ef6ba16402bc9b0cc97a30035"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "f2c260b8d44feefc29cd4e3ef3f320f33b4b38bd"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/bio.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-bio.h-15383E039EC4A51D21DBFC82A19820DB4D300BDC",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4de6b8270d074f9ef2b386656ed29fdee47fafdae279858403915a55b8d7be10"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "15383e039ec4a51d21dbfc82a19820db4d300bdc"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/cms.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-cms.h-9F649A677BB8A0BBFB0B75F8B28A706F926C1562",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0761a29713f12ad5cb744c7b11d279367b84ad722bf953724a132e99c303ab8a"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9f649a677bb8a0bbfb0b75f8b28a706f926c1562"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/dh.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-dh.h-D5F77961E0B15A3EFD33DD32C89E47B2FEA3E01B",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fbdb39ba001ff7da053a1924fcdf0452576707a0e749462c2cbd62a4b2deb79e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d5f77961e0b15a3efd33dd32c89e47b2fea3e01b"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/err.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-err.h-E033ACDD91E403F4E6F132BC9B37D45BCB8301EA",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "48a8035b149f4414c8cfd44c9f6afd68a7dcdac777e9634ff51d4746116f6986"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e033acdd91e403f4e6f132bc9b37d45bcb8301ea"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/md4.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-md4.h-E0DA5C9FABDA727B9863BF34E3C9CCAEA4F6C3A4",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e1328d6105ca4507b7f91a68015224facb306cf27ef8650e00f396da1783c434"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e0da5c9fabda727b9863bf34e3c9ccaea4f6c3a4"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/opensslv.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-opensslv.h-0B7005D33B9116BF88BCE90C8FCD51696014C025",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6366cca9dfb80cbe4069af03ed2c369c711934ed2d78a80cd12f372c7d7b8063"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "0b7005d33b9116bf88bce90c8fcd51696014c025"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/rc2.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-rc2.h-B57D79A6DC120397A162D30F87C1E1331DAE09AE",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5d84489792f11444b7804ff0f201ac871caabb495957fbd579a9e7395dc87ec0"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "b57d79a6dc120397a162d30f87c1e1331dae09ae"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/srtp.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-srtp.h-6D27C3750E5B4327656D8C1F99488EA858921877",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a22b90770d2f947d7b1d32af43bb14a7cd920ddc47748ea5e5112e7a0deabf77"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6d27c3750e5b4327656d8c1f99488ea858921877"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/txt_db.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-txt-db.h-FE46E138E77F188D55967C5573CF61AC28757E71",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "85ac61b92a0442c7c5aa3de18cef63d8da17636aa24d7d3ebdef80a023d5d4bf"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "fe46e138e77f188d55967c5573cf61ac28757e71"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/arm/libcrypto.pdb",
+      "SPDXID": "SPDXRef-File--bin-onecore-arm-libcrypto.pdb-821B0226738D755D3BC5EE2BCFE66A5627C384B3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c7a68052a4e25f2065db8dd36d129149cc395de29c2bb5515539ced8fcd28459"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "821b0226738d755d3bc5ee2bcfe66a5627c384b3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/arm64/libcrypto.pdb",
+      "SPDXID": "SPDXRef-File--bin-desktop-arm64-libcrypto.pdb-AF8EAC495871CA15D7073366CA59DFFCB2ABB546",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c0223dd7f2d87f6db8f41b6767181820f2ec41391857be70203559accdf13e61"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "af8eac495871ca15d7073366ca59dffcb2abb546"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/x64/libcrypto.pdb",
+      "SPDXID": "SPDXRef-File--bin-onecore-x64-libcrypto.pdb-0ABC9E4D4E22A96715E75522A4FA9425A89F5BC6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f2c02b26880e0ad6eb0c354e9ca0e71e8dac436bad60cbc2554b87573d49a162"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "0abc9e4d4e22a96715e75522a4fa9425a89f5bc6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/asn1.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-asn1.h-372C59EE0E4A8F3C15A9BBBBC1B697C90A24A7E2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "1a164abfab0fac702765d67d47543d23e05d679dbdd6ba47713591f3d001593f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "372c59ee0e4a8f3c15a9bbbbc1b697c90a24a7e2"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/chacha.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-chacha.h-9CBACBDFDBFF2CCAD1B1D635E99331290B916CF7",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "052c2c1cccf34f5e26697faf028d4f0583c3e11e6adb2adcbfa88a34ba91cf0d"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9cbacbdfdbff2ccad1b1d635e99331290b916cf7"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/curve25519.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-curve25519.h-D6BEB7D065A24AE2B1F9D5461A0D961741BF6303",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4fe185e732d3f1e7fe7e1bfbca2b9ad1874348d9165679146342bf31130dae0f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d6beb7d065a24ae2b1f9d5461a0d961741bf6303"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ecdsa.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ecdsa.h-67B02C6FCE149E5E277AC1A86A6ED2A8F77867D5",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8a21cd15cc32939856fac155ab1269f07b024803ee6fb203887d12f9a089d0b2"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "67b02c6fce149e5e277ac1a86a6ed2a8f77867d5"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/kdf.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-kdf.h-77ABCB3C8E80EA5C7BD5D326D753B53A4049E41A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "02ced03f0ab9226ec2bcdcf19dd61c8706f381a1597b1df872b01d3f6e9693c9"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "77abcb3c8e80ea5c7bd5d326d753b53a4049e41a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/opensslconf.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-opensslconf.h-682A48653F70AF209F53545253D1CA082F2C3CBB",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "26cc5d0754b91390ebe3edbf21d7dac8d841993747dd9c1972f7126f66fc4779"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "682a48653f70af209f53545253d1ca082f2c3cbb"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/poly1305.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-poly1305.h-7A75AA4CEA8FF204EFBDB8AAC97067EFACB5B010",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "dab080f0120a577cd15388a749ac843294117e92be52c3b99c6b33dd35f3f5b7"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "7a75aa4cea8ff204efbdb8aac97067efacb5b010"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/sm3.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-sm3.h-31AC0412E58FFCD1E19E3ADFD77AFB5EFE200DB3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "081f8e06f7ead4d19a7aed102297abe683302c75fc97b757967abeb2cd166935"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "31ac0412e58ffcd1e19e3adfd77afb5efe200db3"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/tls1.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-tls1.h-1DCCF6B99131E0E0358FC4C0FF72AC03902EA079",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e75706caee16a9ad9a459a5bbc6559e4fc809ef5fc37c2a86772b5af20c2fe07"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "1dccf6b99131e0e0358fc4c0ff72ac03902ea079"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/x509_verify.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-x509-verify.h-E19D68460D0DAD4348CDEAD0EF34D191079E2C5C",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "8cd323aae7b95e15ff7a12749a46eb5cd0d7ab12ed763f4662715a11ea56b222"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e19d68460d0dad4348cdead0ef34d191079e2c5c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/desktop/x86/libcrypto.pdb",
+      "SPDXID": "SPDXRef-File--bin-desktop-x86-libcrypto.pdb-9AA47EDE7682E1D20C01189C62A26E2FFEB5D82C",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a594c9a18d1510b514d6a65fa932eee965788194420544dd22be167f50d7818f"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "9aa47ede7682e1d20c01189c62a26e2ffeb5d82c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/arm64/libcrypto.pdb",
+      "SPDXID": "SPDXRef-File--bin-onecore-arm64-libcrypto.pdb-FDEFF12AB29B8585802C90E52E8BE501E521FF2C",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "2d9c6d5680a693dbfce252a9e4c5de87d7e6c4190d85f0485f06899416083b9c"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "fdeff12ab29b8585802c90e52e8be501e521ff2c"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./bin/onecore/x86/libcrypto.pdb",
+      "SPDXID": "SPDXRef-File--bin-onecore-x86-libcrypto.pdb-21EEB7A943AADA9DA7A55D816817FA7F076FB669",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e58784861fe31105e0b84302cefa460384bdd8c187ceafccc506ba942687764d"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "21eeb7a943aada9da7a55d816817fa7f076fb669"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/bn.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-bn.h-E450D318EE3FEE2ECA3271FFBE70BFA2E5A0374A",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6ab53ce8445230639dc02b1dee60ac986ea75e7ad83261db98ead2b9c4be7f1e"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "e450d318ee3fee2eca3271ffbe70bfa2e5a0374a"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/conf.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-conf.h-A968A3F8FE6A2913ACAFD5D5C37AC433BA9D7B14",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c5edc38c87ffb375755eca26414057429a6974604068c7c0b54739444080c95c"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "a968a3f8fe6a2913acafd5d5c37ac433ba9d7b14"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/dso.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-dso.h-7236A54441969E7BB244FC74F3417493DD22F945",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e7de154c45ee783e71d6ee158a6e6a6280c0ad3a767ef63829e46d1eff6715e9"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "7236a54441969e7bb244fc74f3417493dd22f945"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/gost.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-gost.h-BFA18C312480A29BF2698EE5378C4240C99E289E",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "5a3b410775843bdce163d2b245a69966b1d9a6afa292baa07098692bc20487d0"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "bfa18c312480a29bf2698ee5378c4240c99e289e"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/modes.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-modes.h-D753F86E2222083386A7A8EA959B654A2F7ABABC",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ef705a72c9bfb273405d0e59b5384e861d2c35dc8d66a4e9773e2a4790e4b921"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "d753f86e2222083386a7a8ea959b654a2f7ababc"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/pem.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-pem.h-BF5939F0C616597E167D3F62270E6EFBA3FAC9F1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "823987515f7e58afdfc45ce5cd74834386d2b5402a4dbc8166a7b68952ff3beb"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "bf5939f0c616597e167d3f62270e6efba3fac9f1"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ripemd.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ripemd.h-DB4006BA746E7A1512C9B865F1B65A3A737B4690",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "009d8452d626cf34d853d5c737fe65b54cbad3588ee2fca15512567a0af2e743"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "db4006ba746e7a1512c9b865f1b65a3a737b4690"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ssl2.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ssl2.h-385E489AA11D959C3A2A59ED5BC2989C09225F65",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0ea7073a0cd9d74da19ad9c3702724792c8618deabb180917100c474c79f4871"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "385e489aa11d959c3a2a59ed5bc2989c09225f65"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    },
+    {
+      "fileName": "./sdk/include/openssl/ui_compat.h",
+      "SPDXID": "SPDXRef-File--sdk-include-openssl-ui-compat.h-6BB7FC179450D87512081CA79A7FB1D4EA9407F6",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fc6b6b37a72692c2bf59010c8287822367ad51f311c34fa2fed96679644b30ec"
+        },
+        {
+          "algorithm": "SHA1",
+          "checksumValue": "6bb7fc179450d87512081ca79a7fb1d4ea9407f6"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoInFiles": [
+        "NOASSERTION"
+      ],
+      "copyrightText": "NOASSERTION"
+    }
+  ],
+  "packages": [
+    {
+      "name": "LibreSSL",
+      "SPDXID": "SPDXRef-RootPackage",
+      "downloadLocation": "NOASSERTION",
+      "packageVerificationCode": {
+        "packageVerificationCodeValue": "1dc3d2af7e321cd4f7786589aaaf5fcd42540537"
+      },
+      "filesAnalyzed": true,
+      "licenseConcluded": "NOASSERTION",
+      "licenseInfoFromFiles": [
+        "NOASSERTION"
+      ],
+      "licenseDeclared": "NOASSERTION",
+      "copyrightText": "NOASSERTION",
+      "versionInfo": "3.6.2",
+      "supplier": "Organization: Microsoft",
+      "hasFiles": [
+        "SPDXRef-File--sdk-include-openssl-ui-compat.h-6BB7FC179450D87512081CA79A7FB1D4EA9407F6",
+        "SPDXRef-File--sdk-include-openssl-ssl2.h-385E489AA11D959C3A2A59ED5BC2989C09225F65",
+        "SPDXRef-File--sdk-include-openssl-ripemd.h-DB4006BA746E7A1512C9B865F1B65A3A737B4690",
+        "SPDXRef-File--sdk-include-openssl-pem.h-BF5939F0C616597E167D3F62270E6EFBA3FAC9F1",
+        "SPDXRef-File--sdk-include-openssl-modes.h-D753F86E2222083386A7A8EA959B654A2F7ABABC",
+        "SPDXRef-File--sdk-include-openssl-gost.h-BFA18C312480A29BF2698EE5378C4240C99E289E",
+        "SPDXRef-File--sdk-include-openssl-dso.h-7236A54441969E7BB244FC74F3417493DD22F945",
+        "SPDXRef-File--sdk-include-openssl-conf.h-A968A3F8FE6A2913ACAFD5D5C37AC433BA9D7B14",
+        "SPDXRef-File--sdk-include-openssl-bn.h-E450D318EE3FEE2ECA3271FFBE70BFA2E5A0374A",
+        "SPDXRef-File--sdk-include-openssl-x509-verify.h-E19D68460D0DAD4348CDEAD0EF34D191079E2C5C",
+        "SPDXRef-File--sdk-include-openssl-tls1.h-1DCCF6B99131E0E0358FC4C0FF72AC03902EA079",
+        "SPDXRef-File--sdk-include-openssl-sm3.h-31AC0412E58FFCD1E19E3ADFD77AFB5EFE200DB3",
+        "SPDXRef-File--sdk-include-openssl-poly1305.h-7A75AA4CEA8FF204EFBDB8AAC97067EFACB5B010",
+        "SPDXRef-File--sdk-include-openssl-opensslconf.h-682A48653F70AF209F53545253D1CA082F2C3CBB",
+        "SPDXRef-File--sdk-include-openssl-kdf.h-77ABCB3C8E80EA5C7BD5D326D753B53A4049E41A",
+        "SPDXRef-File--sdk-include-openssl-ecdsa.h-67B02C6FCE149E5E277AC1A86A6ED2A8F77867D5",
+        "SPDXRef-File--sdk-include-openssl-curve25519.h-D6BEB7D065A24AE2B1F9D5461A0D961741BF6303",
+        "SPDXRef-File--sdk-include-openssl-chacha.h-9CBACBDFDBFF2CCAD1B1D635E99331290B916CF7",
+        "SPDXRef-File--sdk-include-openssl-asn1.h-372C59EE0E4A8F3C15A9BBBBC1B697C90A24A7E2",
+        "SPDXRef-File--bin-onecore-x64-libcrypto.pdb-0ABC9E4D4E22A96715E75522A4FA9425A89F5BC6",
+        "SPDXRef-File--bin-onecore-arm64-libcrypto.pdb-FDEFF12AB29B8585802C90E52E8BE501E521FF2C",
+        "SPDXRef-File--sdk-include-openssl-txt-db.h-FE46E138E77F188D55967C5573CF61AC28757E71",
+        "SPDXRef-File--sdk-include-openssl-srtp.h-6D27C3750E5B4327656D8C1F99488EA858921877",
+        "SPDXRef-File--sdk-include-openssl-rc2.h-B57D79A6DC120397A162D30F87C1E1331DAE09AE",
+        "SPDXRef-File--sdk-include-openssl-opensslv.h-0B7005D33B9116BF88BCE90C8FCD51696014C025",
+        "SPDXRef-File--sdk-include-openssl-md4.h-E0DA5C9FABDA727B9863BF34E3C9CCAEA4F6C3A4",
+        "SPDXRef-File--sdk-include-openssl-err.h-E033ACDD91E403F4E6F132BC9B37D45BCB8301EA",
+        "SPDXRef-File--sdk-include-openssl-dh.h-D5F77961E0B15A3EFD33DD32C89E47B2FEA3E01B",
+        "SPDXRef-File--sdk-include-openssl-cms.h-9F649A677BB8A0BBFB0B75F8B28A706F926C1562",
+        "SPDXRef-File--sdk-include-openssl-bio.h-15383E039EC4A51D21DBFC82A19820DB4D300BDC",
+        "SPDXRef-File--bin-onecore-x86-libcrypto.exp-F2C260B8D44FEEFC29CD4E3EF3F320F33B4B38BD",
+        "SPDXRef-File--bin-onecore-arm64-libcrypto.exp-BEFC35E07279BA48D9C46464EFFEF13D4FDE32F2",
+        "SPDXRef-File--bin-desktop-x86-libcrypto.exp-F2C260B8D44FEEFC29CD4E3EF3F320F33B4B38BD",
+        "SPDXRef-File--bin-onecore-x86-libcrypto.pdb-21EEB7A943AADA9DA7A55D816817FA7F076FB669",
+        "SPDXRef-File--bin-desktop-x86-libcrypto.pdb-9AA47EDE7682E1D20C01189C62A26E2FFEB5D82C",
+        "SPDXRef-File--bin-desktop-arm64-libcrypto.pdb-AF8EAC495871CA15D7073366CA59DFFCB2ABB546",
+        "SPDXRef-File--bin-onecore-arm-libcrypto.pdb-821B0226738D755D3BC5EE2BCFE66A5627C384B3",
+        "SPDXRef-File--sdk-include-openssl-ui.h-C54621A6BAC6FA8AD972B4112AD66EFCEC1ACE2E",
+        "SPDXRef-File--sdk-include-openssl-ssl.h-E65D122377F95AA2646C8CFFDC8AC573AAE82C6B",
+        "SPDXRef-File--sdk-include-openssl-rc4.h-15E2AA1FE0CCE6B2C8F6605F4BF3AD0D4ECF9749",
+        "SPDXRef-File--sdk-include-openssl-ossl-typ.h-D0388707096DAD190A1B643D1F9BDDE9F052C6AB",
+        "SPDXRef-File--sdk-include-openssl-md5.h-D44D895326531BB6FB4CEC831885D06312CF7052",
+        "SPDXRef-File--sdk-include-openssl-evp.h-AAC13526549CA07F74B70918F5B01FA263389965",
+        "SPDXRef-File--sdk-include-openssl-dsa.h-17B3DF1BE0B0D7F91D2AD1A8095B0A7515F02A15",
+        "SPDXRef-File--sdk-include-openssl-comp.h-E8EDD2395EDABBEDAAD20F9CC6B4E670A2D264A6",
+        "SPDXRef-File--sdk-include-openssl-blowfish.h-FB1D3E29AB4067D45788D7B5FF20E8FAD4AACA8E",
+        "SPDXRef-File--bin-onecore-x86-libcrypto.lib-709E0A3C6180EFD2EE7E652209AA5B905F9E8871",
+        "SPDXRef-File--bin-onecore-arm64-libcrypto.lib-F06184D3832ADA821015DBE93DEC8166E5C08579",
+        "SPDXRef-File--bin-desktop-x86-libcrypto.lib-709E0A3C6180EFD2EE7E652209AA5B905F9E8871",
+        "SPDXRef-File--bin-desktop-arm64-libcrypto.lib-F06184D3832ADA821015DBE93DEC8166E5C08579",
+        "SPDXRef-File--bin-desktop-arm64-libcrypto.exp-BEFC35E07279BA48D9C46464EFFEF13D4FDE32F2",
+        "SPDXRef-File--bin-desktop-x64-libcrypto.pdb-AC8A7E54B4CDF99F336A698B1B8D3E2D6D2AAF73",
+        "SPDXRef-File--bin-desktop-arm-libcrypto.pdb-42A8D5ADE9312CB2724F386D259C12BABFDADD53",
+        "SPDXRef-File--sdk-include-openssl-x509-vfy.h-1DACB996F0510938B932633B755DA52D55800BD3",
+        "SPDXRef-File--sdk-include-openssl-ts.h-722F84A1C594745ABBEDFD76AE4E6A7694130F2D",
+        "SPDXRef-File--sdk-include-openssl-sm4.h-AF3FEE2E0A0F3396887B4E2C53BB28A34D948501",
+        "SPDXRef-File--sdk-include-openssl-rand.h-6C6CF7ABDC79E428D0FD4444DA6A43FA4841407A",
+        "SPDXRef-File--sdk-include-openssl-opensslfeatures.h-B590EA068B957C742C4A52F2F4B8BEFF6B6B246A",
+        "SPDXRef-File--sdk-include-openssl-lhash.h-86A41032B239613CD138000C57859338DB5EFA21",
+        "SPDXRef-File--sdk-include-openssl-engine.h-BA14D55CDEEAA0082D489D398321D0363CB23A51",
+        "SPDXRef-File--sdk-include-openssl-des.h-B3165665DA5651C700588E467BD61FDF8C0392C2",
+        "SPDXRef-File--sdk-include-openssl-cmac.h-15D3305D5509073B8D965C1E9C5DEC785C60B876",
+        "SPDXRef-File--sdk-include-openssl-asn1t.h-923EA1813C88D60DF0B532F95F91C01C431B3604",
+        "SPDXRef-File--bin-onecore-x86-libcrypto.dll-26C238263C33EF92AC135B1B175D87494CE78D80",
+        "SPDXRef-File--bin-onecore-arm64-libcrypto.dll-6283D3C24663FF5B01CCE9DD4BF0295A53DA1A36",
+        "SPDXRef-File--bin-desktop-x86-libcrypto.dll-299236060BEFBD95A9B5BB5663BD1D69772DD9F8",
+        "SPDXRef-File--bin-desktop-arm64-libcrypto.dll-D77F9DA34DA239B162D7E45B0913ADE82479F4E0",
+        "SPDXRef-File--sdk-include-openssl-x509.h-25AF628B1A0F64A6507C9E1145EDC20F8C8C9AE8",
+        "SPDXRef-File--sdk-include-openssl-ssl3.h-DD78DCD09BAC38DC8D378841D7839787B589A419",
+        "SPDXRef-File--sdk-include-openssl-safestack.h-9060DA95D73C261334289FFA79AA1829E891C8BC",
+        "SPDXRef-File--sdk-include-openssl-pkcs12.h-64169DE703D85A421BD512927685D6318A6F941B",
+        "SPDXRef-File--sdk-include-openssl-obj-mac.h-95315856C86E1C28E31133A993F629060AC768C0",
+        "SPDXRef-File--sdk-include-openssl-hmac.h-D00A4A05416447B69AF0ABAB20290A8A7E0A9024",
+        "SPDXRef-File--sdk-include-openssl-ec.h-DA936DC6A544E9D6B0D5BC39FE3C1F56E3BD06B3",
+        "SPDXRef-File--sdk-include-openssl-crypto.h-13B23715EC333BECD9BA8749FD737A69D5F4B711",
+        "SPDXRef-File--sdk-include-openssl-camellia.h-061E56C47E3CC4AF9EDBB61FC1ABB1E809F421D5",
+        "SPDXRef-File--sdk-include-tls.h-11B142BEC992ABEE6EDE2781E7CCC5B9284CBD6B",
+        "SPDXRef-File--bin-onecore-x64-libcrypto.exp-8DCA0C9C58E761ABF37B4D4BF5B60ED88B015028",
+        "SPDXRef-File--bin-onecore-arm-libcrypto.exp-9EEE9F80FA5BA6FC39E8668587037CCEFE6C0BEB",
+        "SPDXRef-File--bin-desktop-x64-libcrypto.exp-8DCA0C9C58E761ABF37B4D4BF5B60ED88B015028",
+        "SPDXRef-File--bin-desktop-arm-libcrypto.exp-9EEE9F80FA5BA6FC39E8668587037CCEFE6C0BEB",
+        "SPDXRef-File--sdk-include-openssl-whrlpool.h-4B8CF565E8B963576BF5A1E6A58ED74AECE0AE4D",
+        "SPDXRef-File--sdk-include-openssl-ssl23.h-B6839F704651C8BC732400F4DC8788AFFC538D3A",
+        "SPDXRef-File--sdk-include-openssl-rsa.h-D7E4A4557F987701B1F7DCD151F28041BF7B39AB",
+        "SPDXRef-File--sdk-include-openssl-pem2.h-33494A8407389929DA6B28C7F2A0525AD170E98A",
+        "SPDXRef-File--sdk-include-openssl-objects.h-80A7A5C864891C5F70F01B012423B18DF27FF108",
+        "SPDXRef-File--sdk-include-openssl-hkdf.h-9C23717CE580CD98322A163B73399B06CE0365D5",
+        "SPDXRef-File--sdk-include-openssl-dtls1.h-FB28CA14AF812EDC52E737C4F99883858BE52F5C",
+        "SPDXRef-File--sdk-include-openssl-conf-api.h-6D01037B91EE4B5EE810544503FF03030A668699",
+        "SPDXRef-File--sdk-include-openssl-buffer.h-43F9E53A72580860DA6824DD405DED13D4777FBA",
+        "SPDXRef-File--sdk-include-pqueue.h-20EB70C7C2EAE1D6A018906409011A9F887381A1",
+        "SPDXRef-File--bin-onecore-x64-libcrypto.dll-469EFAF16EB939320330A5C0B4AC4D7F02AF334C",
+        "SPDXRef-File--bin-onecore-arm-libcrypto.dll-564887FB7008477BBA81229987BC7D351DCA476E",
+        "SPDXRef-File--bin-desktop-x64-libcrypto.dll-CE495C2071719E40B64EF81C51B743C3870BCA06",
+        "SPDXRef-File--bin-desktop-arm-libcrypto.dll-F6B5390C18C0B11FE444DB1C27588C15AD0F7809",
+        "SPDXRef-File--sdk-include-openssl-x509v3.h-6EFD623C035CE485D1F11C631073B1DFB0AF3BD6",
+        "SPDXRef-File--sdk-include-openssl-stack.h-CFA1D875EB9A94099C2C68EB8F6DA6F5FF3E46DF",
+        "SPDXRef-File--sdk-include-openssl-sha.h-CF98367915FDC11B20B5AC26345C95D451E6F944",
+        "SPDXRef-File--sdk-include-openssl-pkcs7.h-258B595562759AA2F53940003EB8C5F6E0734633",
+        "SPDXRef-File--sdk-include-openssl-ocsp.h-2BF68B6E6E45120E04E496889FA356486256FF9E",
+        "SPDXRef-File--sdk-include-openssl-idea.h-A9AEA1DF3E32BD84DAE839F2626AD175A9F8AED9",
+        "SPDXRef-File--sdk-include-openssl-ecdh.h-D455BCB8D7ECF73D23370C17C30E78D6F08D409A",
+        "SPDXRef-File--sdk-include-openssl-ct.h-307BF2460427724E815E2B92D62C75A64D2D0EF6",
+        "SPDXRef-File--sdk-include-openssl-cast.h-DB408978AC939FECDDADB976632702169ECC7130",
+        "SPDXRef-File--sdk-include-openssl-aes.h-00419B2FB8B2A193A696DBFDBECE1DF241382C03",
+        "SPDXRef-File--bin-onecore-x64-libcrypto.lib-37A1AF1A709DA45B2E747EED7DD94C9133B5FD7A",
+        "SPDXRef-File--bin-onecore-arm-libcrypto.lib-23D34CB02E4035DEACAF44903099D55EB879E517",
+        "SPDXRef-File--bin-desktop-x64-libcrypto.lib-37A1AF1A709DA45B2E747EED7DD94C9133B5FD7A",
+        "SPDXRef-File--bin-desktop-arm-libcrypto.lib-23D34CB02E4035DEACAF44903099D55EB879E517"
+      ]
+    }
+  ],
+  "externalDocumentRefs": [],
+  "relationships": [
+    {
+      "relationshipType": "DESCRIBES",
+      "relatedSpdxElement": "SPDXRef-RootPackage",
+      "spdxElementId": "SPDXRef-DOCUMENT"
+    }
+  ],
+  "spdxVersion": "SPDX-2.2",
+  "dataLicense": "CC0-1.0",
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "name": "LibreSSL 3.6.2",
+  "documentNamespace": "https://sbom.microsoft/1:2QSF7qZlbE-F7QrUJlEo7g:Ifmy0CRpKEe0S33n1Rdb-w/1750:341741/LibreSSL:3.6.2:ahTSNGF3tEimn6PHAFH92A",
+  "creationInfo": {
+    "created": "2023-02-27T19:26:59Z",
+    "creators": [
+      "Organization: Microsoft",
+      "Tool: Microsoft.SBOMTool-0.3.2"
+    ]
+  },
+  "documentDescribes": [
+    "SPDXRef-RootPackage"
+  ]
+}
