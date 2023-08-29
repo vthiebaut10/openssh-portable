@@ -301,9 +301,11 @@ fi
 # -qq is equivalent and is not removed.
 SSHLOGWRAP=$OBJ/ssh-log-wrapper.sh
 # BALU todo - check if we need to pass -T flag
+if [ "$os" == "windows" ]; then
+# timestamp line messes up stderr-data.sh stderr-after-eof.sh, 
+# seems to be used for concurrency tests that Windows doesn't supported yet anyway
 cat >$SSHLOGWRAP <<EOD
 #!/bin/sh
-timestamp="\`$OBJ/timestamp\`"
 logfile="${TEST_SSH_LOGDIR}/\${timestamp}.ssh.\$\$.log"
 echo "Executing: ${SSH} \$@" log \${logfile} >>$TEST_REGRESS_LOGFILE
 echo "Executing: ${SSH} \$@" >>\${logfile}
@@ -312,6 +314,19 @@ rm -f $TEST_SSH_LOGFILE
 ln -f -s \${logfile} $TEST_SSH_LOGFILE
 exec ${SSH} -E\${logfile} "\$@"
 EOD
+else
+cat >$SSHLOGWRAP <<EOD
+#!/bin/sh
+#timestamp="\`$OBJ/timestamp\`"
+logfile="${TEST_SSH_LOGDIR}/\${timestamp}.ssh.\$\$.log"
+echo "Executing: ${SSH} \$@" log \${logfile} >>$TEST_REGRESS_LOGFILE
+echo "Executing: ${SSH} \$@" >>\${logfile}
+for i in "\$@";do shift;case "\$i" in -q):;; *) set -- "\$@" "\$i";;esac;done
+rm -f $TEST_SSH_LOGFILE
+ln -f -s \${logfile} $TEST_SSH_LOGFILE
+exec ${SSH} -E\${logfile} "\$@"
+EOD
+fi
 
 chmod a+rx $OBJ/ssh-log-wrapper.sh
 REAL_SSH="$SSH"
