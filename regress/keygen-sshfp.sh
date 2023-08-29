@@ -17,20 +17,20 @@ if [ "$fp" != \
 fi
 
 # Expect two lines of output without an explicit algorithm
-fp=`${SSHKEYGEN} -r test -f ${SRC}/ed25519_openssh.pub | wc -l`
+fp=`${SSHKEYGEN} -r test -f ${SRC}/ed25519_openssh.pub | wc -l | sed 's/\r$//'`
 if [ $(($fp + 0)) -ne 2 ] ; then
 	fail "incorrect number of SSHFP records $fp (expected 2)"
 fi
 
 # Test explicit algorithm selection
 exp="test IN SSHFP 4 1 8a8647a7567e202ce317e62606c799c53d4c121f"
-fp=`${SSHKEYGEN} -Ohashalg=sha1 -r test -f ${SRC}/ed25519_openssh.pub`
+fp=`${SSHKEYGEN} -Ohashalg=sha1 -r test -f ${SRC}/ed25519_openssh.pub | sed 's/\r$//'`
 if [ "x$exp" != "x$fp" ] ; then
 	fail "incorrect SHA1 SSHFP output"
 fi
 
 exp="test IN SSHFP 4 2 54a506fb849aafb9f229cf78a94436c281efcb4ae67c8a430e8c06afcb5ee18f"
-fp=`${SSHKEYGEN} -Ohashalg=sha256 -r test -f ${SRC}/ed25519_openssh.pub`
+fp=`${SSHKEYGEN} -Ohashalg=sha256 -r test -f ${SRC}/ed25519_openssh.pub | sed 's/\r$//'`
 if [ "x$exp" != "x$fp" ] ; then
 	fail "incorrect SHA256 SSHFP output"
 fi
