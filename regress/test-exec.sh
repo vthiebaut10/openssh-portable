@@ -302,8 +302,8 @@ fi
 SSHLOGWRAP=$OBJ/ssh-log-wrapper.sh
 # BALU todo - check if we need to pass -T flag
 if [ "$os" == "windows" ]; then
-# timestamp line messes up stderr-data.sh stderr-after-eof.sh, 
-# seems to be used for concurrency tests that Windows doesn't support yet anyway
+# timestamp line messes up stderr-data.sh stderr-after-eof.sh 
+# seems to be used for debugging concurrency tests (a feature unsupported on Windows currently)
 cat >$SSHLOGWRAP <<EOD
 #!/bin/sh
 logfile="${TEST_SSH_LOGDIR}/\${timestamp}.ssh.\$\$.log"
@@ -317,7 +317,7 @@ EOD
 else
 cat >$SSHLOGWRAP <<EOD
 #!/bin/sh
-#timestamp="\`$OBJ/timestamp\`"
+timestamp="\`$OBJ/timestamp\`"
 logfile="${TEST_SSH_LOGDIR}/\${timestamp}.ssh.\$\$.log"
 echo "Executing: ${SSH} \$@" log \${logfile} >>$TEST_REGRESS_LOGFILE
 echo "Executing: ${SSH} \$@" >>\${logfile}

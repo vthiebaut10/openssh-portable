@@ -331,6 +331,13 @@ waitfd(int fd, int *timeoutp, short events, volatile sig_atomic_t *stop)
 	pfd.fd = fd;
 	pfd.events = events;
 #ifdef WINDOWS
+	/*
+	 * Windows does not support sigprocmask
+	 * which was implemented to handle ctrl+c during multiplexing.
+	 * When Win32-OpenSSH adds multiplexing support, modify and use
+	 * native_sig_handler in contrib/win32/win32compat/signal.c here
+	 *
+	*/
 	for (; !have_timeout || *timeoutp >= 0;) {
 		monotime_tv(&t_start);
 		r = poll(&pfd, 1, *timeoutp);
