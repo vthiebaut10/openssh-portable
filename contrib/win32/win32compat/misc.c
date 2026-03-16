@@ -213,6 +213,27 @@ gettimeofday(struct timeval *tv, void *tz)
 	return 0;
 }
 
+int
+clock_gettime(int clock_id, struct timespec *tp)
+{
+	union {
+		FILETIME ft;
+		unsigned long long ns;
+	} timehelper;
+	unsigned long long ns100;
+
+	/* Fetch time since Jan 1, 1601 in 100ns increments */
+	GetSystemTimeAsFileTime(&timehelper.ft);
+
+	/* Remove the epoch difference */
+	ns100 = timehelper.ns - EPOCH_DELTA;
+
+	tp->tv_sec = (time_t)(ns100 / 10000000ULL);
+	tp->tv_nsec = (long)((ns100 % 10000000ULL) * 100);
+
+	return 0;
+}
+
 void
 explicit_bzero(void *b, size_t len)
 {

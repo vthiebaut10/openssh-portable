@@ -22,3 +22,8 @@ int usleep(unsigned int);
 int gettimeofday(struct timeval *, void *);
 int nanosleep(const struct timespec *, struct timespec *);
 int w32_utimes(const char *, struct timeval *);
+
+#ifndef CLOCK_REALTIME
+#define CLOCK_REALTIME 0
+#endif
+int clock_gettime(int, struct timespec *);
